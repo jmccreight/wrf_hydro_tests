@@ -3,7 +3,7 @@
 
 theHelp='
 Arguments:
-1: mode in [ 'local', 'circleci', '--help' ]
+1: mode in [ '--help' ]
 
 If local,
 The following envionrment variables are required:
@@ -63,23 +63,18 @@ echo -e "\e[4;49;34m WRF-Hydro Testing Container\e[0m"
 
 ###################################
 #Setup directory structure in HOME directory
-baseDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+WRF_HYDRO_CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ##Set variables for each directory for easy change later
-testRepoDir=$baseDir/repos/test
-refRepoDir=$baseDir/repos/reference
-toolboxDir=$baseDir/toolbox
-testsDir=$baseDir/tests
-domainDir=$baseDir/test_domain
+testRepoDir=$WRF_HYDRO_CI_DIR/repos/test
+refRepoDir=$WRF_HYDRO_CI_DIR/repos/reference
+toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
+testsDir=$WRF_HYDRO_CI_DIR/tests
+domainDir=$WRF_HYDRO_CI_DIR/test_domain
 
 #Make directories that don't exist already
 mkdir -p $testRepoDir
 mkdir -p $refRepoDir
-
-###Source necessary tool scripts
-source $toolboxDir/ncoScripts/ncFilters.sh
-
-###Source test scripts
-source $testsDir/comp_nco.sh
 
 ###################################
 ##Setup github authitcation
@@ -159,139 +154,4 @@ fi
 #source /root/wrf_hydro_tools/utilities/sourceMe.sh
 #setHenv -RNLS
 
-###################################
-## COMPILE
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
 
-cd $testRepoDir/wrf_hydro_test/trunk/NDHMS/
-echo
-#cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
-
-## 2 is gfort  >>>> FRAGILE <<<<
-#./use_env_compileTag_offline_NoahMP.sh 2 || { echo "Compilation failed."; exit 1; }
-
-#Set environment variables. This will likely need to be hard coded so that people don't change compile time options
-./setEnvar.sh
-./configure 2
-./compile_offline_NoahMP.sh || { echo "Compilation failed."; exit 1; }
-
-echo -e "\e[5;49;32mCompilation successful under GNU!\e[0m"
-sleep 2
-theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
-
-###################################
-## Test Run = run 1
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mRunning run.1.new\e[0m"
-
-cd $domainDir/run.1.new
-cp $theBinary .
-nCoresFull=2
-mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-
-## did the model finish successfully?
-## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
-nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
-if [[ $nSuccess -ne $nCoresFull ]]; then
-    echo Run run.1.new failed.
-    exit 2
-fi
-
-###################################
-## Reference Run = run 2:
-## THis requires compiling the old binary, which in theory is not an issue. 
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mCompiling the reference (old) code\e[0m"
-
-cd $refRepoDir/wrf_hydro_nwm/trunk/NDHMS/
-echo
-#cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
-
-## 2 is gfort  >>>> FRAGILE <<<<
-#./use_env_compileTag_offline_NoahMP.sh 2 || { echo "Compilation failed."; exit 3; }
-
-#Set environment variables. This will likely need to be hard coded so that people don't change compile time options
-./setEnvar.sh
-./configure 2
-./compile_offline_NoahMP.sh || { echo "Compilation failed."; exit 1; }
-
-theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
-
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mRunning run.2.old\e[0m"
-
-cd $domainDir/run.2.old
-cp $theRefBinary .
-nCoresFull=2
-mpirun -np $nCoresFull ./`basename $theRefBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-
-## did the model finish successfully?
-## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
-nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
-if [[ $nSuccess -ne $nCoresFull ]]; then
-    echo Run run.2.old failed.
-    exit 4
-fi
-
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mComparing the results.\e[0m"
-
-
-comp_nco run.2.old run.1.new
-
-###################################
-## Run 3: perfect restarts
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mRunning run.3.restart_new\e[0m"
-
-cd $domainDir/run.3.restart_new
-cp $theBinary .
-nCoresFull=2
-mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-
-## did the model finish successfully?
-## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
-nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
-if [[ $nSuccess -ne $nCoresFull ]]; then
-    echo Run run.1.new failed.
-    exit 2
-fi
-
-cd ../
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mComparing the results.\e[0m"
-comp_nco run.1.new run.3.restart_new
-
-
-###################################
-## Run 4: ncores test
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mRunning run.4.ncores_new\e[0m"
-
-cd $domainDir/run.4.ncores_new
-cp $theBinary .
-nCoresTest=3
-mpirun -np $nCoresTest ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-
-cd ../
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mComparing the results.\e[0m"
-comp_nco run.1.new run.4.ncores_new
-
-#exec /bin/bash
-
-echo "Success. All tests appear successful. "
-
-exec /bin/bash
-
-exit $?
