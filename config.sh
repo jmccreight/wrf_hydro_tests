@@ -76,7 +76,7 @@ mkdir -p $testRepoDir
 mkdir -p $refRepoDir
 
 ###Source necessary tool scripts
-source $toolbox/ncoScripts/ncFilters.sh
+source $toolboxDir/ncoScripts/ncFilters.sh
 
 ###Source test scripts
 source $testsDir/comp_nco.sh
@@ -165,7 +165,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
 
-cd $testRepoDir/wrf_hydro_nwm/trunk/NDHMS/
+cd $testRepoDir/wrf_hydro_test/trunk/NDHMS/
 echo
 #cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
