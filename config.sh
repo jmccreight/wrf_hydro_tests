@@ -76,6 +76,9 @@ mkdir -p $testRepoDir
 mkdir -p $refRepoDir
 
 ###Source necessary tool scripts
+source $toolbox/ncoScripts/ncFilters.sh
+
+###Source test scripts
 source $testsDir/comp_nco.sh
 
 ###################################
@@ -146,7 +149,6 @@ fi
 ## setup ncoScripts & wrf_hydro_tools
 #mkdir /root/ncoTmp
 #echo "tmpPath=/root/ncoTmp" > /root/.ncoScripts
-source toolbox/ncoScripts/ncFilters.sh
 
 #echo "wrf_hydro_tools=/root/wrf_hydro_tools" > /root/.wrf_hydro_tools
 #echo "# Following established in interface.sh entrypoint:" >> /root/.bashrc
@@ -163,7 +165,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
 
-cd $testRepoDir/trunk/NDHMS/
+cd $testRepoDir/wrf_hydro_nwm/trunk/NDHMS/
 echo
 #cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
@@ -206,7 +208,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mCompiling the reference (old) code\e[0m"
 
-cd $refRepoDir/trunk/NDHMS/
+cd $refRepoDir/wrf_hydro_nwm/trunk/NDHMS/
 echo
 #cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
