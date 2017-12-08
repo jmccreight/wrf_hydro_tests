@@ -98,7 +98,7 @@ if [[ -z ${referenceFork} ]]; then referenceFork=NCAR/wrf_hydro_nwm; fi
 if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
 
 ###Source necessary tool scripts
-source $testsDir/comp_nco.sh
+source tests/comp_nco.sh
 
 ###################################
 ###Clone reference fork into repos directory
@@ -137,9 +137,6 @@ if [[ -z ${CIRCLECI} ]]; then
     echo -e "\e[0;49;32mTest branch:\e[0m    `git branch`"
     echo -e "\e[0;49;32mTesting commit:\e[0m"
     git log -n1
-else
-    #CircleCI
-
 fi
 
 ###################################
