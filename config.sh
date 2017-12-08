@@ -75,6 +75,9 @@ testsDir=$baseDir/tests
 mkdir -p $testRepoDir
 mkdir -p $refRepoDir
 
+###Source necessary tool scripts
+source $testsDir/comp_nco.sh
+
 ###################################
 ##Setup github authitcation
 doExit=0
@@ -99,9 +102,6 @@ if [[ -z ${testFork} ]]; then testFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi
 if [[ -z ${testBranchCommit} ]]; then testBranchCommit=master; fi
 if [[ -z ${referenceFork} ]]; then referenceFork=NCAR/wrf_hydro_nwm; fi
 if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
-
-###Source necessary tool scripts
-source $testDir/comp_nco.sh
 
 ###################################
 ###Clone reference fork into repos directory
