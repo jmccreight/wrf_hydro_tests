@@ -67,15 +67,10 @@ echo -e "\e[4;49;34m WRF-Hydro Testing Container\e[0m"
 ##Set variables for each directory for easy change later
 testRepoDir=repos/test
 refRepoDir=repos/reference
-toolboxDir=toolbox
-testsDir=tests
 
 #Make directories
 mkdir -p $testRepoDir
 mkdir -p $refRepoDir
-mkdir -p $toolboxDir
-mkdir -p $testsDir
-
 
 ###################################
 ##Setup github authitcation
@@ -101,22 +96,6 @@ if [[ -z ${testFork} ]]; then testFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi
 if [[ -z ${testBranchCommit} ]]; then testBranchCommit=master; fi
 if [[ -z ${referenceFork} ]]; then referenceFork=NCAR/wrf_hydro_nwm; fi
 if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
-
-###################################
-###Clone required tool repos into toolbox directory
-cd $toolboxDir
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mCloning testing dependencies\e[0m"
-git clone https://${authInfo}@github.com/jmccreight/ncoScripts
-
-###################################
-###Clone tests repo into tests directory
-cd $testsDir
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mCloning testing dependencies\e[0m"
-git clone https://${authInfo}@github.com/NCAR/wrf_hydro_ci
 
 ###Source necessary tool scripts
 source $testsDir/comp_nco.sh
@@ -167,7 +146,7 @@ fi
 ## setup ncoScripts & wrf_hydro_tools
 #mkdir /root/ncoTmp
 #echo "tmpPath=/root/ncoTmp" > /root/.ncoScripts
-source $toolboxDir/ncoScripts/ncFilters.sh
+source toolbox/ncoScripts/ncFilters.sh
 
 #echo "wrf_hydro_tools=/root/wrf_hydro_tools" > /root/.wrf_hydro_tools
 #echo "# Following established in interface.sh entrypoint:" >> /root/.bashrc
