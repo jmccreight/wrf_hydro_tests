@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tmpPath=$HOME/wrf_hydro_CItesting/toolbox/ncoScripts
+tmpPath=`grep "tmpPath" $toolboxDir/ncoScripts | cut -d '=' -f2 | tr -d ' '` 
 
 # These derived from examples found here: http://nco.sourceforge.net/nco.html#filters
 
