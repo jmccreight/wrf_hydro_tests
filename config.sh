@@ -63,12 +63,15 @@ echo -e "\e[4;49;34m WRF-Hydro Testing Container\e[0m"
 
 ###################################
 #Setup directory structure in HOME directory
+baseDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ##Set variables for each directory for easy change later
-testRepoDir=repos/test
-refRepoDir=repos/reference
+testRepoDir=$baseDir/repos/test
+refRepoDir=$baseDir/repos/reference
+toolboxDir=$baseDir/toolbox
+testsDir=$baseDir/tests
 
-#Make directories
+#Make directories that don't exist already
 mkdir -p $testRepoDir
 mkdir -p $refRepoDir
 
@@ -98,7 +101,7 @@ if [[ -z ${referenceFork} ]]; then referenceFork=NCAR/wrf_hydro_nwm; fi
 if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
 
 ###Source necessary tool scripts
-source tests/comp_nco.sh
+source $testDir/comp_nco.sh
 
 ###################################
 ###Clone reference fork into repos directory
@@ -160,7 +163,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
 
-cd testRepoDir/trunk/NDHMS/
+cd $testRepoDir/trunk/NDHMS/
 echo
 #cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
@@ -203,7 +206,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mCompiling the reference (old) code\e[0m"
 
-cd refRepoDir/trunk/NDHMS/
+cd $refRepoDir/trunk/NDHMS/
 echo
 #cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
