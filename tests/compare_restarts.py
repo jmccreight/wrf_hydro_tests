@@ -13,24 +13,31 @@ def compare_restarts(test_run_dir,ref_run_dir):
     print('Comparing RESTART files')
     for test_run_file in restart_files:
         test_run_filename = os.path.basename(test_run_file)
-        ref_run_file = glob(ref_run_dir+'/**/'+test_run_filename)
+        ref_run_file = glob(ref_run_dir+'/'+test_run_filename)
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing file '+test_run_filename)
             restart_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
+            comparison_run_check = 1
 
     #Compare HYDRO_RST files
     hydro_out = list()
     print('Comparing HYDRO_RST files')
     for test_run_file in hydro_files:
         test_run_filename = os.path.basename(test_run_file)
-        ref_run_file = glob(ref_run_dir+'/**/'+test_run_filename)
+        ref_run_file = glob(ref_run_dir+'/'+test_run_filename)
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing file '+test_run_filename)
             hydro_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
+            comparison_run_check = 1
+
+    #Check that a comparison was actually done
+    if comparison_run_check != 1:
+        print('No matching files were found to compare')
+        exit(1)
 
     #Check for exit codes and fail if non-zero
     for output in restart_out:
