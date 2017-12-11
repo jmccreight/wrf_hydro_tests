@@ -17,7 +17,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing file ',+test_run_filename)
+            print('Comparing file '+test_run_filename)
             restart_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
 
     #Compare HYDRO_RST files
@@ -29,7 +29,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing file ', +test_run_filename)
+            print('Comparing file '+test_run_filename)
             hydro_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
 
     #Check for exit codes and fail if non-zero
