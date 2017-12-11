@@ -5,8 +5,8 @@ from sys import argv
 import warnings
 
 def compare_restarts(test_run_dir,ref_run_dir):
-    restart_files=glob(test_run_dir+'/**/*RESTART*',recursive=True)
-    hydro_files=glob(test_run_dir+'/**/*HYDRO_RST*',recursive=True)
+    restart_files=glob(test_run_dir+'/*RESTART*')
+    hydro_files=glob(test_run_dir+'/*HYDRO_RST*')
 
     #Compare RESTART files
     restart_out = list()
