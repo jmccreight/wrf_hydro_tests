@@ -95,7 +95,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
-	echo -e "\e[7;49;32mRunning run.2.old\e[0m"
+	echo -e "\e[7;49;32mRunning reference fork\e[0m"
 	cd $domainDir/run.2.old
 	cp $theRefBinary .
 	nCoresFull=2
@@ -105,7 +105,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 	nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
 	if [[ $nSuccess -ne $nCoresFull ]]; then
-	    echo Run run.2.old failed.
+	    echo Run reference fork failed.
 	    exit 4
 	fi
 
@@ -124,7 +124,7 @@ fi
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
-	echo -e "\e[7;49;32mRunning run.3.restart_new\e[0m"
+	echo -e "\e[7;49;32mRunning test fork from restart\e[0m"
 
 	cd $domainDir/run.3.restart_new
 	cp $theBinary .
@@ -142,26 +142,26 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
 	cd ../
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
-	echo -e "\e[7;49;32mComparing the results.\e[0m"
+	echo -e "\e[7;49;32mComparing test fork run to restart test fork run.\e[0m"
 	comp_nco run.1.new run.3.restart_new
 fi
 
 ###################################
 ## Run 4: ncores test
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
+	nCoresTest=1
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
-	echo -e "\e[7;49;32mRunning run.4.ncores_new\e[0m"
+	echo -e "\e[7;49;32mRunning test fork with $nCoresTest cores\e[0m"
 
 	cd $domainDir/run.4.ncores_new
 	cp $theBinary .
-	nCoresTest=3
 	mpirun -np $nCoresTest ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 
 	cd ../
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
-	echo -e "\e[7;49;32mComparing the results.\e[0m"
+	echo -e "\e[7;49;32mComparing the results for test fork with 2 cores vs test fork with $nCoresTest cores.\e[0m"
 	comp_nco run.1.new run.4.ncores_new
 fi
 
