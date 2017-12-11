@@ -7,10 +7,10 @@ toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
 testsDir=$WRF_HYDRO_CI_DIR/tests
 domainDir=$WRF_HYDRO_CI_DIR/test_domain
 
-cd $testRepoDir/wrf_hydro_test/trunk/NDHMS/
+cd $testRepoDir/trunk/NDHMS/
 theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 
-cd $refRepoDir/wrf_hydro_nwm/trunk/NDHMS/
+cd $refRepoDir/trunk/NDHMS/
 theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 
 ###Source necessary tool scripts
@@ -26,7 +26,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
 
-	cd $testRepoDir/wrf_hydro_test/trunk/NDHMS/
+	cd $testRepoDir/trunk/NDHMS/
 	echo
 	#cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
@@ -75,7 +75,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mCompiling the reference (old) code\e[0m"
 
-	cd $refRepoDir/wrf_hydro_nwm/trunk/NDHMS/
+	cd $refRepoDir/trunk/NDHMS/
 	echo
 	#cp /root/wrf_hydro_tools/utilities/use_env_compileTag_offline_NoahMP.sh .
 
