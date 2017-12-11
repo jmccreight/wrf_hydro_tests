@@ -8,6 +8,9 @@ def compare_restarts(test_run_dir,ref_run_dir):
     restart_files=glob(test_run_dir+'/*RESTART*')
     hydro_files=glob(test_run_dir+'/*HYDRO_RST*')
 
+    #Make a flag for when comparisons actually happen
+    comparison_run_check = 0
+
     #Compare RESTART files
     restart_out = list()
     print('Comparing RESTART files')
