@@ -2,6 +2,7 @@ from glob import glob
 import os
 import subprocess
 from sys import argv
+import warnings
 
 def compare_restarts(test_run_dir,ref_run_dir):
     restart_files=glob(test_run_dir+'/**/*RESTART*',recursive=True)
@@ -13,7 +14,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
     for test_run_file in restart_files:
         ref_run_file = glob(ref_run_dir+'/**/'+os.path.basename(test_run_file))
         if len(ref_run_file) == 0:
-            Warning(os.path.basename(test_run_file)+' not found in reference run directory')
+            warnings.warn(os.path.basename(test_run_file)+' not found in reference run directory')
         else:
             restart_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
 
@@ -23,7 +24,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
     for test_run_file in hydro_files:
         ref_run_file = glob(ref_run_dir+'/**/'+os.path.basename(test_run_file))
         if len(ref_run_file) == 0:
-            Warning(os.path.basename(test_run_file)+' not found in reference run directory')
+            warnings.warn(os.path.basename(test_run_file)+' not found in reference run directory')
         else:
             hydro_out.append(subprocess.run(['nccmp','-dmf',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
 
