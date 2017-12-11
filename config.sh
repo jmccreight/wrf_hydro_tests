@@ -73,8 +73,8 @@ testsDir=$WRF_HYDRO_CI_DIR/tests
 domainDir=$WRF_HYDRO_CI_DIR/test_domain
 
 #Make directories that don't exist already
-#mkdir -p $testRepoDir
-#mkdir -p $refRepoDir
+[ -d $testRepoDir ] || mkdir -p $testRepoDir
+[ -d $refRepoDir ] || mkdir -p $refRepoDir
 
 ###################################
 ##Setup github authitcation
