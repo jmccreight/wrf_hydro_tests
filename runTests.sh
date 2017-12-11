@@ -8,6 +8,10 @@ toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
 testsDir=$WRF_HYDRO_CI_DIR/tests
 domainDir=$WRF_HYDRO_CI_DIR/test_domain
 
+#Speccify link to binaries after compilation
+theBinary=$testRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
+theRefBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
+
 #Specify number of cores
 nCoresFull=2
 nCoresTest=1
@@ -33,10 +37,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 
 	echo -e "\e[5;49;32mCompilation of test fork successful under GNU!\e[0m"
 	sleep 2
-
-	#Specify test binary
-    theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
-
 fi
 
 ###################################
@@ -82,10 +82,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 	./setEnvar.sh
 	./configure 2
 	./compile_offline_NoahMP.sh || { echo "Compilation failed."; exit 1; }
-
-	#The reference binary
-    theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
-
 fi
 
 ###################################
