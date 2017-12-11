@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 WRF_HYDRO_CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ##Set variables for each directory for easy change later
@@ -6,13 +7,6 @@ refRepoDir=$WRF_HYDRO_CI_DIR/repos/reference
 toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
 testsDir=$WRF_HYDRO_CI_DIR/tests
 domainDir=$WRF_HYDRO_CI_DIR/test_domain
-
-#Specify reference and test binaries
-cd $testRepoDir/trunk/NDHMS/
-theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
-
-cd $refRepoDir/trunk/NDHMS/
-theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 
 #Specify number of cores
 nCoresFull=2
@@ -39,6 +33,10 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 
 	echo -e "\e[5;49;32mCompilation of test fork successful under GNU!\e[0m"
 	sleep 2
+
+	#Specify test binary
+    theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
+
 fi
 
 ###################################
@@ -84,6 +82,9 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
 	./setEnvar.sh
 	./configure 2
 	./compile_offline_NoahMP.sh || { echo "Compilation failed."; exit 1; }
+
+	#The reference binary
+    theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 
 fi
 
