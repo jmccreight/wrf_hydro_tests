@@ -107,7 +107,7 @@ cd $refRepoDir
 # reference fork
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
-    git clone https://${authInfo}@github.com/$referenceFork    
+    git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
     cd `basename $referenceFork`
     git checkout $referenceBranchCommit || \
         { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
@@ -129,9 +129,8 @@ if [[ -z ${CIRCLECI} ]]; then
     # git clone specified test fork
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mTest fork: $testFork\e[0m"
-    git clone https://${authInfo}@github.com/$testFork
-    mv `basename $testFork` wrf_hydro_test
-    cd wrf_hydro_test
+    git clone https://${authInfo}@github.com/$testFork $testRepoDir
+    cd `basename $testFork`
     git checkout $testBranchCommit || \
         { echo "Unsuccessful checkout of $testBranchCommit from $testFork."; exit 1; }
     echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"

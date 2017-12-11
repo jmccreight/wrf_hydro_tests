@@ -14,7 +14,7 @@ USER root
 
 #Get all scripts and tests from local directory
 RUN mkdir wrf_hydro_ci
-COPY . wrf_hydro_ci/	
+#COPY . wrf_hydro_ci/	
 
 #Make directory to hold repos
 
