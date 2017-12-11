@@ -16,6 +16,8 @@ USER root
 RUN mkdir wrf_hydro_ci
 COPY . wrf_hydro_ci/	
 
+#Make directory to hold repos
+
 #Grab domain from previous domain layer
 COPY --from=domain /test_domain wrf_hydro_ci/test_domain
 
