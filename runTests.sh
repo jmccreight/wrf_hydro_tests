@@ -7,11 +7,17 @@ toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
 testsDir=$WRF_HYDRO_CI_DIR/tests
 domainDir=$WRF_HYDRO_CI_DIR/test_domain
 
+#Specify reference and test binaries
 cd $testRepoDir/trunk/NDHMS/
 theBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 
 cd $refRepoDir/trunk/NDHMS/
 theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
+
+#Specify number of cores
+nCoresFull=2
+nCoresTest=1
+
 
 ###Source necessary tool scripts
 source $toolboxDir/ncoScripts/ncFilters.sh
@@ -53,7 +59,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo -e "\e[7;49;32mRunning test fork\e[0m"
 	cd $domainDir/run.1.new
 	cp $theBinary .
-	nCoresFull=2
 	ls 
 	mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 	echo foo
@@ -98,7 +103,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo -e "\e[7;49;32mRunning reference fork\e[0m"
 	cd $domainDir/run.2.old
 	cp $theRefBinary .
-	nCoresFull=2
 	mpirun -np $nCoresFull ./`basename $theRefBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 
 	## did the model finish successfully?
@@ -125,10 +129,8 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mRunning test fork from restart\e[0m"
-
 	cd $domainDir/run.3.restart_new
 	cp $theBinary .
-	nCoresFull=2
 	mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 
 	## did the model finish successfully?
@@ -149,13 +151,13 @@ fi
 ###################################
 ## Run 4: ncores test
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
-	nCoresTest=1
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mRunning test fork with $nCoresTest cores\e[0m"
 
 	cd $domainDir/run.4.ncores_new
 	cp $theBinary .
+	echo mpirun -np $nCoresTest ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 	mpirun -np $nCoresTest ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 
 	cd ../
