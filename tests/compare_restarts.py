@@ -1,6 +1,8 @@
 from glob import glob
 import os
 import subprocess
+from sys import argv
+
 def compare_restarts(test_run_dir,ref_run_dir):
     restart_files=glob(test_run_dir+'/**/*RESTART*',recursive=True)
     hydro_files=glob(test_run_dir+'/**/*HYDRO_RST*',recursive=True)
@@ -35,3 +37,10 @@ def compare_restarts(test_run_dir,ref_run_dir):
     print('All restart file comparisons pass')
     exit(0)
 
+def main():
+    test_run_dir = argv[1]
+    ref_run_dir = argv[2]
+    compare_restarts(test_run_dir, ref_run_dir)
+
+if __name__ == "__main__":
+    main()
