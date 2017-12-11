@@ -18,13 +18,6 @@ theRefBinary=`pwd`/Run/`ls -rt Run | tail -n1`
 nCoresFull=2
 nCoresTest=1
 
-
-###Source necessary tool scripts
-source $toolboxDir/ncoScripts/ncFilters.sh
-
-###Source test scripts
-source $testsDir/comp_nco.sh
-
 ###################################
 ## COMPILE test repo
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
@@ -117,8 +110,8 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing the results.\e[0m"
 
-
-	comp_nco run.2.old run.1.new
+	#compare restart files
+	python3 tests/compare_restarts.py run.1.new run.2.old
 fi
 
 ###################################
@@ -145,7 +138,9 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing test fork run to restart test fork run.\e[0m"
-	comp_nco run.1.new run.3.restart_new
+
+	#compare restart files
+	python3 tests/compare_restarts.py run.1.new run.3.restart_new
 fi
 
 ###################################
@@ -165,6 +160,10 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing the results for test fork with 2 cores vs test fork with $nCoresTest cores.\e[0m"
 	comp_nco run.1.new run.4.ncores_new
+
+	#compare restart files
+	python3 tests/compare_restarts.py run.1.new run.4.ncores_new
+
 fi
 
 #exec /bin/bash
