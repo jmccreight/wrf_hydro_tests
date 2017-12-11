@@ -161,7 +161,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing the results for test fork with 2 cores vs test fork with $nCoresTest cores.\e[0m"
-	comp_nco run.1.new run.4.ncores_new
 
 	#compare restart files
 	python3 $testsDir/compare_restarts.py run.1.new run.4.ncores_new || \
