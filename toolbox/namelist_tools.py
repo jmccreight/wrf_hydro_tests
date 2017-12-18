@@ -16,13 +16,6 @@ def namelist_to_json(file,output_file=''):
         namelist_json = json.dump(namelist, f,indent=4)
         f.close()
 
-def main():
-    inputFile = argv[1]
-    outputFile = argv[2]
-    namelist_to_json(inputFile, outputFile)
-
-if __name__ == "__main__":
-    main()
 
 #file='/Volumes/d1/jmills/NCAR-WRF-Hydro/sixmile_docker_tests/hydro.namelist.json'
 #patch_file='/Volumes/d1/jmills/NCAR-WRF-Hydro/sixmile_docker_tests/DOMAIN.json'
@@ -42,3 +35,12 @@ def domain_to_namelist(file,patch_file=None,output_file=''):
                 namelist_json[sub_namelist].update(patch_json[sub_namelist])
 
     f90nml.write(namelist_json,output_file)
+
+
+# def main():
+#     inputFile = argv[1]
+#     outputFile = argv[2]
+#     namelist_to_json(inputFile, outputFile)
+#
+# if __name__ == "__main__":
+#     main()
