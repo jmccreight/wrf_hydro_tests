@@ -45,7 +45,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
     cp $theBinary .
     ls 
     mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-    echo foo
     ls
     ## did the model finish successfully?
     ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

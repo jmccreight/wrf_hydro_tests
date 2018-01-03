@@ -67,7 +67,7 @@ export testRepoDir=$TEST_DIR/repos/test
 export refRepoDir=$TEST_DIR/repos/reference
 export toolboxDir=$TEST_DIR/toolbox
 export testsDir=$TEST_DIR/tests
-export domainDir=$TEST_DIR/test_domain
+export domainDir=$TEST_DIR/sixmile_docker_tests
 
 #Make directories that don't exist already
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
