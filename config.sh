@@ -73,6 +73,11 @@ export domainDir=$TEST_DIR/test_domain
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
 [ -d $refRepoDir ] || mkdir -p $refRepoDir
 
+[ -d $domainDir/run.1.new ]        || mkdir -p $domainDir/run.1.new
+[ -d $domainDir/run.2.old ]        || mkdir -p $domainDir/run.2.old
+[ -d $domainDir/run.3.restart ]    || mkdir -p $domainDir/run.3.restart
+[ -d $domainDir/run.4.ncores_new ] || mkdir -p $domainDir/run.4.ncores_new
+
 ###################################
 ##Setup github authitcation
 doExit=0
