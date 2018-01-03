@@ -1,22 +1,7 @@
 #!/bin/bash
+## Below requires environment variables set in config.sh
 
-## This is where invoked.
-#TEST_DIR=`pwd`
-echo foo
-echo $TEST_DIR
-ls $TEST_DIR
-
-##Set variables for each directory for easy change later
-#testRepoDir=$TEST_DIR/repos/test
-#refRepoDir=$TEST_DIR/repos/reference
-#toolboxDir=$TEST_DIR/toolbox
-#testsDir=$TEST_DIR/tests
-#domainDir=$TEST_DIR/test_domain
-
-
-exit 1
-
-#Speccify link to binaries after compilation
+#Specify link to binaries after compilation
 theBinary=$testRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 theRefBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 
