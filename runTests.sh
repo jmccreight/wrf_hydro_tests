@@ -2,6 +2,7 @@
 
 ## This is where invoked.
 #TEST_DIR=`pwd`
+echo foo
 echo $TESTDIR
 ls $TESTDIR
 
