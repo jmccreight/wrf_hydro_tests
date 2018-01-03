@@ -1,7 +1,8 @@
 #!/bin/bash
 ## Below requires environment variables set in config.sh
-
-success=0
+## Source this script.
+## After informative message: exit on failure with non-zero status.
+## Do not exit otherwise.
 
 #Specify link to binaries after compilation
 theBinary=$testRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
@@ -14,7 +15,6 @@ nCoresTest=1
 ###################################
 ## COMPILE test repo
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
-    success=1
     echo
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mCompiling the new binary.\e[0m"
@@ -31,13 +31,11 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     ./compile_offline_NoahMP.sh || { echo "Compilation of test fork failed."; exit 1; }
     
     echo -e "\e[5;49;32mCompilation of test fork successful under GNU!\e[0m"
-    success=1
 fi
 
 ###################################
 ## run test repo
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
-    success=0
     ###################################
     ## Test Run = run 1
     echo
@@ -56,14 +54,12 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo Run test fork failed.
 	exit 2
     fi
-    success=1
 fi
 
 ###################################
 ## Reference Run = run 2:
 ## THis requires compiling the old binary, which in theory is not an issue. 
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
-    success=0    
     echo
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mCompiling the reference (old) code\e[0m"
@@ -80,13 +76,11 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     ./configure 2
     ./compile_offline_NoahMP.sh || { echo "Compilation of reference fork failed."; exit 1; }
     echo -e "\e[5;49;32mCompilation of reference fork successful under GNU!\e[0m"
-    success=1
 fi
 
 ###################################
 ## run reference repo
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
-        success=0    
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mRunning reference fork\e[0m"
@@ -108,8 +102,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 
 	#compare restart files
 	python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.2.old || \
-            { echo "Test script exited unexpectedly"; exit 1; }
-        success=1
+            { echo "Comparison of regression restart files failed."; exit 1; }
 fi
 
 ###################################
@@ -117,7 +110,6 @@ fi
 ###################################
 ## run restart tests
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
-    success=0
     echo
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mRunning test fork from restart\e[0m"
@@ -140,14 +132,12 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
     
     #compare restart files
     python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.3.restart_new || \
-        { echo "Test script exited unexpectedly"; exit 1; }
-    success=1
+        { echo "Comparison of perfect restarts failed."; exit 1; }
 fi
 
 ###################################
 ## Run 4: ncores test
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
-    success=0
     echo
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mRunning test fork with $nCoresTest cores\e[0m"
@@ -164,9 +154,5 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
     
     #compare restart files
     python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new || \
-        { echo "Test script exited unexpectedly"; exit 1; }
-    success=1
+        { echo "Comparison of ncores restarts failed."; exit 1; }
 fi
-
-exit $success
-

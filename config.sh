@@ -1,5 +1,9 @@
 #!/bin/bash
 
+## Source this script.
+## After informative message: exit on failure with non-zero status.
+## Do not exit otherwise.
+
 theHelp='
 NCAR/wrf_hydro_tests: config.sh
 
@@ -58,7 +62,6 @@ if [[ "${1}" == '--help' ]]; then echo "$theHelp"; exit 0; fi
 ###################################
 #Setup directory structure where invoked.
 export TEST_DIR=`pwd`
-
 ##Set variables for each directory for easy change later
 export testRepoDir=$TEST_DIR/repos/test
 export refRepoDir=$TEST_DIR/repos/reference
@@ -99,26 +102,26 @@ if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
 ###Clone reference fork into repos directory
 cd $refRepoDir
 # reference fork
-    echo -e "\e[0;49;32m-----------------------------------\e[0m"
-    echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
-    git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
-    cd `basename $referenceFork`
-    git checkout $referenceBranchCommit || \
-        { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
-    echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
-    echo -e "\e[0;49;32mReference branch:\e[0m    `git branch`"
-    echo -e "\e[0;49;32mReference commit:\e[0m"
-    git log -n1
+echo -e "\e[0;49;32m-----------------------------------\e[0m"
+echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
+git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
+cd `basename $referenceFork`
+git checkout $referenceBranchCommit || \
+    { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
+echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
+echo -e "\e[0;49;32mReference branch:\e[0m    `git branch`"
+echo -e "\e[0;49;32mReference commit:\e[0m"
+git log -n1
 
 ###################################
-##check if running in circleCI or locally. This is specified using environment variables passed to docker
-##If running locally, clone specified test fork, otherwise in circleCI the current PR/Commit is used as test
-
+## Check if running in circleCI or locally.
+## This is specified using environment variables passed to docker
+## If running locally, clone specified test fork, otherwise in circleCI the current PR/Commit
+## is used as test.
 if [[ -z ${CIRCLECI} ]]; then 
     ##Local 
-
     cd $testRepoDir
-
+    
     echo
     # git clone specified test fork
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
@@ -131,20 +134,6 @@ if [[ -z ${CIRCLECI} ]]; then
     echo -e "\e[0;49;32mTest branch:\e[0m    `git branch`"
     echo -e "\e[0;49;32mTesting commit:\e[0m"
     git log -n1
+    
 fi
-
-###################################
-## setup ncoScripts & wrf_hydro_tools
-#mkdir /root/ncoTmp
-#echo "tmpPath=/root/ncoTmp" > /root/.ncoScripts
-
-#echo "wrf_hydro_tools=/root/wrf_hydro_tools" > /root/.wrf_hydro_tools
-#echo "# Following established in interface.sh entrypoint:" >> /root/.bashrc
-#echo "source /root/wrf_hydro_tools/utilities/sourceMe.sh" >> /root/.bashrc
-#echo 'PS1="\[\e[0;49;34m\]\\u@\h[\!]:\[\e[m\]\\w> "' >> /root/.bashrc
-## CD to the testing repo
-#source /root/.bashrc
-#source /root/wrf_hydro_tools/utilities/sourceMe.sh
-#setHenv -RNLS
-
 
