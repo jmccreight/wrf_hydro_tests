@@ -1,6 +1,8 @@
 #!/bin/bash
 ## Below requires environment variables set in config.sh
 
+success=0
+
 #Specify link to binaries after compilation
 theBinary=$testRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 theRefBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
@@ -158,9 +160,13 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
 
 fi
 
-#exec /bin/bash
-echo -e "\e[7;49;32mSuccess. ${1} tests appear successful.\e[0m"
-
-#exec /bin/bash
+if [[ $success == 0 ]]; then
+    echo -e "\e[7;49;32mTests appear UNSUCCESSFUL.\e[0m"
+    exit 1
+else 
+    echo -e "\e[7;49;32mSuccess. ${1} tests appear successful.\e[0m"
+    exit 0
+fi
 
 exit 0
+
