@@ -168,13 +168,5 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
     success=1
 fi
 
-if [[ $success == 0 ]]; then
-    echo -e "\e[7;49;32mTests appear UNSUCCESSFUL.\e[0m"
-    exit 1
-else 
-    echo -e "\e[7;49;32mSuccess. ${1} tests appear successful.\e[0m"
-    exit 0
-fi
-
-exit 0
+exit $success
 
