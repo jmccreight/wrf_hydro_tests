@@ -43,10 +43,8 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
     echo -e "\e[7;49;32mRunning test fork\e[0m"
     cd $domainDir/run.1.new
     cp $theBinary .
-    ls 
     mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-    echo foo
-    ls
+    ls -lrt
     ## did the model finish successfully?
     ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
     nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
@@ -95,7 +93,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	    echo Run reference fork failed.
 	    exit 4
 	fi
-
+        ls -lrt
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing the results.\e[0m"
