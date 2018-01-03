@@ -3,8 +3,8 @@
 ## This is where invoked.
 #TEST_DIR=`pwd`
 echo foo
-echo $TESTDIR
-ls $TESTDIR
+echo $TEST_DIR
+ls $TEST_DIR
 
 ##Set variables for each directory for easy change later
 #testRepoDir=$TEST_DIR/repos/test
