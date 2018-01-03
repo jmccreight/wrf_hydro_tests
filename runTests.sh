@@ -1,12 +1,19 @@
-#!/usr/bin/env bash
-WRF_HYDRO_CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#!/bin/bash
+
+## This is where invoked.
+#TEST_DIR=`pwd`
+echo $TESTDIR
+ls $TESTDIR
 
 ##Set variables for each directory for easy change later
-testRepoDir=$WRF_HYDRO_CI_DIR/repos/test
-refRepoDir=$WRF_HYDRO_CI_DIR/repos/reference
-toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
-testsDir=$WRF_HYDRO_CI_DIR/tests
-domainDir=$WRF_HYDRO_CI_DIR/test_domain
+#testRepoDir=$TEST_DIR/repos/test
+#refRepoDir=$TEST_DIR/repos/reference
+#toolboxDir=$TEST_DIR/toolbox
+#testsDir=$TEST_DIR/tests
+#domainDir=$TEST_DIR/test_domain
+
+
+exit 1
 
 #Speccify link to binaries after compilation
 theBinary=$testRepoDir/trunk/NDHMS/Run/wrf_hydro.exe

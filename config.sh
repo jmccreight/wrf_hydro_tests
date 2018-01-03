@@ -1,14 +1,12 @@
 #!/bin/bash
 
-
 theHelp='
-Arguments:
-1: mode in [ '--help' ]
+NCAR/wrf_hydro_tests: config.sh
 
-If local,
 The following envionrment variables are required:
 * GITHUB_USERNAME
 * GITHUB_AUTHTOKEN for that user on github (see below for details)
+
 The following environment variables are optional:
 [*] testFork,              A named fork on github.         
                            Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
@@ -20,12 +18,12 @@ The following environment variables are optional:
                            Default = master   
 
 Example usages: 
-
+TODO JLM
 docker run -e GITHUB_USERNAME=$GITHUB_USERNAME \
            -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
-           wrfhydro/testing local
+           wrfhydro/testing 
 
-
+TODO JLM
 docker run -e GITHUB_USERNAME=$GITHUB_USERNAME \
            -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
            -e testFork=NCAR/wrf_hydro_nwm \
@@ -53,24 +51,20 @@ whitespace in the file. See
 https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
 
 for information on getting your github authtoken.
-
-Help on CircleCI usage will be added (though should eb unnecessary.
 '
 
 if [[ "${1}" == '--help' ]]; then echo "$theHelp"; exit 0; fi
 
-echo -e "\e[4;49;34m WRF-Hydro Testing Container\e[0m"
-
 ###################################
-#Setup directory structure in HOME directory
-WRF_HYDRO_CI_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#Setup directory structure where invoked.
+export TEST_DIR=`pwd`
 
 ##Set variables for each directory for easy change later
-testRepoDir=$WRF_HYDRO_CI_DIR/repos/test
-refRepoDir=$WRF_HYDRO_CI_DIR/repos/reference
-toolboxDir=$WRF_HYDRO_CI_DIR/toolbox
-testsDir=$WRF_HYDRO_CI_DIR/tests
-domainDir=$WRF_HYDRO_CI_DIR/test_domain
+export testRepoDir=$TEST_DIR/repos/test
+export refRepoDir=$TEST_DIR/repos/reference
+export toolboxDir=$TEST_DIR/toolbox
+export testsDir=$TEST_DIR/tests
+export domainDir=$TEST_DIR/test_domain
 
 #Make directories that don't exist already
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
