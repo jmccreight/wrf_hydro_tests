@@ -43,7 +43,11 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
     echo -e "\e[7;49;32mRunning test fork\e[0m"
     cd $domainDir/run.1.new
     cp $theBinary .
-    ls 
+    echo ls:
+    ls
+    echo pwd:
+    pwd
+    echo mpirun
     mpirun -np $nCoresFull ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
     ls
     ## did the model finish successfully?

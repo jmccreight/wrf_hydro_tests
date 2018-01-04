@@ -67,16 +67,16 @@ export testRepoDir=$TEST_DIR/repos/test
 export refRepoDir=$TEST_DIR/repos/reference
 export toolboxDir=$TEST_DIR/toolbox
 export testsDir=$TEST_DIR/tests
-export domainDir=$TEST_DIR/sixmile_docker_tests
+export domainDir=$TEST_DIR/test_domain
 
 #Make directories that don't exist already
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
 [ -d $refRepoDir ] || mkdir -p $refRepoDir
 
-[ -d $domainDir/run.1.new ]        || mkdir -p $domainDir/run.1.new
-[ -d $domainDir/run.2.old ]        || mkdir -p $domainDir/run.2.old
-[ -d $domainDir/run.3.restart ]    || mkdir -p $domainDir/run.3.restart
-[ -d $domainDir/run.4.ncores_new ] || mkdir -p $domainDir/run.4.ncores_new
+#[ -d $domainDir/run.1.new ]        || mkdir -p $domainDir/run.1.new
+#[ -d $domainDir/run.2.old ]        || mkdir -p $domainDir/run.2.old
+#[ -d $domainDir/run.3.restart ]    || mkdir -p $domainDir/run.3.restart
+#[ -d $domainDir/run.4.ncores_new ] || mkdir -p $domainDir/run.4.ncores_new
 
 ###################################
 ##Setup github authitcation
