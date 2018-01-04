@@ -102,7 +102,9 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 
 	#compare restart files
 	python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.2.old || \
-            { echo "Comparison of regression restart files failed."; exit 1; }
+            { echo "Comparison of regression restart files failed.";
+	      exec /bin/bash;
+	      exit 1; }
 fi
 
 ###################################
