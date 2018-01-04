@@ -28,8 +28,9 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     #Set environment variables. This will likely need to be hard coded so that people don't change compile time options
     ./setEnvar.sh
     ./configure 2
-    ./compile_offline_NoahMP.sh || { echo "Compilation of test fork failed."; exit 1; }
-    
+    echo Compiling, showing only standard error.
+    ./compile_offline_NoahMP.sh 1>/dev.null || \
+	{ echo "Compilation of test fork failed."; exit 1; }
     echo -e "\e[5;49;32mCompilation of test fork successful under GNU!\e[0m"
 fi
 
@@ -71,6 +72,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     #Set environment variables. This will likely need to be hard coded so that people don't change compile time options
     ./setEnvar.sh
     ./configure 2
+    echo Compiling, showing only standard error.
     ./compile_offline_NoahMP.sh 1>/dev/null || \
 	{ echo "Compilation of reference fork failed."; exit 1; }
     echo -e "\e[5;49;32mCompilation of reference fork successful under GNU!\e[0m"
