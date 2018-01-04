@@ -159,6 +159,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
     
     #compare restart files
     python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new \
-	|| { echo -e "\e[5;49;31m\# cores test: restarts comparison failed.\e[0m"; exit 1; }
-    echo -e "\e[5;49;32m\# cores test: restart comparison successful!\e[0m"    
+	|| { echo -e "\e[5;49;31m# cores test: restarts comparison failed.\e[0m"; exit 1; }
+    echo -e "\e[5;49;32m# cores test: restart comparison successful!\e[0m"    
 fi
