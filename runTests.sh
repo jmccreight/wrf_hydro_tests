@@ -30,7 +30,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     ./configure 2
     echo Compiling, showing only standard error.
     ./compile_offline_NoahMP.sh 1>/dev.null || \
-	{ echo "Compilation of test fork failed."; exit 1; }
+	{ echo -e "\e[5;49;31mCompilation of test fork failed.\e[0m"; exit 1; }
     echo -e "\e[5;49;32mTest fork: successful compilation under GNU!\e[0m"
 fi
 
@@ -49,9 +49,11 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
     ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
     nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
     if [[ $nSuccess -ne $nCoresFull ]]; then
-	echo Run test fork failed.
+	echo -e "\e[5;49;31mTest fork run: failed.\e[0m"
 	exit 2
     fi
+    echo -e "\e[5;49;32mTest fork run:  successful!\e[0m"
+
 fi
 
 ###################################
@@ -74,12 +76,12 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     ./configure 2
     echo Compiling, showing only standard error.
     ./compile_offline_NoahMP.sh 1>/dev/null || \
-	{ echo "Compilation of reference fork failed."; exit 1; }
-    echo -e "\e[5;49;32mReference fork: successful compilation under GNU!\e[0m"
+	{ echo -e "\e[5;49;31mReference fork: compilation under GNU failed.\e[0m"; exit 1; }
+    echo -e "\e[5;49;32mReference fork: compilation under GNU successful!\e[0m"
 fi
 
 ###################################
-## run reference repo
+## run reference repo & perform regression test
 if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
@@ -92,17 +94,19 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 	nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
 	if [[ $nSuccess -ne $nCoresFull ]]; then
-	    echo Run reference fork failed.
+	    echo -e "\e[5;49;31mReference fork run: failed.\e[0m"
 	    exit 4
 	fi
-
+	echo -e "\e[5;49;32mReference fork run:  successful!\e[0m"
+	
 	echo
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mComparing the results.\e[0m"
 
 	#compare restart files
 	python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.2.old || \
-            { echo "Comparison of regression restart files failed."; exit 1; }
+            { echo -e "\e[5;49;31mRegression test: restart comparison failed.\e[0m"; exit 1; }
+	echo -e "\e[5;49;32mRegression test: restart comparison successful!\e[0m"
 fi
 
 ###################################
@@ -131,8 +135,9 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
     echo -e "\e[7;49;32mComparing test fork run to restart test fork run.\e[0m"
     
     #compare restart files
-    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.3.restart_new || \
-        { echo "Comparison of perfect restarts failed."; exit 1; }
+    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.3.restart_new \
+	|| { echo -e "\e[5;49;31mPerfect restart test: restart comparison failed.\e[0m"; exit 1; }
+    echo -e "\e[5;49;32mPerfect restart test: restart comparison successful!\e[0m"
 fi
 
 ###################################
@@ -153,6 +158,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
     echo -e "\e[7;49;32mComparing the results for test fork with 2 cores vs test fork with $nCoresTest cores.\e[0m"
     
     #compare restart files
-    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new || \
-        { echo "Comparison of ncores restarts failed."; exit 1; }
+    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new \
+	|| { echo -e "\e[5;49;31m\# cores test: restarts comparison failed.\e[0m"; exit 1; }
+    echo -e "\e[5;49;32m\# cores test: restart comparison successful!\e[0m"    
 fi
