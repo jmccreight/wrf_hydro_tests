@@ -110,7 +110,6 @@ cd $refRepoDir
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
 git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
-cd `basename $referenceFork`
 git checkout $referenceBranchCommit || \
     { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
 echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
@@ -124,15 +123,13 @@ git log -n1
 ## If running locally, clone specified test fork, otherwise in circleCI the current PR/Commit
 ## is used as test.
 if [[ -z ${CIRCLECI} ]]; then 
-    ##Local 
-    cd $testRepoDir
-    
     echo
+    ##Local 
+    cd $testRepoDir    
     # git clone specified test fork
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mTest fork: $testFork\e[0m"
     git clone https://${authInfo}@github.com/$testFork $testRepoDir
-    cd `basename $testFork`
     git checkout $testBranchCommit || \
         { echo "Unsuccessful checkout of $testBranchCommit from $testFork."; exit 1; }
     echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"
