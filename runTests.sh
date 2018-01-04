@@ -71,7 +71,8 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'compile' ]]; then
     #Set environment variables. This will likely need to be hard coded so that people don't change compile time options
     ./setEnvar.sh
     ./configure 2
-    ./compile_offline_NoahMP.sh || { echo "Compilation of reference fork failed."; exit 1; }
+    ./compile_offline_NoahMP.sh 1>/dev/null || \
+	{ echo "Compilation of reference fork failed."; exit 1; }
     echo -e "\e[5;49;32mCompilation of reference fork successful under GNU!\e[0m"
 fi
 
@@ -98,7 +99,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'run' ]]; then
 	echo -e "\e[7;49;32mComparing the results.\e[0m"
 
 	#compare restart files
-	python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.2.old || \
+	python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.2.old || \
             { echo "Comparison of regression restart files failed."; exit 1; }
 fi
 
@@ -128,7 +129,7 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'restart' ]]; then
     echo -e "\e[7;49;32mComparing test fork run to restart test fork run.\e[0m"
     
     #compare restart files
-    python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.3.restart_new || \
+    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.3.restart_new || \
         { echo "Comparison of perfect restarts failed."; exit 1; }
 fi
 
@@ -150,6 +151,6 @@ if [[ "${1}" == 'all' ]] || [[ "${1}" == 'ncores' ]]; then
     echo -e "\e[7;49;32mComparing the results for test fork with 2 cores vs test fork with $nCoresTest cores.\e[0m"
     
     #compare restart files
-    python3 $testsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new || \
+    python3 $questionsDir/compare_restarts.py $domainDir/run.1.new $domainDir/run.4.ncores_new || \
         { echo "Comparison of ncores restarts failed."; exit 1; }
 fi

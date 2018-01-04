@@ -66,7 +66,7 @@ export TEST_DIR=`pwd`
 export testRepoDir=$TEST_DIR/repos/test
 export refRepoDir=$TEST_DIR/repos/reference
 export toolboxDir=$TEST_DIR/wrf_hydro_test/toolbox
-export questionsDir=$TEST_DIR//wrf_hydro_test/questions
+export questionsDir=$TEST_DIR/wrf_hydro_test/questions
 export domainDir=$TEST_DIR/test_domain
 
 #Make directories that don't exist already
