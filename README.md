@@ -18,29 +18,27 @@ Testing currently depends on a suite of environment variables.
 
 Required:
 
-| Environment Variable      | Description |
-|---|---|
-|* WRF\_HYDRO\_TESTS\_DIR   | The local path to the wrf\_hydro\_tests dir.      |
-|* REPO\_DIR                | Where repositories cloned from github shall       |
-|                           | be placed (in subfolders)                         |
-| domainSourceDir          | Where the domain and pre-established run directories live. |
-| testName                 | A valid subdirectory of wrf\_hydro\_tests/tests where desired test lives. |
+Environment Variable   | Description 
+---                    |---
+WRF\_HYDRO\_TESTS\_DIR | The local path to the wrf\_hydro\_tests dir.
+REPO\_DIR              | Where repositories cloned from github shall be placed (in subfolders)
+domainSourceDir        | Where the domain and pre-established run directories live.
+testName               | A valid subdirectory of wrf\_hydro\_tests/tests where desired test lives.
+
+
 Optional:
 
- Environment Variable      | Description 
----|---
+Environment Variable      | Description 
+---                    |---
 domainTestDir          | If not running in Docker, clone the
-                       |    domainSourceDir here to keep the original clean.
- |
+domainSourceDir here to keep the original clean. 
 If getting repositories from github:|
-GITHUB\_USERNAME       |If cloning repositories from github, these
-                           |are required.
+GITHUB\_USERNAME       |If cloning repositories from github, these are required.
 GITHUB\_AUTHTOKEN      |for above user on github (see below for details)
 
-
-
 Testing repository is the one you have been working on. It may come
-from github or a local path. The first two are nullified if the 3rd is specified.
+from github or a local path. The first two are nullified if the 3rd is
+specified. |
 [*] testFork,              A named fork on github.         
                            Default = ${GITHUB\_USERNAME}/wrf\_hydro\_nwm
 [*] testBranchCommit,      A branch or commit on testFork. 
