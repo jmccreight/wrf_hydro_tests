@@ -18,6 +18,8 @@ Testing currently depends on a suite of environment variables.
 
 Required:
 
+| a | b |
+|---|---|
 |* WRF\_HYDRO\_TESTS\_DIR   | The local path to the wrf\_hydro\_tests dir.      |
 |* REPO\_DIR                | Where repositories cloned from github shall       |
 |                           | be placed (in subfolders)                         |
