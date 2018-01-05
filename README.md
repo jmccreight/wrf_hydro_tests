@@ -31,18 +31,18 @@ Optional:
 Environment Variable   | Description 
 ---                    |---
 domainTestDir          |If not running in Docker, clone the domainSourceDir here to keep the original clean. 
-If getting repositories from github:|
+**If getting repositories from github:**|
 GITHUB\_USERNAME       |If cloning repositories from github, these are required.
 GITHUB\_AUTHTOKEN      |for above user on github (see below for details)
-Test group:  | Testing repository is the one you have been working on. It may come from github or a local path. The first two are nullified if the 3rd is specified. 
+**Test group:**  | Testing repository is the one you have been working on. It may come from github or a local path.
 testFork               |A named fork on github. Default = ${GITHUB\_USERNAME}/wrf\_hydro\_nwm
 testBranchCommit       |A branch or commit on testFork. Default = master
-OR |
+** OR ** |
 testLocalPath          |A path on local machine where the current state of the repo (potentially uncommitted) is compiled. This supercedes BOTH testFork and testBranchCommit if set. Default =''
-Reference group: | Testing repository is the one you have been working on. It may come from github or a local path. The first two are nullified if the 3rd is specified.
+** Reference group: ** | Reference repository is the one that provides the reference for regression testing. It may come from github or a local path.
 referenceFork          |A named fork on github. Default = NCAR/wrf\_hydro\_nwm
 referenceBranchCommit  |A branch or commit on referenceFork. Default = master   
-OR |
+** OR ** |
 referenceLocalPath     |A path on local machine where the current state of the repo (potentially uncommitted) is compiled. This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
 
 
