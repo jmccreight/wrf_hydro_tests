@@ -5,8 +5,6 @@
 ## Do not exit otherwise.
 ## KEEP THIS SCRIPT AS GENERAL AS POSSIBLE FOR THE SETUP
 
-
-
 if [[ "${1}" == '--help' ]]; then echo "$theHelp"; exit 0; fi
 
 ###################################
@@ -20,10 +18,31 @@ export answerKeyDir=$WRF_HYDRO_TEST_DIR/wrf_hydro_tests/answer_keys
 
 #Make directories that don't exist already
 ## TODO JLM: action if they already exist?
+## TODO JLM: tear these down in local runs? optionally?
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
 [ -d $refRepoDir ] || mkdir -p $refRepoDir
 
-## TODO JLM: clone domainDir for non-docker applications
+## Clone domainTestDir for non-docker applications.
+## TODO JLM: also have to tear this down? optionally?
+inDocker=FALSE
+if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
+
+if [[ ! -z $domainTestDir ]]; then
+    if [[ "$domainSourceDir" = /* ]]; then
+	cp -as $domainSourceDir $domainTestDir
+    else
+	cp -as `pwd`/$domainSourceDir $domainTestDir
+    fi
+else
+    if [[ $inDocker == "FALSE" ]]; then
+	## JLM: this does not catch drives mounted from host into the docker container.
+	echo "You are not in docker and you have not specified "
+        echo "the \$domainTestDir environment variable. "
+        echo "Exiting instead of writing into your \$domainSourceDir."
+	exit 1
+    fi
+    export domainTestDir=$domainSourceDir
+fi
 
 ###################################
 ##Setup github authitcation

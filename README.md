@@ -88,6 +88,7 @@ docker run -it \
 	-e WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests \
     -e REPO_DIR=/home/docker/test_repos \
     -e domainSourceDir=/Downloads/sixmile_test_domain \
+	-e domainTestDir=/Downloads/sixmile_test_domain_copy \
     -e testName=CI \
     -e GITHUB_USERNAME=$GITHUB_USERNAME \
     -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
@@ -132,13 +133,16 @@ if [[ -e $testPath/test.sh ]]; then
 fi
 
 #configure the tests (this is a generic script)
-source $testPath/config.sh
+source $WRF_HYDRO_TESTS/setup.sh
 
 ## run the multiple sections of the test
 source $testPath/testSections.sh compile
 source $testPath/testSections.sh run
 source $testPath/testSections.sh restart
 source $testPath/testSections.sh ncores
+
+## if local, need to tear down the setup.
+source $WRF_HYDRO_TESTS/take_down.sh
 
 ## report success
 echo

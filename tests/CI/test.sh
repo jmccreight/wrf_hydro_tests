@@ -12,7 +12,7 @@ testPath=$WRF_HYDRO_TESTS_DIR/tests/$testName
 ## check that this test exists
 
 #configure the tests
-source $testPath/config.sh
+source $WRF_HYDRO_TESTS_DIR/setup.sh
 
 ## multiple sections in the test
 source $testPath/testSections.sh compile
@@ -20,7 +20,7 @@ source $testPath/testSections.sh run
 source $testPath/testSections.sh restart
 source $testPath/testSections.sh ncores
 
-## TODO JLM: clean up.
+## TODO JLM: clean up for local, non-docker runs.
 
 echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
