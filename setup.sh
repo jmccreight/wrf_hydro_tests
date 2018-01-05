@@ -3,80 +3,45 @@
 ## Source this script.
 ## After informative message: exit on failure with non-zero status.
 ## Do not exit otherwise.
-
-theHelp='
-NCAR/wrf_hydro_tests: config.sh
-
-The following envionrment variables are required:
-* GITHUB_USERNAME
-* GITHUB_AUTHTOKEN for that user on github (see below for details)
-
-The following environment variables are optional:
-[*] testFork,              A named fork on github.         
-                           Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
-[*] testBranchCommit,      A branch or commit on testFork. 
-                           Default = master
-[*] referenceFork,         A named fork on github.         
-                           Default = NCAR/wrf_hydro_nwm
-[*] referenceBranchCommit, A branch or commit on referenceFork. 
-                           Default = master   
-
-Example usages: 
-TODO JLM
-docker run -e GITHUB_USERNAME=$GITHUB_USERNAME \
-           -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
-           wrfhydro/testing 
-
-TODO JLM
-docker run -e GITHUB_USERNAME=$GITHUB_USERNAME \
-           -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
-           -e testFork=NCAR/wrf_hydro_nwm \
-           -e testBranchCommit=4612e9c \  
-           -e referenceFork=NCAR/wrf_hydro_nwm \
-           -e referenceBranchCommit=f2db0b55c5c9dab60646a38f8536001907952767 \
-           wrfhydro/testing local
-
-
-Here is a suggestion on how to manage the GITHUB environment variables. 
-Configure your ~/.bashrc with the following
-
-export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
-export GITHUB_USERNAME=jmccreight
-
-
-The file ~/.github_authtoken should be READ-ONLY BY OWNER 500. For example:
-
-jamesmcc@chimayo[736]:~/WRF_Hydro/wrf_hydro_docker/testing> ls -l ~/.github_authtoken 
--r--------  1 jamesmcc  rap  40 Nov  3 10:18 /Users/jamesmcc/.github_authtoken
-
-The file contains the user authtoken from github with no carriage return or other 
-whitespace in the file. See 
-
-https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
-
-for information on getting your github authtoken.
-'
+## KEEP THIS SCRIPT AS GENERAL AS POSSIBLE FOR THE SETUP
 
 if [[ "${1}" == '--help' ]]; then echo "$theHelp"; exit 0; fi
 
-###################################
-#Setup directory structure where invoked.
-export TEST_DIR=`pwd`
-##Set variables for each directory for easy change later
-export testRepoDir=$TEST_DIR/repos/test
-export refRepoDir=$TEST_DIR/repos/reference
-export toolboxDir=$TEST_DIR/toolbox
-export testsDir=$TEST_DIR/tests
-export domainDir=$TEST_DIR/sixmile_docker_tests
+## Establish the file structure
+## Where do all the parts live for the test?
+export testRepoDir=$REPO_DIR/test
+export refRepoDir=$REPO_DIR/reference
+
+export toolboxDir=$WRF_HYDRO_TEST_DIR/wrf_hydro_test/toolbox
+export answerKeyDir=$WRF_HYDRO_TEST_DIR/wrf_hydro_tests/answer_keys
 
 #Make directories that don't exist already
+## TODO JLM: action if they already exist?
+## TODO JLM: tear these down in local runs? optionally?
 [ -d $testRepoDir ] || mkdir -p $testRepoDir
 [ -d $refRepoDir ] || mkdir -p $refRepoDir
 
-[ -d $domainDir/run.1.new ]        || mkdir -p $domainDir/run.1.new
-[ -d $domainDir/run.2.old ]        || mkdir -p $domainDir/run.2.old
-[ -d $domainDir/run.3.restart ]    || mkdir -p $domainDir/run.3.restart
-[ -d $domainDir/run.4.ncores_new ] || mkdir -p $domainDir/run.4.ncores_new
+## Clone domainTestDir for non-docker applications.
+## TODO JLM: also have to tear this down? optionally?
+inDocker=FALSE
+if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
+
+if [[ ! -z $domainTestDir ]]; then
+    if [[ "$domainSourceDir" = /* ]]; then
+	cp -as $domainSourceDir $domainTestDir
+    else
+	cp -as `pwd`/$domainSourceDir $domainTestDir
+    fi
+else
+    if [[ $inDocker == "FALSE" ]]; then
+	## JLM: this does not catch drives mounted from host into the docker container.
+	echo "You are not in docker and you have not specified "
+        echo "the \$domainTestDir environment variable. "
+        echo "Exiting instead of writing into your \$domainSourceDir."
+	exit 1
+    fi
+    export domainTestDir=$domainSourceDir
+fi
 
 ###################################
 ##Setup github authitcation
@@ -110,7 +75,6 @@ cd $refRepoDir
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
 git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
-cd `basename $referenceFork`
 git checkout $referenceBranchCommit || \
     { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
 echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
@@ -124,15 +88,13 @@ git log -n1
 ## If running locally, clone specified test fork, otherwise in circleCI the current PR/Commit
 ## is used as test.
 if [[ -z ${CIRCLECI} ]]; then 
-    ##Local 
-    cd $testRepoDir
-    
     echo
+    ##Local 
+    cd $testRepoDir    
     # git clone specified test fork
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mTest fork: $testFork\e[0m"
     git clone https://${authInfo}@github.com/$testFork $testRepoDir
-    cd `basename $testFork`
     git checkout $testBranchCommit || \
         { echo "Unsuccessful checkout of $testBranchCommit from $testFork."; exit 1; }
     echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"
