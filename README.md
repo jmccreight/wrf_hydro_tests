@@ -17,13 +17,13 @@ application.
 Testing currently depends on a suite of environment variables. 
 
 Required:
-|* WRF\_HYDRO\_TESTS\_DIR   | The local path to the wrf\_hydro\_tests dir.
-|* REPO\_DIR                | Where repositories cloned from github shall
-|                           | be placed (in subfolders)
-|* domainSourceDir          | Where the domain and pre-established run
-|                           | directories live.
-|* testName                 | A valid subdirectory of
-|                           | wrf\_hydro\_tests/tests where desired test lives. 
+|* WRF\_HYDRO\_TESTS\_DIR   | The local path to the wrf\_hydro\_tests dir.      |
+|* REPO\_DIR                | Where repositories cloned from github shall       |
+|                           | be placed (in subfolders)                         |
+|* domainSourceDir          | Where the domain and pre-established run          |
+|                           | directories live.                                 |
+|* testName                 | A valid subdirectory of                           |
+|                           | wrf\_hydro\_tests/tests where desired test lives. |
 
 Optional:
 * domainTestDir          If not running in Docker, clone the
