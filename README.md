@@ -4,31 +4,29 @@ Testing for the WRF-Hydro model.
 # Running tests
 
 For now, testing (actually, configuration) requires two repos. 
-TODO JLM: relax to a single repo, perhaps when a better workflow is
-TODO JLM: setup than bash scripts
-TODO JLM: 1 repo: perfect restart tests, ncores tests
-TODO JLM: 2 repos: above plus regression test
 
 Testing is intended to work
+
 1) locally (e.g. cheyenne) 
 2) on Docker containers (e.g. your desktop), and
 3) CircleCI 
-using the following approach with minor adaptations to each
+
+using the approach in this repo with minor adaptations for each
 application. 
 
 Testing currently depends on a suite of environment variables. 
 
 Required:
-* WRF\_HYDRO\_TESTS\_DIR   The local path to the wrf\_hydro\_tests dir.
-* REPO\_DIR                Where repositories cloned from github shall
-                           be placed (in subfolders)
-* domainSourceDir          Where the domain and pre-established run
-                           directories live.
-* testName                 A valid subdirectory of
-                           wrf\_hydro\_tests/tests where desired test lives. 
+|* WRF\_HYDRO\_TESTS\_DIR   | The local path to the wrf\_hydro\_tests dir.
+|* REPO\_DIR                | Where repositories cloned from github shall
+|                           | be placed (in subfolders)
+|* domainSourceDir          | Where the domain and pre-established run
+|                           | directories live.
+|* testName                 | A valid subdirectory of
+|                           | wrf\_hydro\_tests/tests where desired test lives. 
 
 Optional:
-[*] domainTestDir          If not running in Docker, clone the
+* domainTestDir          If not running in Docker, clone the
                            domainSourceDir here to keep the original clean.
 
 If getting repositories from github
@@ -114,23 +112,26 @@ docker@b72a2aef9b72[1]:/>  $WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
 ## Managing the GITHUB environment variables. 
 Configure your ~/.bashrc with the following
 
+```
 export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
 export GITHUB_USERNAME=jmccreight
+```
 
+The file `~/.github_authtoken` should be READ-ONLY BY OWNER (500). For example:
 
-The file ~/.github_authtoken should be READ-ONLY BY OWNER 500. For example:
-
+```
 jamesmcc@chimayo[736]:~/WRF_Hydro/wrf_hydro_docker/testing> ls -l ~/.github_authtoken 
 -r--------  1 jamesmcc  rap  40 Nov  3 10:18 /Users/jamesmcc/.github_authtoken
+```
 
 The file contains the user authtoken from github with no carriage return or other 
 whitespace in the file. See 
 
-https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
+[https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
 
 for information on getting your github authtoken.
 
-
+## Overview
 Generically, wrf\_hydro\_tests/tests/testName/test.sh looks something like this:
 
 ```
