@@ -8,6 +8,9 @@
 ## Run this in the wrf_hydro_nwm/trunk/NDHMS directory.
 ## TODO JLM: enforce that basename is NDHMS?
 
+## TODO JLM: check that gnu is present?
+## e.g. mpif90 --version | grep -i intel > /dev/null 2>&1 || echo PROBLEM
+
 #############################################
 ## Construct our own gnu-mpi90 macros file
 #############################################
@@ -29,7 +32,6 @@ if [[ -e macros.tmp ]]; then
     rm -f macros.tmp; mv macros.a macros
 fi
 
-
 #############################################
 ## Compile
 #############################################
@@ -39,20 +41,15 @@ fi
 ## This will need updated from time-to-time.
 
 function henv { 
-    grepStr="(WRF_HYDRO|HYDRO_D|SPATIAL_SOIL|WRF_HYDRO_RAPID|WRFIO_NCD_LARGE_FILE_SUPPORT|HYDRO_REALTIME|NCEP_WCOSS|WRF_HYDRO_NUDGING|NETCDF)"
-    printenv | egrep -i "${grepStr}" | egrep -v PWD | egrep '1$'; 
-    echo ----------------
-    printenv | egrep -i "${grepStr}" | egrep -v PWD | egrep '0$'; 
-    echo ----------------
-    printenv | egrep -i "${grepStr}" | egrep -v PWD | egrep -v '(0|1)$'; 
+    grepStr="(WRF_HYDRO)|(HYDRO_D)|(SPATIAL_SOIL)|(WRF_HYDRO_RAPID)|(WRFIO_NCD_LARGE_FILE_SUPPORT)|(HYDRO_REALTIME)|(NCEP_WCOSS)|(WRF_HYDRO_NUDGING)|(NETCDF)"
+    printenv | egrep -w "${grepStr}" | sort
 }
-
-echo
 echo '*****************************************************************'
-echo "The envrionment variables use in the compile:"
+echo "The envrionment variables use in the compile (alphabetically):"
 henv
 echo '*****************************************************************'
 echo
+
 if [[ "$WRF_HYDRO" -ne 1 ]]; then
     echo "Please set WRF_HYDRO to be 1 from setEnvar.sh"
     exit
@@ -69,14 +66,15 @@ cd ../..
 ln -sf Land_models/NoahMP LandModel
 cat macros LandModel/hydro/user_build_options.bak  > LandModel/user_build_options
 ln -sf CPL/NoahMP_cpl LandModel_cpl
-make clean; rm -f Run/wrf_hydro_NoahMP.exe
+make clean 2>/dev/null 1>/dev/null
+rm -f Run/wrf_hydro_NoahMP.exe 
 
-make
+echo "Compiling, showing only standard error..."
+make 1>/dev/null
 
 if [[ $? -eq 0 ]]; then
     echo
     echo '*****************************************************************'
-    echo 
     echo "Make was successful"
 else 
     echo
@@ -87,8 +85,7 @@ else
 fi
 
 echo '*****************************************************************'
-echo
-echo "The envrionment variables use in the compile AGAIN:"
+echo "The envrionment variables use in the compile (alphabetically) AGAIN:"
 henv
 echo '*****************************************************************'
 echo 

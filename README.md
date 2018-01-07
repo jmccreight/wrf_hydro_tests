@@ -24,6 +24,8 @@ WRF\_HYDRO\_TESTS\_DIR | The local path to the wrf\_hydro\_tests dir.
 REPO\_DIR              | Where repositories cloned from github shall be placed (in subfolders)
 domainSourceDir        | Where the domain and pre-established run directories live.
 testName               | A valid subdirectory of wrf\_hydro\_tests/tests where desired test lives.
+WRF_HYDRO              | Compile time option to the model (1 for off-line runs)
+NETCDF                 | Where NetCDF resides on your system
 
 
 Optional:
@@ -31,6 +33,13 @@ Optional:
 Environment Variable   | Description 
 ---                    |---
 domainTestDir          |If not running in Docker, clone the domainSourceDir here to keep the original clean. 
+**Model group:**       |
+HYDRO_D SPATIAL_SOIL   | See model reference for these
+WRFIO_NCD_LARGE_FILE_SUPPORT | " "
+WRF_HYDRO_RAPID        | " "
+HYDRO_REALTIME         | " "(may be defunct now)
+NCEP_WCOSS             | " "
+WRF_HYDRO_NUDGING      | " "
 **Github group:** | If getting repositories from github.
 GITHUB\_USERNAME       |If cloning repositories from github, these are required.
 GITHUB\_AUTHTOKEN      |for above user on github (see below for details)
@@ -83,8 +92,8 @@ docker@b72a2aef9b72[1]:/>  $WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
 ## Should always pass or the model is not deterministic.
 ## docker invocation using the wrfhydro/dev container
 docker run -it \
-    -v /Users/james/Downloads:/Downloads \
-	-v /Users/james/WRF_Hydro/wrf_hydro_tests/:/wrf_hydro_tests \
+    -v /Users/`whoami`/Downloads:/Downloads \
+	-v /Users/`whoami`/WRF_Hydro/wrf_hydro_tests/:/wrf_hydro_tests \
 	-e WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests \
     -e REPO_DIR=/home/docker/test_repos \
     -e domainSourceDir=/Downloads/sixmile_test_domain \
@@ -95,7 +104,6 @@ docker run -it \
 	-e testFork=NCAR/wrf_hydro_nwm \
 	-e referenceFork=NCAR/wrf_hydro_nwm \
 	wrfhydro/dev
-
 docker@b72a2aef9b72[1]:/>  $WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
 ```
 
