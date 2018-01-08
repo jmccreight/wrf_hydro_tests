@@ -15,7 +15,7 @@ export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # !!! NOTE THAT IF YOU ARE USING A MOUNTED VOLUME IN DOCKER, YOU PROBABLY WANT TO USE THIS, !!!
 # !!! HOWEVER IT IS NOT REQUIRED (UNTIL WE CAN DETECT HOST-MOUNTED DRIVES IN THE CONTAINER).!!!
-export domainRunDir=/scratch/sixmile_test_domain_run_fundamental
+export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_fundamental
 
 
 # ** Machine Group **
@@ -25,7 +25,8 @@ export WRF_HYDRO_TESTS_DIR=/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
 ## TODO JLM: This probably has access to internal variables used by deferred execution (double quotes required?)
 export RUN_WRF_HYDRO=""
 # Where NetCDF resides on the system (must be exported)
-export NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+#export NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+## Is an environment variable. 
 
 # ** Model group: **
 # Compile time option to the model (1 for off-line runs). These are not all technically required, but
@@ -58,7 +59,7 @@ export nCoresTest=1
 export GITHUB_USERNAME=$GITHUB_USERNAME
 export GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN
 # Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
-export REPO_DIR=/home/docker/test_repos
+export REPO_DIR=/glade/scratch/`whoami`/test_repos
 
 # ** Candidate repo group **
 # Candidate repository is the one you have been working on. It may come from github or a local path.

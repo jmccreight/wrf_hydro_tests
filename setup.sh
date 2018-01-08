@@ -103,7 +103,7 @@ if [[ -z ${CIRCLECI} ]]; then
         echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"
         echo -e "\e[0;49;32mCandidate branch:\e[0m    `git branch`"
         echo -e "\e[0;49;32mTesting commit:\e[0m"
-        git log -n1
+        git log -n1 | cat
     fi
 fi
 
@@ -128,7 +128,7 @@ if [[ -z $referenceLocalPath ]]; then
 	echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
 	echo -e "\e[0;49;32mReference branch:\e[0m    `git branch`"
 	echo -e "\e[0;49;32mReference commit:\e[0m"
-	git log -n1
+	git log -n1 | cat
     fi
 fi
 

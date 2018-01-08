@@ -105,55 +105,7 @@ referenceLocalPath     |A path on local machine where the current state of the r
 
 ## Examples
 
-```
-## 1.
-## This will compare master of wrf_hydro_nwm and your fork (upstream
-## and origin typically)
-export WRF_HYDRO_TESTS_DIR=/Users/james/WRF_Hydro/wrf_hydro_tests
-export REPO_DIR=/Users/james/Downloads/test_repos
-export domainSourceDir=/Users/james/Downloads/sixmile_test_domain
-export testName=CI
-export GITHUB_USERNAME=$GITHUB_USERNAME
-export GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN
-
-## local invocation
-$WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
-
-## docker invocation using the wrfhydro/dev container
-docker run -it \
-    -v /Users/james/Downloads:/Downloads \
-	-v /Users/james/WRF_Hydro/wrf_hydro_tests/:/wrf_hydro_tests \
-	-e WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests \
-    -e REPO_DIR=/home/docker/test_repos \
-    -e domainSourceDir=/Downloads/sixmile_test_domain \
-    -e testName=CI \
-    -e GITHUB_USERNAME=$GITHUB_USERNAME \
-    -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
-	wrfhydro/dev
-
-docker@b72a2aef9b72[1]:/>  $WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
-
-```
-
-```
-## 2.
-## Should always pass or the model is not deterministic.
-## docker invocation using the wrfhydro/dev container
-docker run -it \
-    -v /Users/`whoami`/Downloads:/Downloads \
-	-v /Users/`whoami`/WRF_Hydro/wrf_hydro_tests/:/wrf_hydro_tests \
-	-e WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests \
-    -e REPO_DIR=/home/docker/test_repos \
-    -e domainSourceDir=/Downloads/sixmile_test_domain \
-	-e domainTestDir=/Downloads/sixmile_test_domain_copy \
-    -e testName=CI \
-    -e GITHUB_USERNAME=$GITHUB_USERNAME \
-    -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
-	-e testFork=NCAR/wrf_hydro_nwm \
-	-e referenceFork=NCAR/wrf_hydro_nwm \
-	wrfhydro/dev
-docker@b72a2aef9b72[1]:/>  $WRF_HYDRO_TESTS_DIR/tests/$testName/test.sh
-```
+See the examples directory. 
 
 ## Managing the GITHUB environment variables. 
 Configure your ~/.bashrc with the following
@@ -176,33 +128,3 @@ whitespace in the file. See
 [https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
 
 for information on getting your github authtoken.
-
-## Overview
-Generically, wrf\_hydro\_tests/tests/testName/test.sh looks something like this:
-
-```
-testPath=testPath=$WRF_HYDRO_TESTS_DIR/tests/$testName
-
-## check that this test exists
-if [[ -e $testPath/test.sh ]]; then 
-   echo "Something is wrong with the $WRF_HYDRO_TESTS_DIR environment variable"
-fi
-
-#configure the tests (this is a generic script)
-source $WRF_HYDRO_TESTS/setup.sh
-
-## run the multiple sections of the test
-source $testPath/testSections.sh compile
-source $testPath/testSections.sh run
-source $testPath/testSections.sh restart
-source $testPath/testSections.sh ncores
-
-## if local, need to tear down the setup.
-source $WRF_HYDRO_TESTS/take_down.sh
-
-## report success
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[5;42;30mAll tests passed!\e[0m"
-```
-

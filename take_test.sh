@@ -45,15 +45,14 @@ echo -e "$horizBar"                                         2>&1 | tee -a $logFi
 message="\e[7;49;32mTesting the candidate.                                           \e[0m"
 echo -e "$message"                                          2>&1 | tee -a $logFile
 $testFile                                                   2>&1 | tee -a $logFile
-test ${PIPESTATUS[0]} -eq 0  ## some real foo.
-testExitValue=$?
+testExitValue=${PIPESTATUS[0]}  ## some real foo.
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
 message="\e[7;49;32mResults of all tests.                                            \e[0m"
 echo -e "$message"                                          2>&1 | tee -a $logFile
 if [[ $testExitValue -ne 0 ]]; then
-    message="\e[5;49;31mA total of $exitValue tests failed.\e[0m"
+    message="\e[5;49;31mA total of $testExitValue tests failed.\e[0m"
 else 
     message="\e[5;49;32mAll test appear successful.\e[0m"   2>&1 | tee -a $logFile
 fi
