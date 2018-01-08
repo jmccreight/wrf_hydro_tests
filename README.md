@@ -1,5 +1,46 @@
-# wrf\_hydro\_tests
+# wrf\_hydro\_tests #
+
 Testing for the WRF-Hydro model.
+
+# Overview
+
+take\_test -> test, candidate -> setup -> question1, answer1 -> ... ->
+questionN, answerN -> questionN+1, diagnostic1 -> ... -> questionN+M,
+diagnosticM -> take_down.sh
+
+A candidate is described by a copy of candidate\_template.sh which may
+have another name. Candidates have lots of different moving parts,
+including machine, domain, commit while the underlying tests remain
+the same.
+
+Take\_test requires a test name and a candidate file. If no candidate
+file is supplied, the necessary candidate variables/info are looked
+for in the environment.
+
+Inside take\_test:
+	* The candidate is instantiated by setup.sh.
+	* A test is comprised of questions (You can make your own custom
+      tests from existing questions or make your own questions). 
+	* Questions are comprised of premises (given a, b, c) and may or may
+	  not have answers (you can make custom questions too). 
+	* The answer_key is invoked (by the question) to see if the testee's answers are
+	  correct. 
+	* Questions with answers should be ordered from most fundamental to
+	  least fundamental and the test stops with the first failure. 
+	* Questions without answers come at the end and only return
+	  diagnostic/qualitative information.
+
+questions/ 
+	* are only about the candidate. (E.g. for a regression test, the
+      question is about the candidate: does the candidate run 
+	  match the reference run. All parts of compiling and running the 
+	  reference binary should be contained in the question about
+	  the regression of the candidate.)
+	* should be summarized at the top of each question file. 
+	* have defined run directory names that must be adhered to when
+      constructing domains. 
+	* 
+
 
 # Running tests
 
