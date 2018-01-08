@@ -9,16 +9,16 @@
 ## Establish the file structure
 ###################################
 ## Where do all the parts live for the test?
-candidateRepoDir=$REPO_DIR/candidate
-refRepoDir=$REPO_DIR/reference
+export candidateRepoDir=$REPO_DIR/candidate
+export refRepoDir=$REPO_DIR/reference
 
-toolboxDir=$WRF_HYDRO_TESTS_DIR/toolbox
-answerKeyDir=$WRF_HYDRO_TESTS_DIR/answer_keys
+export toolboxDir=$WRF_HYDRO_TESTS_DIR/toolbox
+export answerKeyDir=$WRF_HYDRO_TESTS_DIR/answer_keys
 
 #Binary paths/names
 ## TODO JLM: evaluate if better names should be used. 
-candidateBinary=$candidateRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
-referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
+export candidateBinary=$candidateRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
+export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 
 
 ###################################
@@ -47,7 +47,7 @@ else
         echo "Exiting instead of writing into your \$domainSourceDir."
 	exit 1
     fi
-    domainRunDir=$domainSourceDir
+    export domainRunDir=$domainSourceDir
 fi
 
 
@@ -57,25 +57,25 @@ fi
 doExit=0
 if [[ -z ${GITHUB_USERNAME} ]]; then
     echo "The required environment variable GITHUB_USERNAME has 
-          not been supplied. Exiting"
-
+          not been supplied. Exiting."
     doExit=1
 fi
 if [[ -z ${GITHUB_AUTHTOKEN} ]] ; then
     echo "The required environment variable GITHUB_AUTHTOKEN has 
-          not been supplied. Exiting"
+          not been supplied. Exiting."
     doExit=1
 fi
 if [[ $doExit -eq 1 ]]; then exit 1; fi
 
-authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+
 if [[ -z $candidateLocalPath ]]; then
-    if [[ -z ${candidateFork} ]]; then candidateFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi
-    if [[ -z ${candidateBranchCommit} ]]; then candidateBranchCommit=master; fi
+    if [[ -z ${candidateFork} ]]; then export candidateFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi
+    if [[ -z ${candidateBranchCommit} ]]; then export candidateBranchCommit=master; fi
 fi
 if [[ -z $referenceLocalPath ]]; then
-    if [[ -z ${referenceFork} ]]; then referenceFork=NCAR/wrf_hydro_nwm; fi
-    if [[ -z ${referenceBranchCommit} ]]; then referenceBranchCommit=master; fi
+    if [[ -z ${referenceFork} ]]; then export referenceFork=NCAR/wrf_hydro_nwm; fi
+    if [[ -z ${referenceBranchCommit} ]]; then export referenceBranchCommit=master; fi
 fi
 
 

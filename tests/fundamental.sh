@@ -1,13 +1,22 @@
 #!/bin/bash
 
-## after sourcing setup.sh, source this script.
+exitValue=0
 
 ## The questions
-source $WRF_HYDRO_TESTS_DIR/questions/compile.sh
-source $WRF_HYDRO_TESTS_DIR/questions/run.sh
-source $WRF_HYDRO_TESTS_DIR/questions/perfect_restart.sh
-source $WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
-source $WRF_HYDRO_TESTS_DIR/questions/regression.sh
+$WRF_HYDRO_TESTS_DIR/questions/compile.sh
+exitValue=$(($?+$exitValue))
 
-## do not exit
+$WRF_HYDRO_TESTS_DIR/questions/run.sh
+exitValue=$(($?+$exitValue))
+
+$WRF_HYDRO_TESTS_DIR/questions/perfect_restart.sh
+exitValue=$(($?+$exitValue))
+
+$WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
+exitValue=$(($?+$exitValue))
+
+$WRF_HYDRO_TESTS_DIR/questions/regression.sh
+exitValue=$(($?+$exitValue))
+
+exit $exitValue
 

@@ -4,16 +4,23 @@ Testing for the WRF-Hydro model.
 
 # Overview
 
-take\_test -> test, candidate -> setup -> question1, answer1 -> ... ->
-questionN, answerN -> questionN+1, diagnostic1 -> ... -> questionN+M,
-diagnosticM -> take_down.sh
+take\_test(candidate, test) 
+  setup candidate
+  test
+   question1, answer1
+   ...
+   questionN, answerN
+   questionN+1, diagnostic1
+   ... 
+   questionN+M, diagnosticM
+   take_down candidate
 
-A candidate is described by a copy of candidate\_template.sh which may
-have another name. Candidates have lots of different moving parts,
-including machine, domain, commit while the underlying tests remain
-the same.
+A candidate takes a test.  A candidate is described by a copy of 
+candidate\_template.sh which may have another name. Candidates have 
+lots of different moving parts, including machine, domain, commit 
+while the underlying tests remain the same.
 
-Take\_test requires a test name and a candidate file. If no candidate
+Take\_test requires a "candidate specification file" and a "test file". If no candidate
 file is supplied, the necessary candidate variables/info are looked
 for in the environment.
 

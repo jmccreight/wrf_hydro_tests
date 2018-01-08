@@ -1,9 +1,12 @@
 #!/bin/bash
-# source this 
-echo $candidateSpec | egrep '.sh$' > /dev/null 2>&1
+candidateSpecFile=$1
+echo $candidateSpecFile | egrep '.sh$' > /dev/null 2>&1
 if [[ "$?" -eq 0 ]]; then
-    logFile=$(echo gol`echo $candidateSpec | rev | cut -c3-` | rev)
+    logFile=$(echo gol`echo $candidateSpecFile | rev | cut -c3-` | rev)
 else
-    logFile=${candidateSpec}.log
+    logFile=${candidateSpecFile}.log
 fi
 
+echo $logFile
+
+exit 0
