@@ -74,7 +74,8 @@ candidateBranchCommit=master
 # --- OR ---
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH candidateFork and candidateBranchCommit if set. Default =''
-candidateLocalPath=/home/docker/test_repos/candidate
+candidateLocalPath=''
+#/home/docker/test_repos/candidate
 
 # ** Reference repo group **
 # Optional, but necessary for regression testing.
@@ -88,4 +89,5 @@ referenceBranchCommit=master
 # --- OR ---
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
-referenceLocalPath=/home/docker/test_repos/reference
+referenceLocalPath=''
+#/home/docker/test_repos/reference

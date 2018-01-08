@@ -1,3 +1,14 @@
+#!/bin/bash
 
-2018 Jan 08 05:16:25 UTC
-/wrf_hydro_tests/take_test.sh: line 18: /setup.sh: No such file or directory
+## after sourcing setup.sh, source this script.
+
+## The questions
+source $WRF_HYDRO_TESTS_DIR/questions/compile.sh
+source $WRF_HYDRO_TESTS_DIR/questions/run.sh
+source $WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
+source $WRF_HYDRO_TESTS_DIR/questions/regression.sh
+# CHANGED THE ORDER TO MAKE THIS ONE LAST
+source $WRF_HYDRO_TESTS_DIR/questions/perfect_restart.sh
+
+## do not exit
+ 
