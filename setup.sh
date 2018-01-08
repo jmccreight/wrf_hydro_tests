@@ -5,6 +5,7 @@
 ## Do not exit otherwise.
 ## KEEP THIS SCRIPT AS GENERAL AS POSSIBLE FOR THE SETUP
 
+echo yeah yeah yeah
 
 ###################################
 ## Establish the file structure

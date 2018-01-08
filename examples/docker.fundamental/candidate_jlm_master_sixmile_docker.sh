@@ -44,7 +44,7 @@ export WRF_HYDRO_RAPID=0
 export HYDRO_REALTIME=0
 export NCEP_WCOSS=0
 export WRF_HYDRO_NUDGING=1
-
+ 
 # ** Number of cores group **
 # default number of cores to use for runs
 nCoresDefault=2
