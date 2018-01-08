@@ -10,6 +10,7 @@ testFile=${2}
 source $candidateSpecFile
 
 # Determine log file name
+## JLM TODO: seems like the name of test should be embedded in the name of the logFile.
 logFile=`$WRF_HYDRO_TESTS_DIR/toolbox/make_log_file_name.sh $candidateSpecFile`
 
 ## Assume failure for this script if the first
