@@ -9,10 +9,6 @@
 ## Required Variables:
 ###################################
 
-# ** Test (broad) description group **
-# A valid subdirectory of wrf_hydro_tests/tests where desired test lives.
-# Suggested convention fork_branch_domain_machine
-export testName=jlm_master_sixmile_docker
 # Where the domain and pre-established run directories live.
 export domainSourceDir=/Downloads/sixmile_test_domain
 # Required if not running in Docker:
@@ -20,7 +16,6 @@ export domainSourceDir=/Downloads/sixmile_test_domain
 # !!! NOTE THAT IF YOU ARE USING A MOUNTED VOLUME IN DOCKER, YOU PROBABLY WANT TO USE THIS, !!!
 # !!! HOWEVER IT IS NOT REQUIRED (UNTIL WE CAN DETECT HOST-MOUNTED DRIVES IN THE CONTAINER).!!!
 export domainRunDir=/Downloads/sixmile_test_domain_run
-
 
 # ** Machine Group **
 # The local path to the wrf_hydro_tests dir.
@@ -74,8 +69,7 @@ export candidateBranchCommit=master
 # --- OR ---
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH candidateFork and candidateBranchCommit if set. Default =''
-export candidateLocalPath=''
-#/home/docker/test_repos/candidate
+export candidateLocalPath=/wrf_hydro_nwm_myFork
 
 # ** Reference repo group **
 # Optional, but necessary for regression testing.
@@ -89,5 +83,4 @@ export referenceBranchCommit=master
 # --- OR ---
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
-export referenceLocalPath=''
-#/home/docker/test_repos/reference
+export referenceLocalPath=/wrf_hydro_nwm_myFork_2
