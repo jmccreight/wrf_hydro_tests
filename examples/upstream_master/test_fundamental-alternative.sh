@@ -22,13 +22,14 @@ exitValue=$(($?+$exitValue))
 $WRF_HYDRO_TESTS_DIR/questions/perfect_restart.sh
 exitValue=$(($?+$exitValue))
 
-#$WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
-#exitValue=$(($?+$exitValue))
+$WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
+exitValue=$(($?+$exitValue))
 
-#$WRF_HYDRO_TESTS_DIR/questions/regression.sh
-#exitValue=$(($?+$exitValue))
+$WRF_HYDRO_TESTS_DIR/questions/regression.sh
+exitValue=$(($?+$exitValue))
 
 rm -rf $referenceLocalPath $candidateLocalPath 
+rmdir /home/docker/test_repos
 
 exit $exitValue
 

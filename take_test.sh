@@ -54,7 +54,7 @@ echo -e "$message"                                          2>&1 | tee -a $logFi
 if [[ $testExitValue -ne 0 ]]; then
     message="\e[5;49;31mA total of $testExitValue tests failed.\e[0m"
 else 
-    message="\e[5;49;32mAll test appear successful.\e[0m"   2>&1 | tee -a $logFile
+    message="\e[5;49;32mAll test appear successful.\e[0m"
 fi
 echo -e "$message"                                          2>&1 | tee -a $logFile
 if [[ $? == 0 ]]; then exitValue=0; else exitValue=$testExitValue; fi

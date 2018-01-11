@@ -32,7 +32,7 @@ export NETCDF=/usr/local
 # Caveat Emptor:  there is nothing sacred about whatever values you may find here. 
 # These variables must all be exported.
 export WRF_HYDRO=1
-export HYDRO_D=0
+export HYDRO_D=1
 export SPATIAL_SOIL=1
 export WRFIO_NCD_LARGE_FILE_SUPPORT=1
 export WRF_HYDRO_RAPID=0
