@@ -97,11 +97,12 @@ if [[ -z ${CIRCLECI} ]]; then
         echo
         echo -e "\e[0;49;32m-----------------------------------\e[0m"
         echo -e "\e[7;49;32mCandidate fork: $candidateFork\e[0m"
+	echo -e "\e[7;49;32mReference branch/commit: $referenceBranchCommit\e[0m"
         git clone https://${authInfo}@github.com/$candidateFork $candidateRepoDir
         git checkout $candidateBranchCommit || \
             { echo "Unsuccessful checkout of $candidateBranchCommit from $candidateFork."; exit 1; }
         echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"
-        echo -e "\e[0;49;32mCandidate branch:\e[0m    `git branch`"
+        echo -e "\e[0;49;32mCandidate branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
         echo -e "\e[0;49;32mTesting commit:\e[0m"
         git log -n1 | cat
     fi
@@ -122,11 +123,12 @@ if [[ -z $referenceLocalPath ]]; then
 	cd $refRepoDir
 	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
+	echo -e "\e[7;49;32mReference branch/commit: $referenceBranchCommit\e[0m"
 	git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
 	git checkout $referenceBranchCommit || \
             { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
 	echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
-	echo -e "\e[0;49;32mReference branch:\e[0m    `git branch`"
+	echo -e "\e[0;49;32mReference branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
 	echo -e "\e[0;49;32mReference commit:\e[0m"
 	git log -n1 | cat
     fi

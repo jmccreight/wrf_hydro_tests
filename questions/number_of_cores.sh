@@ -35,7 +35,11 @@ echo -e "\e[0;49;32mQuestion: Are restarts unchanged with the number of cores us
 python3 $answerKeyDir/compare_restarts.py \
         $domainRunDir/run.candidate \
         $domainRunDir/run.candidate.ncores_test \
-    || { echo -e "\e[5;49;31mAnswer: Number of  cores test restart comparison failed.\e[0m"; exit 1; }
+    || { echo -e "\e[5;49;31mAnswer: Number of  cores test restart comparison failed.\e[0m"; 
+         echo "Files compared are in the directories:"
+         echo "$domainRunDir/run.candidate"
+         echo "$domainRunDir/run.candidate.ncores_test"
+         exit 1; }
 echo -e "\e[5;49;32mAnswer: Number of cores test restart comparison successful!\e[0m"    
 
 exit 0

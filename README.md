@@ -1,6 +1,7 @@
 # wrf\_hydro\_tests #
 
 Testing for the WRF-Hydro model.
+Testing for the price of compiling: This should completely replace your WRF-Hydro compile process on all machines. 
 
 # Overview
 
@@ -128,3 +129,5 @@ whitespace in the file. See
 [https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
 
 for information on getting your github authtoken.
+
+## Contributing

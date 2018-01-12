@@ -42,14 +42,23 @@ message="\e[7;49;32mSetting up the candidate                                    
 echo -e "$message"                                          2>&1 | tee -a $logFile
 source $WRF_HYDRO_TESTS_DIR/setup.sh
 
+echo                                                        2>&1 | tee -a $logFile
+echo -e "$horizBar"                                         2>&1 | tee -a $logFile
 if [[ ! -z $WRF_HYDRO_MODULES ]]; then
-    echo                                                        2>&1 | tee -a $logFile
-    echo -e "$horizBar"                                         2>&1 | tee -a $logFile
     message="\e[7;49;32mModule information:\e[0m"
     echo -e "$message"                                          2>&1 | tee -a $logFile
     echo "module load $WRF_HYDRO_MODULES"                       2>&1 | tee -a $logFile
     module load $WRF_HYDRO_MODULES                            
     module list                                                 2>&1 | tee -a $logFile
+else 
+    message="\e[7;49;32mConfiguration information:\e[0m"
+    echo -e "$message"                                          2>&1 | tee -a $logFile
+    echo
+    echo "mpif90 --version:"
+    mpif90 --version
+    echo 
+    echo "nc-config --version --fc --fflags --flibs:"
+    nc-config --version --fc --fflags --flibs
 fi
 
 echo                                                        2>&1 | tee -a $logFile
