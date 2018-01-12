@@ -47,6 +47,8 @@ echo -e "$horizBar"                                         2>&1 | tee -a $logFi
 if [[ ! -z $WRF_HYDRO_MODULES ]]; then
     message="\e[7;49;32mModule information:\e[0m"
     echo -e "$message"                                          2>&1 | tee -a $logFile
+    echo "module purge"                                         2>&1 | tee -a $logFile
+    module purge                                                2>&1 | tee -a $logFile
     echo "module load $WRF_HYDRO_MODULES"                       2>&1 | tee -a $logFile
     module load $WRF_HYDRO_MODULES                            
     module list                                                 2>&1 | tee -a $logFile
