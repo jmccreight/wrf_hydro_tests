@@ -18,7 +18,9 @@ cp $candidateBinary .
 mpirun -np $nCoresTest ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
-nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
+nSuccessDiag=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
+nSuccessStdout=`grep 'The model finished successfully.......' *.stdout | wc -l`
+nSuccess=$(($nSuccessDiag + $nSuccessStdout))
 if [[ $nSuccess -ne $nCoresTest ]]; then
     echo -e "\e[5;49;31mCandidate binary run failed unexpectedly with $nCoresTest cores.\e[0m"
     exit 1

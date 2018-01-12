@@ -21,7 +21,7 @@ else
     cd $referenceLocalPath/trunk/NDHMS/
 fi
 echo
-$WRF_HYDRO_TESTS_DIR/toolbox/config_compile_gnu_NoahMP.sh || \
+$WRF_HYDRO_TESTS_DIR/toolbox/config_compile_NoahMP.sh || \
     { echo -e "\e[5;49;31mReference binary: compilation under GNU failed unexpectedly.\e[0m"; exit 1; }
 echo -e "\e[0;49;32mReference binary: compilation under GNU successful.\e[0m"
 
@@ -38,9 +38,12 @@ cp $referenceBinary .
 mpirun -np $nCoresDefault ./`basename $referenceBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
-nSuccess=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
+nSuccessDiag=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
+nSuccessStdout=`grep 'The model finished successfully.......' *.stdout | wc -l`
+nSuccess=$(($nSuccessDiag + $nSuccessStdout))
 if [[ $nSuccess -ne $nCoresDefault ]]; then
     echo -e "\e[5;49;31mReference binary: run failed unexpectedly.\e[0m"
+    echo "See results in $domainRunDir/run.reference"
     exit 1
 fi
 echo -e "\e[0;49;32mReference binary: run successful.\e[0m"
@@ -55,7 +58,11 @@ echo -e "\e[0;49;32mQuestion: Do candidate results regress on to reference resul
 python3 $answerKeyDir/compare_restarts.py \
         $domainRunDir/run.candidate \
         $domainRunDir/run.reference || \
-    { echo -e "\e[5;49;31mAnswer: Regression test restart comparison failed.\e[0m"; exit 1; }
+    { echo -e "\e[5;49;31mAnswer: Regression test restart comparison failed.\e[0m"; 
+      echo "Files compared are in the directories:"
+      echo "$domainRunDir/run.candidate"
+      echo "$domainRunDir/run.reference"
+      exit 1; }
 echo -e "\e[5;49;32mAnswer: Regression test restart comparison successful!\e[0m"
 
 exit 0

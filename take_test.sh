@@ -29,6 +29,8 @@ echo -e "$message"                                          2>&1 | tee    $logFi
 echo                                                        2>&1 | tee -a $logFile
 echo -e "\e[0;49;32mBoilerplate:\e[0m"                      2>&1 | tee -a $logFile
 echo "Date             : `date +'%Y %h %d %H:%M:%S %Z'`"    2>&1 | tee -a $logFile
+echo "User             : `whoami`"                          2>&1 | tee -a $logFile
+echo "Machine          : $HOSTNAME"                         2>&1 | tee -a $logFile
 echo "candidateSpecFile: $candidateSpecFile"                2>&1 | tee -a $logFile
 echo "testFile         : $testFile"                         2>&1 | tee -a $logFile  
 echo "Log file         : $logFile"                          2>&1 | tee -a $logFile       
@@ -40,12 +42,23 @@ message="\e[7;49;32mSetting up the candidate                                    
 echo -e "$message"                                          2>&1 | tee -a $logFile
 source $WRF_HYDRO_TESTS_DIR/setup.sh
 
+if [[ ! -z $WRF_HYDRO_MODULES ]]; then
+    echo                                                        2>&1 | tee -a $logFile
+    echo -e "$horizBar"                                         2>&1 | tee -a $logFile
+    message="\e[7;49;32mModule information:\e[0m"
+    echo -e "$message"                                          2>&1 | tee -a $logFile
+    echo "module load $WRF_HYDRO_MODULES"                       2>&1 | tee -a $logFile
+    module load $WRF_HYDRO_MODULES                            
+    module list                                                 2>&1 | tee -a $logFile
+fi
+
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
 message="\e[7;49;32mTesting the candidate.                                           \e[0m"
 echo -e "$message"                                          2>&1 | tee -a $logFile
 $testFile                                                   2>&1 | tee -a $logFile
-testExitValue=${PIPESTATUS[0]}  ## some real foo.
+## The following is how you get a return status in spite of tee.
+testExitValue=${PIPESTATUS[0]}
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile

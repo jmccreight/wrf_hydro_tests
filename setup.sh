@@ -132,5 +132,17 @@ if [[ -z $referenceLocalPath ]]; then
     fi
 fi
 
+###################################
+## Compiler / macros
+###################################
+if [[ $WRF_HYDRO_COMPILER == intel ]]; then
+    export MACROS_FILE=macros.mpp.ifort
+fi 
 
+if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
+    export MACROS_FILE=macros.mpp.gfort
+fi 
+
+## TODO JLM: check that gnu is present?
+## e.g. mpif90 --version | grep -i intel > /dev/null 2>&1 || echo PROBLEM
 

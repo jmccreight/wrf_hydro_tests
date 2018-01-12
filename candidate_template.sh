@@ -2,35 +2,78 @@
 
 ## Test candidate template
 ## Purpose: collect all the necessary  variables for describing what is being tested and how.
-## TODO JLM: Sourcing vs. Executing
-## TODO JLM: Respect any environment variables above the scope of this file? Is that a group? 
 
-###################################
-## Required Variables:
-###################################
+###############################################
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Rules for editing:
+## To keep this working:
+## 1) This is bash.
+## 2) DO NOT REMOVE ANY export STATEMENTS
+## 3) DO NOT PUT SPACES BEFORE OR AFTER ANY '='.
+## We may try to relax these in the future, but this is 
+## what we have for now.
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+###############################################
 
-# Where the domain and pre-established run directories live.
+###############################################
+## REQUIREMENTS FOR ACCEPTIBLE TEST LOGS
+## 1) Document every dependency here. Do NOT pull from 
+##    envionment variables in your shell. 
+## 2) Name this file with the following conventions
+##    candidate_$candidateFork_$candidateBranchCommit_`whoami`_model-config-name_$HOSTNAME_$domain_$compiler.sh
+## TODOJLM: create a script that auto-generates file name from a source file and copies the source file to that name. 
+## TODOJLM: create a script that checks if the file name matches the variables in the file.
+###############################################
+
+## Notes:
+## Comments are BELOW variables.
+
+# ** Domain Group **
 export domainSourceDir=''
-## Required if NOT running in docker (i.e. locally):
-## Clone the domainSourceDir to domainRunDir to keep the original clean.
+# REQUIRED
+# Where the domain and pre-established run directories live.
+
+export domainRunDir=''
+# REQUIRED if NOT running in docker (i.e. locally):
+# Clone the domainSourceDir to domainRunDir to keep the original clean.
+# Default = domainSourceDir if on docker.
 # !!! NOTE THAT IF YOU ARE USING A MOUNTED VOLUME IN DOCKER, YOU PROBABLY WANT TO USE THIS, !!!
 # !!! HOWEVER IT IS NOT REQUIRED (UNTIL WE CAN DETECT HOST-MOUNTED DRIVES IN THE CONTAINER).!!!
-export domainRunDir=''
-
 
 # ** Machine Group **
-# The local path to the wrf_hydro_tests dir.
 export WRF_HYDRO_TESTS_DIR=''
-# Required if you need something other than 'mpirun'
-## TODO JLM: This probably has access to internal variables used by deferred execution (double quotes required?)
+# REQUIRED
+# The local path to the wrf_hydro_tests dir.
+
 export RUN_WRF_HYDRO=""
-# Where NetCDF resides on your system
+## NOT YET USED.
+# REQUIRED if you need something other than 'mpirun'
+# TODO JLM: This probably has access to internal variables used by deferred execution (double quotes required?)
+
 export NETCDF=''
+# REQUIRED
+# Where NetCDF resides on your system
+
+export WRF_HYDRO_COMPILER='intel'
+## Default = 'GNU'
+## Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
+## TODO clarify this: Intel and GNU write this message to different files. 
+## This requires that standard out under intel is writen to a file ending in "stdout"
+
+
+if [[ $HOSTNAME == *cheyenne* ]]; then 
+    if [[ $WRF_HYDRO_COMPILER == intel ]]; then
+        WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
+    else 
+        WRF_HYDRO_MODULES='module load gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
+    fi
+fi
+# Modules you want/need loaded on the machine.
+# These are invoked all at once (order may matter) by `module load`. 
+# Currently this includes modules needed for testing (e.g. on cheyenne: python and ncarenv (which contains nccmp))
+
 
 # ** Model group: **
-# Compile time option to the model (1 for off-line runs). These are not all technically required, but
-# probably a good idea to be explicit.
-# Caveat Emptor:  there is nothing sacred about whatever values you may find here. 
 export WRF_HYDRO=1
 export HYDRO_D=0
 export SPATIAL_SOIL=1
@@ -39,48 +82,54 @@ export WRF_HYDRO_RAPID=0
 export HYDRO_REALTIME=0
 export NCEP_WCOSS=0
 export WRF_HYDRO_NUDGING=1
+# REQUIRED
+# Compile time options to the model
+# Caveat Emptor:  there is nothing sacred about whatever values you may find here. 
 
 # ** Number of cores group **
-# default number of cores to use for runs
 export nCoresDefault=2
-# A different number of cores than above for performing an mpi number of cores test.
+# REQUIRED
+# default number of cores to use for runs
 export nCoresTest=1
-
-
-
-###################################
-## Optional Variables:
-###################################
+# REQUIRED for # cores tests.
+# A different number of cores than above for performing an mpi number of cores test.
 
 # ** Github group **
-# If cloning repositories from github, these are required.
-# See README.md for information and a suggestion on setting these. These can be inherited from the environment
 export GITHUB_USERNAME=''
 export GITHUB_AUTHTOKEN=''
-# Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
+# REQUIRED only if cloning any repositories from github.
+# See wrf_hydro_tests/README.md for information and a suggestion on setting these. These can be inherited from the environment
+
 export REPO_DIR=''
+# Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
 
 # ** Candidate repo group **
-# Candidate repository is the one you have been working on. It may come from github or a local path.
-# A named fork on github. Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
 export candidateFork=''
-# A branch or commit on candidateFork. Default = master
+# Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
+# Candidate repository is the one you have been working on. It may come from github or a local path.
+# A named fork on github. 
 export candidateBranchCommit=''
+# Default = master
+# A branch or commit on candidateFork. 
 # --- OR ---
-# A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
-# This supercedes BOTH candidateFork and candidateBranchCommit if set. Default =''
 export candidateLocalPath=''
+# Default ='' : NOT used.
+# A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
+# This supercedes BOTH candidateFork and candidateBranchCommit if set. 
 
 # ** Reference repo group **
-# Optional, but necessary for regression testing.
+# REQUIRED only for regression testing.
+export referenceFork=''
+# Default = NCAR/wrf_hydro_nwm.
+# A named fork on github. 
 # Reference repository is the one that provides the reference for regression testing. It may come
 # from github or a local path.
-# A named fork on github. Default = NCAR/wrf_hydro_nwm.
-# If both referenceFork and referenceLocalPath equal '', the reference fork is not used.
-export referenceFork=''
-# A branch or commit on referenceFork. Default = master
+# If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 export referenceBranchCommit=''
+# Default = master
+# A branch or commit on referenceFork. 
 # --- OR ---
-# A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
-# This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
 export referenceLocalPath=''
+# Default ='' : NOT used.
+# A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
+# This supercedes BOTH referenceFork and referenceBranchCommit if set. 
