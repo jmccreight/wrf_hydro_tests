@@ -9,8 +9,12 @@
 ## Establish the file structure
 ###################################
 ## Where do all the parts live for the test?
-export candidateRepoDir=$REPO_DIR/candidate
-export refRepoDir=$REPO_DIR/reference
+candidateRepoDir=$REPO_DIR/candidate
+refRepoDir=$REPO_DIR/reference
+if [[ ! -z $candidateLocalPath ]]; then candidateRepoDir=$candidateLocalPath; fi
+if [[ ! -z $referenceLocalPath ]]; then refRepoDir=$referenceLocalPath; fi
+export candidateRepoDir=$candidateRepoDir
+export refRepoDir=$refRepoDir
 
 export toolboxDir=$WRF_HYDRO_TESTS_DIR/toolbox
 export answerKeyDir=$WRF_HYDRO_TESTS_DIR/answer_keys
@@ -97,7 +101,7 @@ if [[ -z ${CIRCLECI} ]]; then
         echo
         echo -e "\e[0;49;32m-----------------------------------\e[0m"
         echo -e "\e[7;49;32mCandidate fork: $candidateFork\e[0m"
-	echo -e "\e[7;49;32mReference branch/commit: $referenceBranchCommit\e[0m"
+	echo -e "\e[7;49;32mCandidate branch/commit: $candidateBranchCommit\e[0m"
         git clone https://${authInfo}@github.com/$candidateFork $candidateRepoDir
         git checkout $candidateBranchCommit || \
             { echo "Unsuccessful checkout of $candidateBranchCommit from $candidateFork."; exit 1; }
@@ -105,6 +109,19 @@ if [[ -z ${CIRCLECI} ]]; then
         echo -e "\e[0;49;32mCandidate branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
         echo -e "\e[0;49;32mTesting commit:\e[0m"
         git log -n1 | cat
+    else
+        cd $candidateLocalPath
+        echo
+        echo -e "\e[0;49;32m-----------------------------------\e[0m"
+        echo -e "\e[7;49;32mCandidate fork: LOCAL: `pwd` \e[0m"
+        echo -e "\e[0;49;32mCandidate branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
+        if [[ -z $(git diff-index HEAD --) ]]; then 
+            echo -e "\e[0;49;32mTesting commit:\e[0m"
+            git log -n1 | cat
+        else 
+            echo  -e "\e[0;49;32mTesting uncommitted changes.\e[0m"
+        fi
+        cd - >/dev/null 2>&1
     fi
 fi
 
@@ -132,7 +149,21 @@ if [[ -z $referenceLocalPath ]]; then
 	echo -e "\e[0;49;32mReference commit:\e[0m"
 	git log -n1 | cat
     fi
+else
+    cd $referenceLocalPath
+    echo
+    echo -e "\e[0;49;32m-----------------------------------\e[0m"
+    echo -e "\e[7;49;32mReference fork: LOCAL: `pwd` \e[0m"
+    echo -e "\e[0;49;32mReference branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
+    if [[  -z $(git diff-index HEAD --) ]]; then 
+        echo -e "\e[0;49;32mTesting commit:\e[0m"
+        git log -n1 | cat
+    else 
+        echo  -e "\e[0;49;32mTesting uncommitted changes.\e[0m"
+    fi
+    cd - >/dev/null 2>&1
 fi
+
 
 ###################################
 ## Compiler / macros

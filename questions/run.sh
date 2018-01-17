@@ -14,7 +14,9 @@ echo -e "\e[0;49;32mQuestion: Does the candidate binary run? (using $nCoresDefau
 cd $domainRunDir/run.candidate || \
     { echo "Can not cd to ${domainRunDir}/run.candidate. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate"
-cp $candidateBinary .
+cp $candidateBinary . || {
+    echo -e "Candidate binary not found";
+    exit 1;}
 mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

@@ -76,7 +76,7 @@ export HYDRO_D=0
 export SPATIAL_SOIL=1
 export WRFIO_NCD_LARGE_FILE_SUPPORT=1
 export WRF_HYDRO_RAPID=0
-export HYDRO_REALTIME=1
+export HYDRO_REALTIME=0
 export NCEP_WCOSS=0
 export WRF_HYDRO_NUDGING=1
 # REQUIRED
@@ -122,7 +122,9 @@ export referenceFork=NCAR/wrf_hydro_nwm
 # Reference repository is the one that provides the reference for regression testing. It may come
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
-export referenceBranchCommit=v1.2_release-gwFix-qstrmvolrtFix
+export referenceBranchCommit=f7bb626dbb7393d117c1d01c1dda33a16c653fe4
+##f5d2496600c7185a292a47e74fa55a0d3f774615 #fails compile!
+#master
 # Default = master
 # A branch or commit on referenceFork. 
 # --- OR ---

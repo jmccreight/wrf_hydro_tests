@@ -45,10 +45,10 @@ source $WRF_HYDRO_TESTS_DIR/setup.sh
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
 if [[ ! -z $WRF_HYDRO_MODULES ]]; then
-    message="\e[7;49;32mModule information:\e[0m"
+    message="\e[7;49;32mModule information                                           \e[0m"
     echo -e "$message"                                          2>&1 | tee -a $logFile
     echo "module purge"                                         2>&1 | tee -a $logFile
-    module purge                                                2>&1 | tee -a $logFile
+    module purge
     echo "module load $WRF_HYDRO_MODULES"                       2>&1 | tee -a $logFile
     module load $WRF_HYDRO_MODULES                            
     module list                                                 2>&1 | tee -a $logFile
@@ -65,7 +65,7 @@ fi
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
-message="\e[7;49;32mTesting the candidate.                                           \e[0m"
+message="\e[7;49;32mTesting the candidate                                            \e[0m"
 echo -e "$message"                                          2>&1 | tee -a $logFile
 $testFile                                                   2>&1 | tee -a $logFile
 ## The following is how you get a return status in spite of tee.

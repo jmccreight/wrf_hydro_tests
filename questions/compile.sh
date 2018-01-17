@@ -9,7 +9,7 @@ echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
 echo -e "\e[7;49;32mcompile.sh:\e[0m"
 echo -e "\e[0;49;32mQuestion: Does candidate binary compile?\e[0m"    
-echo "Compileing with $WRF_HYDRO_COMPILER"
+echo "Compiling with $WRF_HYDRO_COMPILER"
 if [[ -z $candidateLocalPath ]]; then
     cd $candidateRepoDir/trunk/NDHMS/ || \
 	{ echo "Unale to cd to $candidateRepoDir/trunk/NDHMS/. Exiting."; exit 1; }

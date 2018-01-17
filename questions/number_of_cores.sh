@@ -14,6 +14,7 @@ echo -e "\e[0;49;32mRunning candidate binary with $nCoresTest cores.\e[0m"
 
 cd $domainRunDir/run.candidate.ncores_test || \
     { echo "Can not cd to $domainRunDir/run.candidate.ncores_test. Exiting."; exit 1; }
+echo "Running in $domainRunDir/run.candidate.ncores_test"
 cp $candidateBinary .
 mpirun -np $nCoresTest ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
 ## did the model finish successfully?
