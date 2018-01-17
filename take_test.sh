@@ -3,10 +3,11 @@
 # Arguments
 # 1: candidatesSpecFile: a copy of wrf_hydr_tests/candidate_template.sh with details.
 # 2: testFile: A file specifying the test (set of questions) to run on the candidate.
-candidateSpecFile=${1}
-testFile=${2}
+# Conver these to absolute paths if needed.
+candidateSpecFile=`readlink -f ${1}`
+testFile=`readlink -f ${2}`
 
-## Establish the candidate variables.
+# Establish the candidate variables.
 source $candidateSpecFile
 
 # Determine log file name
