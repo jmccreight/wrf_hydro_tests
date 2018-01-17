@@ -115,7 +115,9 @@ if [[ -z ${CIRCLECI} ]]; then
         echo -e "\e[0;49;32m-----------------------------------\e[0m"
         echo -e "\e[7;49;32mCandidate fork: LOCAL: `pwd` \e[0m"
         echo -e "\e[0;49;32mCandidate branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
-        if [[ -z $(git diff-index HEAD --) ]]; then 
+
+        gitDiffInd=`git diff-index HEAD -- `
+        if [[ -z $gitDiffInd ]]; then 
             echo -e "\e[0;49;32mTesting commit:\e[0m"
             git log -n1 | cat
         else 
@@ -155,7 +157,8 @@ else
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mReference fork: LOCAL: `pwd` \e[0m"
     echo -e "\e[0;49;32mReference branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
-    if [[  -z $(git diff-index HEAD --) ]]; then 
+    gitDiffInd=`git diff-index HEAD -- `
+    if [[ -z $gitDiffInd ]]; then 
         echo -e "\e[0;49;32mTesting commit:\e[0m"
         git log -n1 | cat
     else 

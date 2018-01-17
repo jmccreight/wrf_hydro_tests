@@ -17,8 +17,7 @@ cd $domainRunDir/run.candidate.ncores_test || \
 echo "Running in $domainRunDir/run.candidate.ncores_test"
 cp $candidateBinary .
 
-#mpirun -np $nCoresTest ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-$WRF_HYDRO_RUN $nCoresTest $candidateBinary
+$WRF_HYDRO_RUN $nCoresTest $candidateBinary question_n_cores $TEST_WALL_TIME
 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

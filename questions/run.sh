@@ -18,8 +18,7 @@ cp $candidateBinary . || {
     echo -e "Candidate binary not found";
     exit 1;}
 
-#mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-$WRF_HYDRO_RUN $nCoresDefault $candidateBinary
+$WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_run $TEST_WALL_TIME
 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

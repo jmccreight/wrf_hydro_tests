@@ -41,8 +41,7 @@ cd $domainRunDir/run.reference || \
     { echo "Can not cd to ${domainRunDir}/run.reference Exiting."; exit 1; }
 cp $referenceBinary .
 
-#mpirun -np $nCoresDefault ./`basename $referenceBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
-$WRF_HYDRO_RUN $ncoresDefault $referenceBinary
+$WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_regression $TEST_WALL_TIME
 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

@@ -45,11 +45,25 @@ export WRF_HYDRO_TESTS_DIR=''
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
-#export RUN_WRF_HYDRO=""
-export WRF_HYDRO_RUN="mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`"
-## NOT YET USED.
-# REQUIRED if you need something other than 'mpirun'
-# TODO JLM: This probably has access to internal variables used by deferred execution (double quotes required?)
+function mpiRunFunc 
+{ 
+    local nCores=$1; 
+    local theBinary=$2;
+    echo "mpirun -np $nCores ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`";
+    mpirun -np $nCores ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`;
+    return $?
+}
+# Required
+# Define a run function. The above works on docker and cheyenne (assuming low core counts and not 
+# using the job scheduler).
+
+export -f mpiRunFunc
+# REQUIRED
+# First the desired function must be exported. 
+export WRF_HYDRO_RUN=mpiRunFunc
+# REQUIRED
+# Now call the function something generic.
+# NOTE: the function on the RHS does NOT need a dollar sign.
 
 export NETCDF=''
 # REQUIRED

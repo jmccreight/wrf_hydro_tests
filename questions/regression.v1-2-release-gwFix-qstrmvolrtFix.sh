@@ -20,13 +20,18 @@ echo -e "\e[7;49;32mregression.v1-2-release-gwFix-qstrmvolrtFix.sh:\e[0m"
 echo -e "\e[0;49;32mCompiling reference binary.\e[0m"
 if [[ -z $referenceLocalPath ]]; then
     cd $refRepoDir/trunk/NDHMS/
+    theCompDir=$referenceRepoDir/trunk/NDHMS/
 else
     cd $referenceLocalPath/trunk/NDHMS/
+    theCompDir=$referenceLocalPath/trunk/NDHMS/
 fi
+echo "Compiling in $theCompDir"
 echo
-$WRF_HYDRO_TESTS_DIR/toolbox/config_compile_NoahMP.sh || \
-    { echo -e "\e[5;49;31mReference binary: compilation under GNU failed unexpectedly.\e[0m"; exit 1; }
-echo -e "\e[0;49;32mReference binary: compilation under GNU successful.\e[0m"
+$toolboxDir/config_compile_NoahMP.sh || \
+    { echo -e "\e[5;49;31mReference binary: compilation under $WRF_HYDRO_COMPILER failed unexpectedly.\e[0m"; 
+      echo "See results in $theCompDir"; 
+      exit 1; }
+echo -e "\e[0;49;32mReference binary: compilation under $WRF_HYDRO_COMPILER successful.\e[0m"
 
 ###################################
 ## Run Reference Binary
@@ -38,7 +43,9 @@ echo -e "\e[0;49;32mRunning reference binary (with $nCoresDefault cores).\e[0m"
 cd $domainRunDir/run.reference.v1-2-release-gwFix-qstrmvolrtFix || \
     { echo "Can not cd to ${domainRunDir}/run.reference.v1-2-release-gwFix-qstrmvolrtFix Exiting."; exit 1; }
 cp $referenceBinary .
-mpirun -np $nCoresDefault ./`basename $referenceBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+
+$WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_reg-v1.2-release-plus $TEST_WALL_TIME
+
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 nSuccessDiag=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
