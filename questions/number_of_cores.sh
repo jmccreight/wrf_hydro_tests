@@ -16,7 +16,10 @@ cd $domainRunDir/run.candidate.ncores_test || \
     { echo "Can not cd to $domainRunDir/run.candidate.ncores_test. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate.ncores_test"
 cp $candidateBinary .
-mpirun -np $nCoresTest ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+
+#mpirun -np $nCoresTest ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+$WRF_HYDRO_RUN $nCoresTest $candidateBinary
+
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 nSuccessDiag=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`

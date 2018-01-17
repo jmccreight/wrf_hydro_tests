@@ -15,7 +15,9 @@ cd $domainRunDir/run.candidate.restart || \
     { echo "Can not cd to $domainRunDir/run.candidate.restart. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate.restart"
 cp $candidateBinary .
-mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+
+#mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+$WRF_HYDRO_RUN $nCoresDefault $candidateBinary
 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 

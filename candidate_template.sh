@@ -45,7 +45,8 @@ export WRF_HYDRO_TESTS_DIR=''
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
-export RUN_WRF_HYDRO=""
+#export RUN_WRF_HYDRO=""
+export WRF_HYDRO_RUN="mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`"
 ## NOT YET USED.
 # REQUIRED if you need something other than 'mpirun'
 # TODO JLM: This probably has access to internal variables used by deferred execution (double quotes required?)

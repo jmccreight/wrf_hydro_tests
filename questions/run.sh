@@ -17,7 +17,10 @@ echo "Running in $domainRunDir/run.candidate"
 cp $candidateBinary . || {
     echo -e "Candidate binary not found";
     exit 1;}
-mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+
+#mpirun -np $nCoresDefault ./`basename $candidateBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+$WRF_HYDRO_RUN $nCoresDefault $candidateBinary
+
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 ## Intel and GNU write this message to different files. This requires that standard out

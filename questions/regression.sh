@@ -40,7 +40,10 @@ echo -e "\e[0;49;32mRunning reference binary (with $nCoresDefault cores).\e[0m"
 cd $domainRunDir/run.reference || \
     { echo "Can not cd to ${domainRunDir}/run.reference Exiting."; exit 1; }
 cp $referenceBinary .
-mpirun -np $nCoresDefault ./`basename $referenceBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+
+#mpirun -np $nCoresDefault ./`basename $referenceBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'` 
+$WRF_HYDRO_RUN $ncoresDefault $referenceBinary
+
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
 nSuccessDiag=`grep 'The model finished successfully.......' diag_hydro.* | wc -l`
