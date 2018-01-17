@@ -45,12 +45,15 @@ export WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
+
 function mpiRunFunc 
 { 
     local nCores=$1; 
     local theBinary=$2;
-    echo "mpirun -np $nCores ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`";
-    mpirun -np $nCores ./`basename $theBinary` 1> `date +'%Y-%m-%d_%H-%M-%S.stdout'` 2> `date +'%Y-%m-%d_%H-%M-%S.stderr'`;
+    dateTag=`date +'%Y-%m-%d_%H-%M-%S'`
+    runCmd="mpirun -np $nCores ./`basename $theBinary` 1> ${dateTag}.stdout 2> ${dateTag}.stderr";
+    echo $runCmd
+    eval $runCmd
     return $?
 }
 
