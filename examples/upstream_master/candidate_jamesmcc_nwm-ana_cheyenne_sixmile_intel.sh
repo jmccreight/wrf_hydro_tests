@@ -123,7 +123,7 @@ export referenceFork=NCAR/wrf_hydro_nwm
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 export referenceBranchCommit=f7bb626dbb7393d117c1d01c1dda33a16c653fe4
-##f5d2496600c7185a292a47e74fa55a0d3f774615 #fails compile!
+##f5d2496600c7185a292a47e74fa55a0d3f774615
 #master
 # Default = master
 # A branch or commit on referenceFork. 
