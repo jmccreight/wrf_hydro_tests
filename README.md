@@ -1,34 +1,89 @@
-# wrf\_hydro\_tests #
+# wrf\_hydro\_tests: Testing for the WRF-Hydro model. #
 
-Testing for the WRF-Hydro model.
-Testing for the price of compiling: This should completely replace your WRF-Hydro compile process on all machines. 
+Why use wrf\_hydro\_tests?
 
-# Overview
+_Testing for the price of compiling:_ Developers can run engineering
+tests with each compile with minimal added overhead when using toy
+domains. This IS the way for developers to compile.
 
-take\_test(candidate, test) 
-  setup candidate
-  test
-   question1, answer1
-   ...
-   questionN, answerN
-   questionN+1, diagnostic1
-   ... 
-   questionN+M, diagnosticM
-   take_down candidate
+_Testing on a machine near you:_ This code is meant to work on any
+linux distribution. The requirements are bash, python3, and the
+dependencies of the WRF-Hydro model. It has been run on Docker and on
+Chyenne (using qsub requires the wrf_hydro_tools repository at this
+time) and is meant to be highly protable between different environments. 
 
-A candidate takes a test.  A candidate is described by a copy of 
-candidate\_template.sh which may have another name. Candidates have 
-lots of different moving parts, including machine, domain, commit 
-while the underlying tests remain the same.
+# Overview / Definitions #
 
-Take\_test requires a "candidate specification file" and a "test file". If no candidate
-file is supplied, the necessary candidate variables/info are looked
-for in the environment.
+Purpose of this section
 
-Inside take\_test:
-	* The candidate is instantiated by setup.sh.
-	* A test is comprised of questions (You can make your own custom
-      tests from existing questions or make your own questions). 
+1. Define terms ("test" can be in multiple, ambiguous ways),
+1. Give the user an idea of how to "take_tests",
+1. Point the way towards users developing custom tests and questions
+   (advanced usage).
+
+## take_test.sh ##
+
+A *candidate* takes a *test*. The take\_test name emphasizes that there
+are two parts: the taker and the test. The take_test script is a
+top-level driver routine which brings the two together and handles:
+
+1. Logging
+1. Setup of the candidate
+1. Taking of the test
+1. Tearing down the candidate (optional).
+
+## Candidate specification file ##
+
+A *candidate* is ALL the particulars of what is necessary to take a
+test. The candidate specification file
+(candidate\_spec\_file\_template.sh) is tailored by the user to specifiy the
+candidate. Broadly, these are the groups of "moving parts" or
+uniqueness to be specified for a candidate: 
+
+1. Domain Group
+1. Machine Group : static configuration for each machine?
+1. Model Group
+1. Numer of Cores Group
+1. *Github group* Could be removed as it is nearly static.
+1. Repository Groups (2)
+
+There are currently a total of 25 variables in these 6 groups. Many are
+optional. We believe these uniquely identify a *candidate*. If you
+dont find that to be true, definitely log an issue! We believe that it
+is best to work with the template file, and when your test is tweaked
+to your liking, name it something special. 
+
+## Test specification file ##
+
+The second argument to take_test is the test specification
+file. *Tests*  are collections of *questions*. That is all. Tests are
+one of the simplest parts of the system. (For CI on CircleCI, tests
+are simply expressed in YAML mardown.) You may desire to develop
+custom tests for you development purposes. Custom tests may simply mix
+and match stock questions. More advanced users will want to develop
+custom tests with custom questions. Questions are described in the
+next section. 
+
+## Questions ##
+
+Questions may 
+
+1. return logical answers and require an *answer_key" ( e.g. "does x pass/fail), or 
+1. return qualitative results (diagnostic outputs), e.g. "how does".
+
+There are stock questions and you can create custom questions. 
+
+Questions imply a known directory structure, but should remain Domain
+agnostic. That is, the same test in multiple domains has the identical
+directory structure. 
+
+Questions typcially involve a premise, examples of premises:
+
+	* There is a run
+	* There is an existing run (ncores test, perfect restart tests)
+	* There is a "blessed version of the code".
+	
+	
 	* Questions are comprised of premises (given a, b, c) and may or may
 	  not have answers (you can make custom questions too). 
 	* The answer_key is invoked (by the question) to see if the testee's answers are
@@ -49,8 +104,43 @@ questions/
       constructing domains. 
 	* 
 
+## Deficiencies, on-going, & future work
 
-# Running tests
+*Namelist management* As noted, the candidate specification file does
+not currently specify a model run-time configuration (set of namelist
+options). Run-time configurations are currently static, which means
+that different domain run directories have to be specified for
+different model run-time configurations (the namelists live inside 
+the established run directories for each domain). 
+
+Work has begun to integrate JSON collections of preconfigured
+namelists in to the code repository so that configurations can
+
+1. be named,
+1. be generated programatically at run time,
+1. evolve with the code base, 
+1. be guaranteed to work and produce consistent results across versions.
+
+Perhaps the biggest probelm this will solve is tracking a given
+configurations specific namelists across the development history (and
+guaranteeing this by testing the code with the namelist maintained
+across versions). The flexibility of mixing domains and configurations
+will tremendously simply the complexity of testing as well. The above
+work will also produce tools for generating and comparing namelists
+programatically. 
+
+*Domain file management* Domain files are continually evolving with
+the code. Because of their size, it is simply not feasible to keep
+domain files 
+
+
+# Getting Started #
+
+## Local Machine Configuration. ##
+
+?? ~/.wrf_hydro_tests file?
+
+# Running tests #
 
 For now, testing (actually, configuration) requires two repos. 
 
@@ -104,7 +194,7 @@ _OR_ |
 referenceLocalPath     |A path on local machine where the current state of the repo (potentially uncommitted) is compiled. This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
 
 
-## Examples
+## Examples ##
 
 See the examples directory. 
 
@@ -130,4 +220,12 @@ whitespace in the file. See
 
 for information on getting your github authtoken.
 
-## Contributing
+
+# Customizing & Contributing
+Answer-changing code development:
+1. Actuall answer changing parts should be isolated to a single commit
+1. Should be diagnosed (on CONUS). 
+You should write diagnostic tests in the flexible framework of
+wrf\_hydro\_tests as you are developing code and evaluating its
+impact. All such diagnostic testing can be used by others (and
+yourself) next time the same variables are being worked on.

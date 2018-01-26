@@ -62,7 +62,7 @@ if [[ $HOSTNAME == *cheyenne* ]]; then
     if [[ $WRF_HYDRO_COMPILER == intel ]]; then
         WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
     else 
-        WRF_HYDRO_MODULES='module load gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
+        WRF_HYDRO_MODULES='gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
     fi
 fi
 # Modules you want/need loaded on the machine.
