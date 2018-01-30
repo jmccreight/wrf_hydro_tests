@@ -182,3 +182,26 @@ fi
 ## TODO JLM: check that gnu is present?
 ## e.g. mpif90 --version | grep -i intel > /dev/null 2>&1 || echo PROBLEM
 
+###################################
+## Module
+###################################
+echo
+echo -e "\e[0;49;32m-----------------------------------\e[0m"
+if [[ ! -z $WRF_HYDRO_MODULES ]]; then
+    message="\e[7;49;32mModule information                                           \e[0m"
+    echo -e "$message"
+    echo "module purge"
+    module purge
+    echo "module load $WRF_HYDRO_MODULES"
+    module load $WRF_HYDRO_MODULES
+    module list
+else 
+    message="\e[7;49;32mConfiguration information:\e[0m"
+    echo -e "$message"
+    echo
+    echo "mpif90 --version:"
+    mpif90 --version
+    echo 
+    echo "nc-config --version --fc --fflags --flibs:"
+    nc-config --version --fc --fflags --flibs
+fi

@@ -1,14 +1,29 @@
 #!/bin/bash
 
-# Arguments
-# 1: candidatesSpecFile: a copy of wrf_hydr_tests/candidate_template.sh with details.
-# 2: testFile: A file specifying the test (set of questions) to run on the candidate.
-# Conver these to absolute paths if needed.
+theHelp='
+take_test arguments:
+1: candidateSpecFile: 
+     Relative or absolute path to a copy of 
+     wrf_hydr_tests/candidate_template.sh 
+     with details for the specific candidate.
+2: testFile: 
+     A file specifying the test (set of 
+     questions) to run on the candidate.
+'
+if [[ -z $1 ]] || [[ -z $2 ]]; then
+    message="\e[7;49;32mtake_test.sh: Incorrect usage. Please read the following help: \e[0m"
+    echo -e "$message"
+    echo -e "$theHelp"
+    exit 1
+fi
+
+#Convert the specification patsh to absolute paths if needed.
 candidateSpecFile=`readlink -f ${1}`
 testFile=`readlink -f ${2}`
 
 # Establish the candidate variables.
 source $candidateSpecFile
+source ~/.wrf_hydro_tests_machine_spec.sh
 
 # Determine log file name
 ## JLM TODO: seems like the name of test should be embedded in the name of the logFile.
@@ -43,26 +58,8 @@ message="\e[7;49;32mSetting up the candidate                                    
 echo -e "$message"                                          2>&1 | tee -a $logFile
 source $WRF_HYDRO_TESTS_DIR/setup.sh
 
-echo                                                        2>&1 | tee -a $logFile
-echo -e "$horizBar"                                         2>&1 | tee -a $logFile
-if [[ ! -z $WRF_HYDRO_MODULES ]]; then
-    message="\e[7;49;32mModule information                                           \e[0m"
-    echo -e "$message"                                          2>&1 | tee -a $logFile
-    echo "module purge"                                         2>&1 | tee -a $logFile
-    module purge
-    echo "module load $WRF_HYDRO_MODULES"                       2>&1 | tee -a $logFile
-    module load $WRF_HYDRO_MODULES                            
-    module list                                                 2>&1 | tee -a $logFile
-else 
-    message="\e[7;49;32mConfiguration information:\e[0m"
-    echo -e "$message"                                          2>&1 | tee -a $logFile
-    echo
-    echo "mpif90 --version:"
-    mpif90 --version
-    echo 
-    echo "nc-config --version --fc --fflags --flibs:"
-    nc-config --version --fc --fflags --flibs
-fi
+
+exit 99
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
