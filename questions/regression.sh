@@ -82,7 +82,7 @@ cd $domainRunDir/run.reference || \
     { echo "Can not cd to ${domainRunDir}/run.reference Exiting."; exit 1; }
 cp $referenceBinary .
 
-if [[ -z $WRF_HYDRO_RUN ]]; then ; source $toolboxDir/mpiRun.sh; fi
+if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_regression $TEST_WALL_TIME
 
 ## did the model finish successfully?
