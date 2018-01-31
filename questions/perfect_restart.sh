@@ -16,7 +16,7 @@ cd $domainRunDir/run.candidate.restart || \
 echo "Running in $domainRunDir/run.candidate.restart"
 cp $candidateBinary .
 
-if [[ -z $WRF_HYDRO_RUN ]]; then ; source $toolboxDir/mpiRun.sh; fi
+if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_perfect_restart $TEST_WALL_TIME
 
 ## did the model finish successfully?
