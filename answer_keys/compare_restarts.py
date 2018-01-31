@@ -7,7 +7,8 @@ import warnings
 def compare_restarts(test_run_dir,ref_run_dir):
     restart_files=glob(test_run_dir+'/*RESTART*')
     hydro_files=glob(test_run_dir+'/*HYDRO_RST*')
-
+    nudging_files=glob(test_run_dir+'/*nudgingLastObs*')
+    
     #Make a flag for when comparisons actually happen
     comparison_run_check = 0
 
@@ -37,6 +38,19 @@ def compare_restarts(test_run_dir,ref_run_dir):
             hydro_out.append(subprocess.run(['nccmp','-dmf','-c 3',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
             comparison_run_check = 1
 
+    #Compare nudgingLastObs files
+    nudging_out = list()
+    print('Comparing nudgingLastObs files')
+    for test_run_file in nudging_files:
+        test_run_filename = os.path.basename(test_run_file)
+        ref_run_file = glob(ref_run_dir+'/'+test_run_filename)
+        if len(ref_run_file) == 0:
+            warnings.warn(test_run_filename+' not found in reference run directory')
+        else:
+            print('Comparing file '+test_run_filename)
+            nudging_out.append(subprocess.run(['nccmp','-dmf','-c 3',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
+            comparison_run_check = 1
+
     #Check that a comparison was actually done
     if comparison_run_check != 1:
         print('No matching files were found to compare')
@@ -45,13 +59,19 @@ def compare_restarts(test_run_dir,ref_run_dir):
     #Check for exit codes and fail if non-zero
     for output in restart_out:
         if output.returncode == 1:
-            print('One or more comparisons failed, see stdout log')
+            print('One or more RESTART comparisons failed, see stdout log')
             exit(1)
 
     #Check for exit codes and fail if non-zero
     for output in hydro_out:
         if output.returncode == 1:
-            print('One or more comparisons failed, see stdout log')
+            print('One or more HYDRO_RST comparisons failed, see stdout log')
+            exit(1)
+
+    #Check for exit codes and fail if non-zero
+    for output in nudging_out:
+        if output.returncode == 1:
+            print('One or more nudgingLastObs comparisons failed, see stdout log')
             exit(1)
 
     #If no errors exit with code 0
