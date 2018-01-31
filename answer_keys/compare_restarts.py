@@ -22,7 +22,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing file '+test_run_filename)
-            restart_out.append(subprocess.run(['nccmp -dmfq -S',\
+            restart_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT))
@@ -38,7 +38,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing file '+test_run_filename)
-            hydro_out.append(subprocess.run(['nccmp -dmfq -S',\
+            hydro_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT))
@@ -54,7 +54,10 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing file '+test_run_filename)
-            nudging_out.append(subprocess.run(['nccmp','-dmf','-c 3',test_run_file,ref_run_file[0]],stderr=subprocess.STDOUT))
+            nudging_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
+                                               '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
+                                               test_run_file,ref_run_file[0]],\
+                                              stderr=subprocess.STDOUT))
             comparison_run_check = 1
 
     #Check that a comparison was actually done
