@@ -169,20 +169,6 @@ fi
 
 
 ###################################
-## Compiler / macros
-###################################
-if [[ $WRF_HYDRO_COMPILER == intel ]]; then
-    export MACROS_FILE=macros.mpp.ifort
-fi 
-
-if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
-    export MACROS_FILE=macros.mpp.gfort
-fi 
-
-## TODO JLM: check that gnu is present?
-## e.g. mpif90 --version | grep -i intel > /dev/null 2>&1 || echo PROBLEM
-
-###################################
 ## Module
 ###################################
 echo
@@ -205,3 +191,26 @@ else
     echo "nc-config --version --fc --fflags --flibs:"
     nc-config --version --fc --fflags --flibs
 fi
+
+
+###################################
+## Compiler / macros
+###################################
+if [[ $WRF_HYDRO_COMPILER == intel ]]; then
+    export MACROS_FILE=macros.mpp.ifort
+    mpif90 --version | grep -i intel > /dev/null 2>&1 || {
+        echo 'The requested compiler was not found, exiting.'
+        exit 1
+    }
+fi 
+
+if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
+    export MACROS_FILE=macros.mpp.gfort
+    mpif90 --version | grep -i GNU > /dev/null 2>&1 || {
+        echo 'The requested compiler was not found, exiting.'
+        exit 1
+    }
+fi 
+
+echo "mpif90 --version:"
+mpif90 --version
