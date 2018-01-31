@@ -2,7 +2,7 @@ source candidate_spec.sh
 source machine_spec.sh
 source ../setup.sh
 
-targetFile=foo.sh
+targetFile=$BASH_ENV
 
 # machine spec
 echo "export WRF_HYDRO_TESTS_DIR=$WRF_HYDRO_TESTS_DIR " >> $targetFile
