@@ -18,6 +18,7 @@ cp $candidateBinary . || {
     echo -e "Candidate binary not found";
     exit 1;}
 
+if [[ -z $WRF_HYDRO_RUN ]]; then ; source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_run $TEST_WALL_TIME
 
 ## did the model finish successfully?
