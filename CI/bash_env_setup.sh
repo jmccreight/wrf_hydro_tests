@@ -7,6 +7,7 @@ targetFile=$BASH_ENV
 # machine spec
 echo "export WRF_HYDRO_TESTS_DIR=$WRF_HYDRO_TESTS_DIR " >> $targetFile
 echo "export NETCDF=$NETCDF " >> $targetFile
+echo "export -f mpiRunFunc " >> $targetFile
 echo "export WRF_HYDRO_RUN=$WRF_HYDRO_RUN " >> $targetFile
 
 # candidate spec
