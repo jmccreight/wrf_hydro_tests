@@ -138,7 +138,21 @@ domain files
 
 ## Local Machine Configuration. ##
 
-?? ~/.wrf_hydro_tests file?
+The static, machine-dependent specifics of the candidate are separated 
+from the main candidate specification file and placed into the following 
+file _for each machine_:  `~/.wrf_hydro_tests_machine_spec.sh`. An 
+example copy of this file is provided in the top level of this repository
+but it must be moved into the correct place and editied to work properly. 
+
+
+We recommend (though the sourcing is optional, the second line 
+appears to put `take_test` in your path:
+
+```
+## wrf_hydro_tests
+function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
+
+```
 
 # Running tests #
 
