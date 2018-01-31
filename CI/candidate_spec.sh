@@ -29,7 +29,7 @@ export domainSourceDir=/wrf_hydro_ci/test_domain/
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
-export domainRunDir=''
+export domainRunDir=/glade/scratch/jamesmcc/foo
 # REQUIRED if NOT running in docker (i.e. locally):
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # Default = domainSourceDir if on docker.

@@ -15,7 +15,7 @@ exitValue=$(($?+$exitValue))
 $WRF_HYDRO_TESTS_DIR/questions/number_of_cores.sh
 exitValue=$(($?+$exitValue))
 
-#$WRF_HYDRO_TESTS_DIR/questions/regression.v1-2-release-gwFix-qstrmvolrtFix.sh
-#exitValue=$(($?+$exitValue))
+$WRF_HYDRO_TESTS_DIR/questions/regression.v1-2-release-gwFix-qstrmvolrtFix.sh
+exitValue=$(($?+$exitValue))
 
 exit $exitValue
