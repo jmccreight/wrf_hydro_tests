@@ -44,6 +44,7 @@ cd $domainRunDir/run.reference.v1-2-release-gwFix-qstrmvolrtFix || \
     { echo "Can not cd to ${domainRunDir}/run.reference.v1-2-release-gwFix-qstrmvolrtFix Exiting."; exit 1; }
 cp $referenceBinary .
 
+if [[ -z $WRF_HYDRO_RUN ]]; then ; source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_reg-v1.2-release-plus $TEST_WALL_TIME
 
 ## did the model finish successfully?

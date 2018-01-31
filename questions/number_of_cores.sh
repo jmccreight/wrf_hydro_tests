@@ -17,6 +17,7 @@ cd $domainRunDir/run.candidate.ncores_test || \
 echo "Running in $domainRunDir/run.candidate.ncores_test"
 cp $candidateBinary .
 
+if [[ -z $WRF_HYDRO_RUN ]]; then ; source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresTest $candidateBinary question_n_cores $TEST_WALL_TIME
 
 ## did the model finish successfully?
