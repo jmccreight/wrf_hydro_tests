@@ -31,7 +31,11 @@ testSpecFile=`readlink -f ${2}`
 
 # Establish the candidate variables.
 source $candidateSpecFile
-source ~/.wrf_hydro_tests_machine_spec.sh
+if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
+    source ~/.wrf_hydro_tests_machine_spec.sh
+else 
+    source $WRF_HYDRO_TESTS_MACHINE_SPEC
+fi
 
 ## TODO JLM: Check all the 3 above files for existence.
 
