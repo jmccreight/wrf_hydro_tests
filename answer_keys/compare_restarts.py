@@ -29,7 +29,8 @@ def compare_restarts(test_run_dir,ref_run_dir):
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT)
-            print(restart_comp_out)
+            if restart_comp_out.returncode != 0:
+                print(restart_comp_out.stdout)
             restart_out.append(restart_comp_out)
             comparison_run_check = 1
 
@@ -47,7 +48,8 @@ def compare_restarts(test_run_dir,ref_run_dir):
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT)
-            print(hydro_restart_comp_out)
+            if hydro_restart_comp_out.returncode != 0:
+                print(hydro_restart_comp_out.stdout)
             hydro_out.append(hydro_restart_comp_out)
             comparison_run_check = 1
 
@@ -61,10 +63,13 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
-            nudging_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
+            nudging_restart_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
-                                              stderr=subprocess.STDOUT))
+                                              stderr=subprocess.STDOUT)
+            if nudging_restart_out.returncode != 0:
+                print(nudging_restart_out.stdout)
+            nudging_out.append(nudging_restart_out)
             comparison_run_check = 1
 
     #Check that a comparison was actually done
