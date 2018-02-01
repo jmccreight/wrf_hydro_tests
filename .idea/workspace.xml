@@ -37,11 +37,21 @@
       <file leaf-file-name="compare_restarts.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/answer_keys/compare_restarts.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="72" column="36" lean-forward="true" selection-start-line="72" selection-start-column="36" selection-end-line="72" selection-end-column="36" />
+            <state relative-caret-position="312">
+              <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="regression.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/questions/regression.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1523">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -112,6 +122,11 @@
               <item name="wrf_hydro_tests" type="b2602c69:ProjectViewProjectNode" />
               <item name="wrf_hydro_tests" type="462c0819:PsiDirectoryNode" />
               <item name="answer_keys" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="wrf_hydro_tests" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wrf_hydro_tests" type="462c0819:PsiDirectoryNode" />
+              <item name="questions" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -308,7 +323,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517508029427</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="suppress printing in compare_restarts.py if exit = 0">
+      <created>1517508618244</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1517508618244</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -349,7 +371,8 @@
     <MESSAGE value="reduced output of diff to first 3 differences" />
     <MESSAGE value="bug fix in compare_restarts.py" />
     <MESSAGE value="gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="gitignore" />
+    <MESSAGE value="suppress printing in compare_restarts.py if exit = 0" />
+    <option name="LAST_COMMIT_MESSAGE" value="suppress printing in compare_restarts.py if exit = 0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -442,10 +465,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/questions/regression.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1523">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/answer_keys/compare_restarts.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="72" column="36" lean-forward="true" selection-start-line="72" selection-start-column="36" selection-end-line="72" selection-end-column="36" />
+        <state relative-caret-position="312">
+          <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
