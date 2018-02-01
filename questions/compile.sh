@@ -13,7 +13,7 @@
 ## on the CIRCLECI environment variables.
 ## If running locally, clone specified candidate fork, otherwise in circleCI the current
 ## PR/Commit is used as candidate.
-if [[ -z ${CIRCLECI} ]]; then 
+#if [[ -z ${CIRCLECI} ]]; then 
     if [[ -z $candidateLocalPath ]]; then
         if [[ -e $candidateRepoDir ]]; then
             chmod -R 755 $candidateRepoDir
@@ -48,7 +48,7 @@ if [[ -z ${CIRCLECI} ]]; then
         fi
         cd - >/dev/null 2>&1
     fi
-fi
+#fi
 
 
 echo
