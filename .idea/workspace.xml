@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f4cdeb2-d94b-49ae-bf50-3dd3e996237a" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/answer_keys/compare_restarts.py" afterPath="$PROJECT_DIR$/answer_keys/compare_restarts.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,14 +34,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="compare_restarts.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="compare_restarts.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/answer_keys/compare_restarts.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1425">
-              <caret line="75" column="24" lean-forward="true" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+            <state relative-caret-position="-731">
+              <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,12 +76,13 @@
         <option value="$PROJECT_DIR$/tests/compare_restarts.py" />
         <option value="$PROJECT_DIR$/take_test.sh" />
         <option value="$PROJECT_DIR$/answer_keys/compare_restarts.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="822" />
-    <option name="y" value="89" />
+    <option name="x" value="711" />
+    <option name="y" value="93" />
     <option name="width" value="2035" />
     <option name="height" value="1195" />
   </component>
@@ -276,11 +287,25 @@
       <option name="project" value="LOCAL" />
       <updated>1517442739667</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="reduced output of diff to first 3 differences">
+      <created>1517506590436</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1517506590436</updated>
+    </task>
+    <task id="LOCAL-00022" summary="bug fix in compare_restarts.py">
+      <created>1517507992528</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1517507992528</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="822" y="89" width="2035" height="1195" extended-state="0" />
+    <frame x="711" y="93" width="2035" height="1195" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -315,7 +340,8 @@
     <MESSAGE value="troubleshooting file comparisons" />
     <MESSAGE value="bug fix in domain file paths" />
     <MESSAGE value="reduced output of diff to first 3 differences" />
-    <option name="LAST_COMMIT_MESSAGE" value="reduced output of diff to first 3 differences" />
+    <MESSAGE value="bug fix in compare_restarts.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix in compare_restarts.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -402,11 +428,19 @@
     <entry file="file://$PROJECT_DIR$/tests/compare_restarts.py" />
     <entry file="file://$PROJECT_DIR$/answer_keys/compare_restarts.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1425">
-          <caret line="75" column="24" lean-forward="true" selection-start-line="75" selection-start-column="24" selection-end-line="75" selection-end-column="24" />
+        <state relative-caret-position="-731">
+          <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -12,6 +12,9 @@ def compare_restarts(test_run_dir,ref_run_dir):
     #Make a flag for when comparisons actually happen
     comparison_run_check = 0
 
+    #Make a flag for exit codes
+    exit_code = 0
+
     #Compare RESTART files
     restart_out = list()
     print('Comparing RESTART files')
@@ -22,12 +25,12 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
-            restartCompOut = subprocess.run(['nccmp', '-dmfq', '-S',\
+            restart_comp_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT)
-            print(restartCompOut)
-            restart_out.append(restartCompOut)
+            print(restart_comp_out)
+            restart_out.append(restart_comp_out)
             comparison_run_check = 1
 
     #Compare HYDRO_RST files
@@ -40,12 +43,12 @@ def compare_restarts(test_run_dir,ref_run_dir):
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
             print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
-            hydroRestartCompOut = subprocess.run(['nccmp', '-dmfq', '-S',\
+            hydro_restart_comp_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
                                               stderr=subprocess.STDOUT)
-            print(hydroRestartCompOut)
-            hydro_out.append(hydroRestartCompOut)
+            print(hydro_restart_comp_out)
+            hydro_out.append(hydro_restart_comp_out)
             comparison_run_check = 1
 
     #Compare nudgingLastObs files
@@ -73,22 +76,22 @@ def compare_restarts(test_run_dir,ref_run_dir):
     for output in restart_out:
         if output.returncode == 1:
             print('One or more RESTART comparisons failed, see stdout')
-            exitCode = 1
+            exit_code = 1
 
     #Check for exit codes and fail if non-zero
     for output in hydro_out:
         if output.returncode == 1:
             print('One or more HYDRO_RST comparisons failed, see stdout')
-            exitCode = 1
+            exit_code = 1
 
     #Check for exit codes and fail if non-zero
     for output in nudging_out:
         if output.returncode == 1:
             print('One or more nudgingLastObs comparisons failed, see stdout')
-            exitCode = 1
+            exit_code = 1
 
     #If no errors exit with code 0
-    if exitCode == 0:
+    if exit_code == 0:
         print('All restart file comparisons pass')
         exit(0)
     else:
