@@ -40,7 +40,11 @@ fi
 ## TODO JLM: Check all the 3 above files for existence.
 
 #cd $WRF_HYDRO_TESTS_DIR
-#whTestsCommit=
+cd $WRF_HYDRO_TESTS_DIR
+whTestsCommit=`git rev-parse HEAD`
+git diff-index --quiet HEAD --
+whTestsUncommitted=$?
+cd -
 
 
 # Determine log file name
@@ -57,19 +61,22 @@ horizBar='\e[7;49;32m===========================================================
 
 ## Boiler plate
 echo
-echo -e "$horizBar"                                         2>&1 | tee -a $logFile
+echo -e "$horizBar"                                           2>&1 | tee -a $logFile
 message="\e[7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                \e[0m"
-echo -e "$message"                                          2>&1 | tee    $logFile
-echo                                                        2>&1 | tee -a $logFile
-echo -e "\e[0;49;32mBoilerplate:\e[0m"                      2>&1 | tee -a $logFile
+echo -e "$message"                                            2>&1 | tee    $logFile
+echo                                                          2>&1 | tee -a $logFile
+echo -e "\e[0;49;32mBoilerplate:\e[0m"                        2>&1 | tee -a $logFile
 echo "Date                  : `date +'%Y %h %d %H:%M:%S %Z'`" 2>&1 | tee -a $logFile
 echo "User                  : `whoami`"                       2>&1 | tee -a $logFile
-echo "Machine               : $HOSTNAME"                         2>&1 | tee -a $logFile
-#echo "wrf_hydro_tests commit: "
-echo "candidateSpecFile: $candidateSpecFile"                2>&1 | tee -a $logFile
-echo "testSpecFile         : $testSpecFile"                 2>&1 | tee -a $logFile  
-echo "Log file         : $logFile"                          2>&1 | tee -a $logFile       
-echo "Will echo candidateSpecFile to log at end."           2>&1 | tee -a $logFile
+echo "Machine               : $HOSTNAME"                      2>&1 | tee -a $logFile
+echo "wrf_hydro_tests commit: $whTestsCommit"                 2>&1 | tee -a $logFile
+if [[ $whTestsUncommitted -eq 1 ]]; then
+    echo "There are uncommitted changes to wrf_hydro_tests."  2>&1 | tee -a $logFile
+fi
+echo "candidateSpecFile     : $candidateSpecFile"             2>&1 | tee -a $logFile
+echo "testSpecFile          : $testSpecFile"                  2>&1 | tee -a $logFile  
+echo "Log file              : $logFile"                       2>&1 | tee -a $logFile       
+echo "Will echo candidateSpecFile to log at end."             2>&1 | tee -a $logFile
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
