@@ -25,11 +25,11 @@ export WRF_HYDRO_TESTS_MACHINE_SPEC=''
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
+export domainSourceDir=/test_domain
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
-export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_fundamental
+export domainRunDir=''
 # REQUIRED if NOT running in docker (i.e. locally):
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # Default = domainSourceDir if on docker.
@@ -40,7 +40,7 @@ export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_fundamental
 ###########################################################################
 # * Compiler * 
 
-export WRF_HYDRO_COMPILER='intel'
+export WRF_HYDRO_COMPILER='GNU'
 ## Default = 'GNU'
 ## Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
 
@@ -81,7 +81,7 @@ export WRF_HYDRO_NUDGING=1
 ###########################################################################
 # * Repo groups *
 
-export REPO_DIR=/glade/scratch/`whoami`/test_repos
+export REPO_DIR=~/test_repos
 # Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
 
 # ** Candidate repo subgroup **

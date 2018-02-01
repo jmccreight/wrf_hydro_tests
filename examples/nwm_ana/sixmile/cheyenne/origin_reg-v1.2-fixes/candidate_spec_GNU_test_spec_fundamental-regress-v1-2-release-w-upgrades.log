@@ -1,14 +1,14 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 01 14:04:04 MST
+Date                  : 2018 Feb 01 14:16:42 MST
 User                  : jamesmcc
 Machine               : cheyenne1
 wrf_hydro_tests commit: d923389742e5d2afd807df65a5c187f7972aed2f
 There are uncommitted changes to wrf_hydro_tests.
-candidateSpecFile     : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh
+candidateSpecFile     : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_GNU.sh
 testSpecFile          : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/tests/fundamental-regress-v1-2-release-w-upgrades.sh
-Log file              : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel_test_spec_fundamental-regress-v1-2-release-w-upgrades.log
+Log file              : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_GNU_test_spec_fundamental-regress-v1-2-release-w-upgrades.log
 Will echo candidateSpecFile to log at end.
 
 [7;49;32m=================================================================[0m
@@ -38,7 +38,7 @@ Date:   Wed Jan 31 17:41:17 2018 -0700
 [0;49;32m-----------------------------------[0m
 [7;49;32mcompile.sh:[0m
 [0;49;32mQuestion: Does candidate binary compile?[0m
-Compiling with intel
+Compiling with GNU
 Compiling in /glade/scratch/jamesmcc/test_repos/candidate/trunk/NDHMS/
 
 *****************************************************************
@@ -46,7 +46,7 @@ The envrionment variables use in the compile (alphabetically):
 HYDRO_D=0
 HYDRO_REALTIME=1
 NCEP_WCOSS=0
-NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
 SPATIAL_SOIL=1
 WRF_HYDRO=1
 WRF_HYDRO_NUDGING=1
@@ -54,7 +54,31 @@ WRF_HYDRO_RAPID=0
 WRFIO_NCD_LARGE_FILE_SUPPORT=1
 *****************************************************************
 
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
 ar: creating ../lib/libHYDRO.a
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dirs]
 
 *****************************************************************
 Make was successful
@@ -63,7 +87,7 @@ The envrionment variables use in the compile (alphabetically) AGAIN:
 HYDRO_D=0
 HYDRO_REALTIME=1
 NCEP_WCOSS=0
-NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
 SPATIAL_SOIL=1
 WRF_HYDRO=1
 WRF_HYDRO_NUDGING=1
@@ -71,7 +95,7 @@ WRF_HYDRO_RAPID=0
 WRFIO_NCD_LARGE_FILE_SUPPORT=1
 *****************************************************************
 
-[5;49;32mAnswer: Candidate binary compile successful under intel![0m
+[5;49;32mAnswer: Candidate binary compile successful under GNU![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mrun.sh:[0m
@@ -86,7 +110,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158472.chadmin1
+PBS_JOBID: 4158620.chadmin1
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
@@ -102,7 +126,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158475.chadmin1
+PBS_JOBID: 4158622.chadmin1
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -128,7 +152,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158476.chadmin1
+PBS_JOBID: 4158623.chadmin1
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -168,7 +192,7 @@ The envrionment variables use in the compile (alphabetically):
 HYDRO_D=0
 HYDRO_REALTIME=1
 NCEP_WCOSS=0
-NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
 SPATIAL_SOIL=1
 WRF_HYDRO=1
 WRF_HYDRO_NUDGING=1
@@ -176,7 +200,31 @@ WRF_HYDRO_RAPID=0
 WRFIO_NCD_LARGE_FILE_SUPPORT=1
 *****************************************************************
 
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
 ar: creating ../lib/libHYDRO.a
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dirs]
 
 *****************************************************************
 Make was successful
@@ -185,7 +233,7 @@ The envrionment variables use in the compile (alphabetically) AGAIN:
 HYDRO_D=0
 HYDRO_REALTIME=1
 NCEP_WCOSS=0
-NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
 SPATIAL_SOIL=1
 WRF_HYDRO=1
 WRF_HYDRO_NUDGING=1
@@ -193,7 +241,7 @@ WRF_HYDRO_RAPID=0
 WRFIO_NCD_LARGE_FILE_SUPPORT=1
 *****************************************************************
 
-[0;49;32mReference binary: compilation under intel successful.[0m
+[0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
 qCleanRun -j question_reg-v1.2-release-plus -W 00:05 2 ./wrf_hydro.exe
@@ -205,27 +253,10 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158483.chadmin1
-[0;49;32mReference binary: run successful.[0m
-
-[0;49;32mQuestion: Do candidate results regress on to reference results?[0m
-Comparing RESTART files
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/RESTART.2013060112_DOMAIN1
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/RESTART.2013060200_DOMAIN1
-Comparing HYDRO_RST files
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/HYDRO_RST.2013-06-02_00:00_DOMAIN1
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/HYDRO_RST.2013-06-01_12:00_DOMAIN1
-Comparing nudgingLastObs files
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/nudgingLastObs.2013-06-02_00:00:00.nc
-None
-Comparing candidate file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix/nudgingLastObs.2013-06-01_12:00:00.nc
-None
-One or more nudgingLastObs comparisons failed, see stdout
-One or more nudgingLastObs comparisons failed, see stdout
-[5;49;31mAnswer: Regression test restart comparison failed.[0m
-Files compared are in the directories:
-/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate
-/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix
+PBS_JOBID: 4158630.chadmin1
+grep: diag_hydro.*: No such file or directory
+[5;49;31mReference binary: run failed unexpectedly.[0m
+See results in /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix
 
 [7;49;32m=================================================================[0m
 [7;49;32mResults of all tests.                                            [0m
@@ -247,10 +278,10 @@ GITHUB_AUTHTOKEN:
 ********************
 
 WRF_HYDRO_MODULES:
-intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2
+gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2
 
 NETCDF:
-/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
 
 * Run group *
 WRF_HYDRO_RUN:
@@ -292,7 +323,7 @@ domainRunDir:
 
 * Compiler *
 WRF_HYDRO_COMPILER:
-intel
+GNU
 
 * Run Group*
 TEST_WALL_TIME:

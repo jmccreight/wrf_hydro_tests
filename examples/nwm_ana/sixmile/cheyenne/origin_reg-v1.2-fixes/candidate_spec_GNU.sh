@@ -1,5 +1,5 @@
 
-source candidate_spec_intel_nwm_origin_nudging-fix_reg-origin-v1.2-updates.sh
+source candidate_spec_intel.sh
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
