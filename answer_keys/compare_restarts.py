@@ -24,7 +24,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing candidate file ' + test_run_file + 'against reference file ' + ref_run_file[0])
+            print('Comparing candidate file ' + test_run_file + ' against reference file ' + ref_run_file[0])
             restart_comp_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
@@ -43,7 +43,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing candidate file ' + test_run_file + 'against reference file ' + ref_run_file[0])
+            print('Comparing candidate file ' + test_run_file + ' against reference file ' + ref_run_file[0])
             hydro_restart_comp_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt', \
                                                      test_run_file,ref_run_file[0]],\
@@ -62,7 +62,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing candidate file ' + test_run_file + 'against reference file ' + ref_run_file[0])
+            print('Comparing candidate file ' + test_run_file + ' against reference file ' + ref_run_file[0])
             nudging_restart_out = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
