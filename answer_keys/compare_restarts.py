@@ -21,11 +21,13 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing file '+test_run_filename)
-            restart_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
+            print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
+            restartCompOut = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
-                                              stderr=subprocess.STDOUT))
+                                              stderr=subprocess.STDOUT)
+            print(restartCompOut)
+            restart_out.append(restartCompOut)
             comparison_run_check = 1
 
     #Compare HYDRO_RST files
@@ -37,11 +39,13 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing file '+test_run_filename)
-            hydro_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
+            print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
+            hydroRestartCompOut = subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
-                                              stderr=subprocess.STDOUT))
+                                              stderr=subprocess.STDOUT)
+            print(hydroRestartCompOut)
+            hydro_out.append(hydroRestartCompOut)
             comparison_run_check = 1
 
     #Compare nudgingLastObs files
@@ -53,7 +57,7 @@ def compare_restarts(test_run_dir,ref_run_dir):
         if len(ref_run_file) == 0:
             warnings.warn(test_run_filename+' not found in reference run directory')
         else:
-            print('Comparing file '+test_run_filename)
+            print('Comparing candidate file ' + test_run_filename + 'against reference file ' + ref_run_file[0])
             nudging_out.append(subprocess.run(['nccmp', '-dmfq', '-S',\
                                                '-x ACMELT,ACSNOW,SFCRUNOFF,UDRUNOFF,ACCPRCP,ACCECAN,ACCEDIR,ACCETRAN,qstrmvolrt',\
                                                test_run_file,ref_run_file[0]],\
@@ -68,24 +72,27 @@ def compare_restarts(test_run_dir,ref_run_dir):
     #Check for exit codes and fail if non-zero
     for output in restart_out:
         if output.returncode == 1:
-            print('One or more RESTART comparisons failed, see stdout log')
-            exit(1)
+            print('One or more RESTART comparisons failed, see stdout')
+            exitCode = 1
 
     #Check for exit codes and fail if non-zero
     for output in hydro_out:
         if output.returncode == 1:
-            print('One or more HYDRO_RST comparisons failed, see stdout log')
-            exit(1)
+            print('One or more HYDRO_RST comparisons failed, see stdout')
+            exitCode = 1
 
     #Check for exit codes and fail if non-zero
     for output in nudging_out:
         if output.returncode == 1:
-            print('One or more nudgingLastObs comparisons failed, see stdout log')
-            exit(1)
+            print('One or more nudgingLastObs comparisons failed, see stdout')
+            exitCode = 1
 
     #If no errors exit with code 0
-    print('All restart file comparisons pass')
-    exit(0)
+    if exitCode == 0:
+        print('All restart file comparisons pass')
+        exit(0)
+    else:
+        exit(1)
 
 def main():
     test_run_dir = argv[1]
