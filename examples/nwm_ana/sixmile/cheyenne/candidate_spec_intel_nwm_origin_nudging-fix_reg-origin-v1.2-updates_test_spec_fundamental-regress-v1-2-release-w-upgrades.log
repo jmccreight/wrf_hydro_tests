@@ -1,0 +1,328 @@
+[7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
+
+[0;49;32mBoilerplate:[0m
+Date                  : 2018 Feb 01 11:43:25 MST
+User                  : jamesmcc
+Machine               : cheyenne1
+wrf_hydro_tests commit: 8a6917ff3d8c063020c75b4ad655e14354592d20
+There are uncommitted changes to wrf_hydro_tests.
+candidateSpecFile     : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/candidate_spec_intel_nwm_origin_nudging-fix_reg-origin-v1.2-updates.sh
+testSpecFile          : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/tests/fundamental-regress-v1-2-release-w-upgrades.sh
+Log file              : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/candidate_spec_intel_nwm_origin_nudging-fix_reg-origin-v1.2-updates_test_spec_fundamental-regress-v1-2-release-w-upgrades.log
+Will echo candidateSpecFile to log at end.
+
+[7;49;32m=================================================================[0m
+[7;49;32mSetting up the candidate                                         [0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mTesting the candidate                                            [0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mCandidate fork: jmccreight/wrf_hydro_nwm[0m
+[7;49;32mCandidate branch/commit: nudging_restart_fixes[0m
+Cloning into '/glade/scratch/jamesmcc/test_repos/candidate'...
+Switched to a new branch 'nudging_restart_fixes'
+Branch nudging_restart_fixes set up to track remote branch nudging_restart_fixes from origin.
+[0;49;32mRepo moved to[0m /glade/scratch/jamesmcc/test_repos/candidate
+[0;49;32mCandidate branch:[0m    nudging_restart_fixes
+[0;49;32mTesting commit:[0m
+[33mcommit de67042c9d0f4038a847ad75603ebfa28d74817d[m
+Merge: 40657c4 8356eb9
+Author: James McCreight <jamesmcc@ucar.edu>
+Date:   Thu Jan 25 16:03:24 2018 -0700
+
+    Merge branch 'master' of github.com-jmccreight:NCAR/wrf_hydro_nwm into nudging_restart_fixes
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mcompile.sh:[0m
+[0;49;32mQuestion: Does candidate binary compile?[0m
+Compiling with intel
+Compiling in /glade/scratch/jamesmcc/test_repos/candidate/trunk/NDHMS/
+
+*****************************************************************
+The envrionment variables use in the compile (alphabetically):
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+ar: creating ../lib/libHYDRO.a
+
+*****************************************************************
+Make was successful
+*****************************************************************
+The envrionment variables use in the compile (alphabetically) AGAIN:
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+[5;49;32mAnswer: Candidate binary compile successful under intel![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mrun.sh:[0m
+[0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
+Running in /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate
+qCleanRun -j question_run -W 00:05 2 ./wrf_hydro.exe
+
+nCores   = 2
+nNodes   = 1
+jobName  = question_run
+wallTime = 00:05
+queue    = regular
+project  = NRAL0017
+
+PBS_JOBID: 4155003.chadmin1
+[5;49;32mAnswer: Candidate binary run successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mperfect_restart.sh:[0m
+[0;49;32mRunning candidate binary from restart (with 2 cores).[0m
+Running in /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate.restart
+qCleanRun -j question_perfect_restart -W 00:05 2 ./wrf_hydro.exe
+
+nCores   = 2
+nNodes   = 1
+jobName  = question_perfect_restart
+wallTime = 00:05
+queue    = regular
+project  = NRAL0017
+
+PBS_JOBID: 4155007.chadmin1
+[0;49;32mCandidate binary restart run successful.[0m
+
+[0;49;32mQuestion: Perfect restarts?[0m.
+Comparing RESTART files
+Comparing file RESTART.2013060200_DOMAIN1
+Comparing HYDRO_RST files
+Comparing file HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing file nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Perfect restart comparison successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mnumber_of_cores.sh:[0m
+[0;49;32mRunning candidate binary with 1 cores.[0m
+Running in /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate.ncores_test
+qCleanRun -j question_n_cores -W 00:05 1 ./wrf_hydro.exe
+
+nCores   = 1
+nNodes   = 1
+jobName  = question_n_cores
+wallTime = 00:05
+queue    = regular
+project  = NRAL0017
+
+PBS_JOBID: 4155008.chadmin1
+[0;49;32mCandidate binary run successful with 1 cores.[0m
+
+[0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
+Comparing RESTART files
+Comparing file RESTART.2013060112_DOMAIN1
+Comparing file RESTART.2013060200_DOMAIN1
+Comparing HYDRO_RST files
+Comparing file HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing file HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing file nudgingLastObs.2013-06-02_00:00:00.nc
+Comparing file nudgingLastObs.2013-06-01_12:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Number of cores test restart comparison successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mregression.v1-2-release-gwFix-qstrmvolrtFix.sh:[0m
+[0;49;32mCompiling reference binary.[0m
+Compiling in /trunk/NDHMS/
+
+*****************************************************************
+The envrionment variables use in the compile (alphabetically):
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+ar: creating ../lib/libHYDRO.a
+
+*****************************************************************
+Make was successful
+*****************************************************************
+The envrionment variables use in the compile (alphabetically) AGAIN:
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+[0;49;32mReference binary: compilation under intel successful.[0m
+
+[0;49;32mRunning reference binary (with 2 cores).[0m
+qCleanRun -j question_reg-v1.2-release-plus -W 00:05 2 ./wrf_hydro.exe
+
+nCores   = 2
+nNodes   = 1
+jobName  = question_reg-v1.2-release-plus
+wallTime = 00:05
+queue    = regular
+project  = NRAL0017
+
+PBS_JOBID: 4155018.chadmin1
+[0;49;32mReference binary: run successful.[0m
+
+[0;49;32mQuestion: Do candidate results regress on to reference results?[0m
+Comparing RESTART files
+Comparing file RESTART.2013060112_DOMAIN1
+Comparing file RESTART.2013060200_DOMAIN1
+Comparing HYDRO_RST files
+Comparing file HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing file HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing file nudgingLastObs.2013-06-02_00:00:00.nc
+Comparing file nudgingLastObs.2013-06-01_12:00:00.nc
+One or more nudgingLastObs comparisons failed, see stdout log
+[5;49;31mAnswer: Regression test restart comparison failed.[0m
+Files compared are in the directories:
+/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate
+/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.reference.v1-2-release-gwFix-qstrmvolrtFix
+
+[7;49;32m=================================================================[0m
+[7;49;32mResults of all tests.                                            [0m
+[5;49;31mA total of 1 tests failed.[0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mTaking down the candidate.                                       [0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mLogging the candidateSpecFile.                                   [0m
+---------------------------------------------------------------------------
+Machine spec group: 
+WRF_HYDRO_TESTS_DIR:
+/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
+
+GITHUB_USERNAME:
+jmccreight
+GITHUB_AUTHTOKEN:
+********************
+
+WRF_HYDRO_MODULES:
+intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2
+
+NETCDF:
+/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+
+* Run group *
+WRF_HYDRO_RUN:
+qCleanFunc is a function
+qCleanFunc () 
+{ 
+    whtPath=`grep "wrf_hydro_tools=" ~/.wrf_hydro_tools | cut -d '=' -f2 | tr -d ' '`;
+    source $whtPath/utilities/sourceMe.sh || { 
+        echo "Your ~/.wrf_hydro_tools does not appear configured correctly.";
+        return 1
+    };
+    local nCores=$1;
+    local theBinary=$2;
+    local jobName=$3;
+    local wallTime=$4;
+    runCmd="qCleanRun -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    echo $runCmd;
+    scriptOutput=`eval $runCmd`;
+    echo "$scriptOutput";
+    jobId=`echo "$scriptOutput" | grep PBS_JOBID | cut -d' ' -f2 | cut -d'.' -f1`;
+    jobStatus='Q';
+    while [ "$jobStatus" != "F" ]; do
+        sleep 5;
+        jobStatus=`qstat -x $jobId | tail -n1 | tr -s ' ' | cut -d' ' -f5`;
+    done;
+    return 0
+}
+
+
+---------------------------------------------------------------------------
+Candidate spec file group: 
+
+* Domain Group *
+domainSourceDir:
+/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
+
+domainRunDir:
+/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental
+
+* Compiler *
+WRF_HYDRO_COMPILER:
+intel
+
+* Run Group*
+TEST_WALL_TIME:
+00:05
+
+nCoresDefault:
+2
+
+nCoresTest:
+1
+
+* Model compile options *
+WRF_HYDRO:
+1
+HYDRO_D:
+0
+SPATIAL_SOIL:
+1
+WRFIO_NCD_LARGE_FILE_SUPPORT:
+1
+WRF_HYDRO_RAPID:
+0
+HYDRO_REALTIME:
+1
+NCEP_WCOSS:
+0
+WRF_HYDRO_NUDGING:
+1
+
+* Repo Groups *
+REPO_DIR:
+/glade/scratch/jamesmcc/test_repos
+
+** Candidate repo subgroup **
+candidateFork:
+jmccreight/wrf_hydro_nwm
+candidateBranchCommit:
+nudging_restart_fixes
+candidateLocalPath:
+
+
+** Reference repo subgroup **
+referenceFork:
+jmccreight/wrf_hydro_nwm
+referenceBranchCommit:
+v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
+referenceLocalPath:
+
+
+
+[7;49;32m=================================================================[0m
+[7;49;32mCandidate testing complete.                                      [0m

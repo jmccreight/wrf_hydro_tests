@@ -1,7 +1,18 @@
 #!/bin/bash
 
-theHelp='
-take_test arguments:
+currentTestTags=\
+`for i in $WRF_HYDRO_TESTS_DIR/tests/*.sh; do 
+echo "           "$(basename $i) | rev | cut -c4- | rev; 
+done`
+
+theHelp="
+take_test: help
+
+A machine specification file is required for
+every machine and should be placed in 
+~/.wrf_hydro_tests_machine_spec.sh
+
+Arguments:
 1: candidateSpecFile: 
      Relative or absolute path to a copy of 
      wrf_hydr_tests/candidate_template.sh 
@@ -9,13 +20,13 @@ take_test arguments:
 2: testSpec: 
      Either
      1) A file specifying the test (set of 
-     questions) to run on the candidate, 
+        questions) to run on the candidate, 
      or 
-     2) A known tag for a canned test (see where?).
-        Tags are just the filenames with out 
-        extenisons of files tests/*.sh.
+     2) A known tag for a canned test. The
+        current list of tags: 
 
-'
+$currentTestTags
+"
 if [[ -z $1 ]] || [[ -z $2 ]]; then
     message="\e[7;49;32mtake_test.sh: Incorrect usage. Please read the following help: \e[0m"
     echo -e "$message"
@@ -25,9 +36,7 @@ fi
 
 #Convert the specification patsh to absolute paths if needed.
 candidateSpecFile=`readlink -f ${1}`
-testSpecFile=`readlink -f ${2}`
-
-#does testSpecFile exist? If not, does its tag yield a file in the repo?
+testSpecFile=`readlink -e ${2}`
 
 # Establish the candidate variables.
 source $candidateSpecFile
@@ -35,6 +44,22 @@ if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
     source ~/.wrf_hydro_tests_machine_spec.sh
 else 
     source $WRF_HYDRO_TESTS_MACHINE_SPEC
+fi
+
+#does testSpecFile exist? If not, does its tag yield a file in the repo?
+# If $2 was not a file, then $testSpecFile will be null
+if [[ -z $testSpecFile ]]; then
+    testSpecFile=`readlink -e $WRF_HYDRO_TESTS_DIR/tests/${2}.sh`
+    if [[ -z $testSpecFile ]]; then
+        echo
+        echo The second argument, the test specification file:
+        echo `readlink -f $WRF_HYDRO_TESTS_DIR/tests/${2}.sh`
+        echo Does not exist. Printing help: 
+        echo 
+        echo "$theHelp"
+        echo Exiting. 
+        exit 1
+    fi
 fi
 
 ## TODO JLM: Check all the 3 above files for existence.
@@ -49,7 +74,7 @@ cd -
 
 # Determine log file name
 ## JLM TODO: seems like the name of test should be embedded in the name of the logFile.
-logFile=`$WRF_HYDRO_TESTS_DIR/toolbox/make_log_file_name.sh $candidateSpecFile`
+logFile=`$WRF_HYDRO_TESTS_DIR/toolbox/make_log_file_name.sh $candidateSpecFile $testSpecFile`
 
 ## Assume failure for this script if the first
 ## addition is zero, exitValue is set to zero. Aggregated after that.
