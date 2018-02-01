@@ -1,10 +1,10 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 01 21:39:53 UTC
-User                  : root
-Machine               : 9b6ffa12b650
-wrf_hydro_tests commit: 2b1e984d9b81499c16e773412b80d45b67bd7f99
+Date                  : 2018 Feb 01 23:29:27 UTC
+User                  : docker
+Machine               : 967ea4f3f769
+wrf_hydro_tests commit: 0d97e2384b34488432b75b1c0bc5ae91f941217f
 There are uncommitted changes to wrf_hydro_tests.
 candidateSpecFile     : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
@@ -20,10 +20,10 @@ Will echo candidateSpecFile to log at end.
 [0;49;32m-----------------------------------[0m
 [7;49;32mCandidate fork: NCAR/wrf_hydro_nwm[0m
 [7;49;32mCandidate branch/commit: master[0m
-Cloning into '/root/test_repos/candidate'...
+Cloning into '/home/docker/test_repos/candidate'...
 Already on 'master'
 Your branch is up-to-date with 'origin/master'.
-[0;49;32mRepo moved to[0m /root/test_repos/candidate
+[0;49;32mRepo moved to[0m /home/docker/test_repos/candidate
 [0;49;32mCandidate branch:[0m    master
 [0;49;32mTesting commit:[0m
 commit df77ba9b8927940af8784a7ccff3cf4e0eb80913
@@ -39,7 +39,7 @@ Date:   Wed Jan 31 17:41:17 2018 -0700
 [7;49;32mcompile.sh:[0m
 [0;49;32mQuestion: Does candidate binary compile?[0m
 Compiling with GNU
-Compiling in /root/test_repos/candidate/trunk/NDHMS/
+Compiling in /home/docker/test_repos/candidate/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -101,85 +101,67 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
 Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_21-40-06.stdout 2> 2018-02-01_21-40-06.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_23-29-40.stdout 2> 2018-02-01_23-29-40.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
 Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_21-40-07.stdout 2> 2018-02-01_21-40-07.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_23-29-41.stdout 2> 2018-02-01_23-29-41.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
 Comparing RESTART files
 Comparing candidate file /test_domain/run.candidate.restart/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1
-Traceback (most recent call last):
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 111, in <module>
-    main()
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 108, in main
-    compare_restarts(test_run_dir, ref_run_dir)
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 31, in compare_restarts
-    stderr=subprocess.STDOUT)
-  File "/usr/lib/python3.5/subprocess.py", line 693, in run
-    with Popen(*popenargs, **kwargs) as process:
-  File "/usr/lib/python3.5/subprocess.py", line 947, in __init__
-    restore_signals, start_new_session)
-  File "/usr/lib/python3.5/subprocess.py", line 1551, in _execute_child
-    raise child_exception_type(errno_num, err_msg)
-FileNotFoundError: [Errno 2] No such file or directory: 'nccmp'
-[5;49;31mAnswer: Perfect restart comparison failed.[0m
-Files compared are in the directories:
-/test_domain/run.candidate
-/test_domain/run.candidate.restart
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate.restart/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate.restart/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Perfect restart comparison successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
 Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-01_21-40-08.stdout 2> 2018-02-01_21-40-08.stderr
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-01_23-29-41.stdout 2> 2018-02-01_23-29-41.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
 Comparing RESTART files
 Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060200_DOMAIN1
-Traceback (most recent call last):
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 111, in <module>
-    main()
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 108, in main
-    compare_restarts(test_run_dir, ref_run_dir)
-  File "/wrf_hydro_tests/answer_keys/compare_restarts.py", line 31, in compare_restarts
-    stderr=subprocess.STDOUT)
-  File "/usr/lib/python3.5/subprocess.py", line 693, in run
-    with Popen(*popenargs, **kwargs) as process:
-  File "/usr/lib/python3.5/subprocess.py", line 947, in __init__
-    restore_signals, start_new_session)
-  File "/usr/lib/python3.5/subprocess.py", line 1551, in _execute_child
-    raise child_exception_type(errno_num, err_msg)
-FileNotFoundError: [Errno 2] No such file or directory: 'nccmp'
-[5;49;31mAnswer: Number of  cores test restart comparison failed.[0m
-Files compared are in the directories:
-/test_domain/run.candidate
-/test_domain/run.candidate.ncores_test
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060112_DOMAIN1
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-01_12:00:00.nc
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Number of cores test restart comparison successful![0m
 [0;49;32m-----------------------------------[0m
 [7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
-[7;49;32mReference branch/commit: v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges[0m
-Cloning into '/root/test_repos/reference'...
-Switched to a new branch 'v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges'
-Branch v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges set up to track remote branch v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges from origin.
-[0;49;32mRepo in[0m /root/test_repos/reference
-[0;49;32mReference branch:[0m    v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
+[7;49;32mReference branch/commit: master[0m
+Cloning into '/home/docker/test_repos/reference'...
+Already on 'master'
+Your branch is up-to-date with 'origin/master'.
+[0;49;32mRepo in[0m /home/docker/test_repos/reference
+[0;49;32mReference branch:[0m    master
 [0;49;32mReference commit:[0m
-commit 00e9382266cb63dd375332609109b85c270570ec
-Author: James McCreight <jamesmcc@ucar.edu>
-Date:   Thu Jan 25 14:42:28 2018 -0700
+commit df77ba9b8927940af8784a7ccff3cf4e0eb80913
+Merge: 22af76b 0cd9de7
+Author: Aubrey Dugger <adugger@ucar.edu>
+Date:   Wed Jan 31 17:41:17 2018 -0700
 
-    Moving allocation of obsStaticStr as in the community v5 code.
+    Merge pull request #118 from aubreyd/master
+    
+    Remove min/max threshold checks in RTOUTs (causing issues in water bu…
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mregression.sh:[0m
 [0;49;32mCompiling reference binary.[0m
-Compiling in /root/test_repos/reference/trunk/NDHMS/
+Compiling in /home/docker/test_repos/reference/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -238,14 +220,25 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_21-40-21.stdout 2> 2018-02-01_21-40-21.stderr
-grep: diag_hydro.*: No such file or directory
-[5;49;31mReference binary: run failed unexpectedly.[0m
-See results in /test_domain/run.reference
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-01_23-29-56.stdout 2> 2018-02-01_23-29-56.stderr
+[0;49;32mReference binary: run successful.[0m
+
+[0;49;32mQuestion: Do candidate results regress on to reference results?[0m
+Comparing RESTART files
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060200_DOMAIN1
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060112_DOMAIN1
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-01_12:00:00.nc
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Regression test restart comparison successful![0m
 
 [7;49;32m=================================================================[0m
 [7;49;32mResults of all tests.                                            [0m
-[5;49;31mA total of 3 tests failed.[0m
+[5;49;32mAll test appear successful.[0m
 
 [7;49;32m=================================================================[0m
 [7;49;32mTaking down the candidate.                                       [0m
@@ -316,7 +309,7 @@ WRF_HYDRO_NUDGING:
 
 * Repo Groups *
 REPO_DIR:
-/root/test_repos
+/home/docker/test_repos
 
 ** Candidate repo subgroup **
 candidateFork:
@@ -330,7 +323,7 @@ candidateLocalPath:
 referenceFork:
 jmccreight/wrf_hydro_nwm
 referenceBranchCommit:
-v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
+master
 referenceLocalPath:
 
 

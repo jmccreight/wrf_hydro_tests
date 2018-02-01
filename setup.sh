@@ -30,7 +30,7 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ## non-docker applications.
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
-inDocker=FALSE
+export inDocker=FALSE
 if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
 
 if [[ ! -z $domainRunDir ]]; then

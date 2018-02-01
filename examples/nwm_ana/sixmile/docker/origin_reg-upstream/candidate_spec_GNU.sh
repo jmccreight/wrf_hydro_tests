@@ -112,7 +112,7 @@ export referenceFork=jmccreight/wrf_hydro_nwm
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 
-export referenceBranchCommit=v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
+export referenceBranchCommit=master
 #master
 # Default = master
 # A branch or commit on referenceFork. 

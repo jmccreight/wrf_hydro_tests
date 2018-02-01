@@ -146,4 +146,14 @@ message="\e[7;49;32mCandidate testing complete.                                 
 echo -e "$message"                                          2>&1 | tee -a $logFile
 exitValue=$(($?+$exitValue))
 
-exit $exitValue
+## How to handle the exit
+if [[ $inDocker == TRUE ]]; then
+    if [[ $testExitValue -ne 0 ]]; then
+        echo -e "Entering docker interactively because some tests failed."
+        exec /bin/bash
+    else
+        exit 0
+    fi
+else
+    exit $exitValue
+fi
