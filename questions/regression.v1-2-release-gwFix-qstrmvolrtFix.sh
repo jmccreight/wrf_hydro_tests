@@ -12,26 +12,10 @@
 ##q Compares: All restart files RESTART, HYDRO_RST, and nudging (if available). 
 ###################################
 
-## This should, in theory, never fail. Though could be possible is unexpected/untested
-## compile options are passed to the reference build.
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mregression.v1-2-release-gwFix-qstrmvolrtFix.sh:\e[0m"
-echo -e "\e[0;49;32mCompiling reference binary.\e[0m"
-if [[ -z $referenceLocalPath ]]; then
-    cd $refRepoDir/trunk/NDHMS/
-    theCompDir=$referenceRepoDir/trunk/NDHMS/
-else
-    cd $referenceLocalPath/trunk/NDHMS/
-    theCompDir=$referenceLocalPath/trunk/NDHMS/
-fi
-echo "Compiling in $theCompDir"
-echo
-$toolboxDir/config_compile_NoahMP.sh || \
-    { echo -e "\e[5;49;31mReference binary: compilation under $WRF_HYDRO_COMPILER failed unexpectedly.\e[0m"; 
-      echo "See results in $theCompDir"; 
-      exit 1; }
-echo -e "\e[0;49;32mReference binary: compilation under $WRF_HYDRO_COMPILER successful.\e[0m"
+questionFileName=regression.v1-2-release-gwFix-qstrmvolrtFix.sh
+## questionFileName is used by the following script
+source $toolboxDir/setup_compile_reference_repo.sh
+
 
 ###################################
 ## Run Reference Binary

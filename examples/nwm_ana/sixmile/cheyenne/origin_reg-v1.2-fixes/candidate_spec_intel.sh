@@ -91,7 +91,7 @@ export candidateFork=jmccreight/wrf_hydro_nwm
 # Candidate repository is the one you have been working on. It may come from github or a local path.
 # A named fork on github. 
 
-export candidateBranchCommit=nudging_restart_fixes
+export candidateBranchCommit=master
 # Default = master
 # A branch or commit on candidateFork. 
 # --- OR ---

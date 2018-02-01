@@ -1,0 +1,86 @@
+[7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
+
+[0;49;32mBoilerplate:[0m
+Date                  : 2018 Feb 01 13:33:01 MST
+User                  : jamesmcc
+Machine               : cheyenne1
+wrf_hydro_tests commit: 9526cd32dbdce00c227878344492c692902cd24d
+There are uncommitted changes to wrf_hydro_tests.
+candidateSpecFile     : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh
+testSpecFile          : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/tests/fundamental-regress-v1-2-release-w-upgrades.sh
+Log file              : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel_test_spec_fundamental-regress-v1-2-release-w-upgrades.log
+Will echo candidateSpecFile to log at end.
+
+[7;49;32m=================================================================[0m
+[7;49;32mSetting up the candidate                                         [0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mTesting the candidate                                            [0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mCandidate fork: jmccreight/wrf_hydro_nwm[0m
+[7;49;32mCandidate branch/commit: master[0m
+Cloning into '/glade/scratch/jamesmcc/test_repos/candidate'...
+Already on 'master'
+Your branch is up-to-date with 'origin/master'.
+[0;49;32mRepo moved to[0m /glade/scratch/jamesmcc/test_repos/candidate
+[0;49;32mCandidate branch:[0m    master
+[0;49;32mTesting commit:[0m
+[33mcommit ec41638df76d837a62b9b4f90a3c4b8dda75a473[m
+Author: James McCreight <jamesmcc@ucar.edu>
+Date:   Tue Jan 16 16:04:03 2018 -0700
+
+    Allow reading of nudging files where the nudge term is missing
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mcompile.sh:[0m
+[0;49;32mQuestion: Does candidate binary compile?[0m
+Compiling with intel
+Compiling in /glade/scratch/jamesmcc/test_repos/candidate/trunk/NDHMS/
+
+*****************************************************************
+The envrionment variables use in the compile (alphabetically):
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+ar: creating ../lib/libHYDRO.a
+
+*****************************************************************
+Make was successful
+*****************************************************************
+The envrionment variables use in the compile (alphabetically) AGAIN:
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+[5;49;32mAnswer: Candidate binary compile successful under intel![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mrun.sh:[0m
+[0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
+Running in /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental/run.candidate
+qCleanRun -j question_run -W 00:05 2 ./wrf_hydro.exe
+
+nCores   = 2
+nNodes   = 1
+jobName  = question_run
+wallTime = 00:05
+queue    = regular
+project  = NRAL0017
+
+PBS_JOBID: 4158233.chadmin1

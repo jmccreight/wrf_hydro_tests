@@ -69,8 +69,7 @@ cd $WRF_HYDRO_TESTS_DIR
 whTestsCommit=`git rev-parse HEAD`
 git diff-index --quiet HEAD --
 whTestsUncommitted=$?
-cd -
-
+cd - > /dev/null 2>&1
 
 # Determine log file name
 ## JLM TODO: seems like the name of test should be embedded in the name of the logFile.
