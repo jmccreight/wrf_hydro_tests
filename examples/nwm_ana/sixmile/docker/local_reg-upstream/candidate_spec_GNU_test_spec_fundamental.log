@@ -1,14 +1,14 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 02 17:22:18 UTC
-User                  : docker
-Machine               : fca4781cc975
-wrf_hydro_tests commit: 8eb31cff709fdd1e082333c790260b9108ea1d8f
-There are uncommitted changes to wrf_hydro_tests.
-candidateSpecFile     : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/local_reg-upstream/candidate_spec_GNU.sh
+Date                  : 2018 Feb 02 19:59:53 UTC
+User                  : root
+Machine               : 4086ed25a4ab
+wrf_hydro_tests commit: c54ee1e1c97b7d0f4e51a0c69f1fa890e9962b10
+machine spec file     : /test_specs_logs/machine_spec.sh
+candidateSpecFile     : /test_specs_logs/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
-Log file              : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/local_reg-upstream/candidate_spec_GNU_test_spec_fundamental.log
+Log file              : /test_specs_logs/candidate_spec_GNU_test_spec_fundamental.log
 Will echo candidateSpecFile to log at end.
 
 [7;49;32m=================================================================[0m
@@ -36,10 +36,10 @@ Compiling with GNU
 Note: Because of docker compile issues with mounted volumes, code from
 $candidateLocalPath=/wrf_hydro_nwm
 is being copied to 
-$candidateRepoDir=/home/docker/test_repos/candidate
+$candidateRepoDir=/root/test_repos/candidate
 for compilation. Make logs and .f files reside only inside the container.
 *************************************************************************
-Compiling in /home/docker/test_repos/candidate/trunk/NDHMS/
+Compiling in /root/test_repos/candidate/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -101,14 +101,14 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
 Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_17-22-32.stdout 2> 2018-02-02_17-22-32.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_20-00-07.stdout 2> 2018-02-02_20-00-07.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
 Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_17-22-33.stdout 2> 2018-02-02_17-22-33.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_20-00-08.stdout 2> 2018-02-02_20-00-08.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -125,7 +125,7 @@ All restart file comparisons pass
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
 Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_17-22-34.stdout 2> 2018-02-02_17-22-34.stderr
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_20-00-08.stdout 2> 2018-02-02_20-00-08.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -140,29 +140,38 @@ Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12
 Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-02_00:00:00.nc
 All restart file comparisons pass
 [5;49;32mAnswer: Number of cores test restart comparison successful![0m
-
 [0;49;32m-----------------------------------[0m
-[7;49;32mReference fork: LOCAL: /wrf_hydro_nwm [0m
-[0;49;32mReference branch:[0m    master
-[0;49;32mTesting commit:[0m
-commit b289744a4390660cf1836d48b42e5eea90584191
-Merge: 89f2e1a 54a510d
-Author: James McCreight <jamesmcc@ucar.edu>
-Date:   Wed Jan 10 22:56:27 2018 -0700
+[7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
+[7;49;32mReference branch/commit: 95ff36990801de0a3a819001d1fa9573bca3cfec[0m
+Cloning into '/root/test_repos/reference'...
+Note: checking out '95ff36990801de0a3a819001d1fa9573bca3cfec'.
 
-    Merge branch 'master' of github.com-jmccreight:jmccreight/wrf_hydro_nwm into HEAD
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at 95ff369... Merge pull request #99 from logankarsten/community_v5.0_release
+[0;49;32mRepo in[0m /root/test_repos/reference
+[0;49;32mReference branch:[0m    HEAD
+[0;49;32mReference commit:[0m
+commit 95ff36990801de0a3a819001d1fa9573bca3cfec
+Merge: 4212313 d7e1173
+Author: logankarsten <karsten@ucar.edu>
+Date:   Thu Jan 4 17:27:11 2018 -0700
+
+    Merge pull request #99 from logankarsten/community_v5.0_release
+    
+    Removing ISNAN per PGI issues and removing hard coding of water class…
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mregression.sh:[0m
 [0;49;32mCompiling reference binary.[0m
-*************************************************************************
-Note: Because of docker compile issues with mounted volumes, code from
-$referenceLocalPath=/wrf_hydro_nwm
-is being copied to 
-$refRepoDir=/home/docker/test_repos/reference
-for compilation. Make logs and .f files reside only inside the container.
-*************************************************************************
-Compiling in /home/docker/test_repos/reference/trunk/NDHMS/
+Compiling in /root/test_repos/reference/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -221,25 +230,45 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_17-22-47.stdout 2> 2018-02-02_17-22-47.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_20-00-22.stdout 2> 2018-02-02_20-00-22.stderr
 [0;49;32mReference binary: run successful.[0m
 
 [0;49;32mQuestion: Do candidate results regress on to reference results?[0m
+Variable Group Count          Sum      AbsSum          Min         Max       Range         Mean      StdDev
+qlink1   /         6 -6.55651e-07 1.13249e-06 -2.38419e-07 2.38419e-07 4.76837e-07 -1.09275e-07 1.78482e-07
+qlink2   /         6 -6.55651e-07 1.13249e-06 -2.38419e-07 2.38419e-07 4.76837e-07 -1.09275e-07 1.78482e-07
+Variable Group Count         Sum      AbsSum          Min         Max       Range        Mean      StdDev
+qlink1   /         6 2.20537e-06 4.58956e-06 -4.76837e-07 1.90735e-06 2.38419e-06 3.67562e-07 9.45005e-07
+qlink2   /         6 2.20537e-06 4.58956e-06 -4.76837e-07 1.90735e-06 2.38419e-06 3.67562e-07 9.45005e-07
+Variable        Group Count      Sum  AbsSum      Min      Max  Range     Mean  StdDev
+model_discharge /        96 -4180.87 4180.87 -494.159 -2.26982 491.89 -43.5508 98.7364
+Variable        Group Count      Sum  AbsSum      Min       Max   Range     Mean  StdDev
+model_discharge /       192 -4466.74 4466.74 -494.159 -0.993667 493.166 -23.2643 72.5541
 Comparing RESTART files
 Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060200_DOMAIN1
 Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060112_DOMAIN1
 Comparing HYDRO_RST files
 Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+None
 Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+None
 Comparing nudgingLastObs files
 Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-01_12:00:00.nc
+None
 Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-02_00:00:00.nc
-All restart file comparisons pass
-[5;49;32mAnswer: Regression test restart comparison successful![0m
+None
+One or more HYDRO_RST comparisons failed, see stdout
+One or more HYDRO_RST comparisons failed, see stdout
+One or more nudgingLastObs comparisons failed, see stdout
+One or more nudgingLastObs comparisons failed, see stdout
+[5;49;31mAnswer: Regression test restart comparison failed.[0m
+Files compared are in the directories:
+/test_domain/run.candidate
+/test_domain/run.reference
 
 [7;49;32m=================================================================[0m
 [7;49;32mResults of all tests.                                            [0m
-[5;49;32mAll test appear successful.[0m
+[5;49;31mA total of 1 tests failed.[0m
 
 [7;49;32m=================================================================[0m
 [7;49;32mTaking down the candidate.                                       [0m
@@ -297,7 +326,7 @@ WRF_HYDRO_NUDGING = 1
 
 * Repo Groups *
 
-REPO_DIR = /home/docker/test_repos
+REPO_DIR = /root/test_repos
 
 ** Candidate repo subgroup **
 
@@ -309,7 +338,7 @@ candidateLocalPath = /wrf_hydro_nwm
 
 referenceFork = jmccreight/wrf_hydro_nwm
 referenceBranchCommit = 95ff36990801de0a3a819001d1fa9573bca3cfec
-referenceLocalPath = /wrf_hydro_nwm
+referenceLocalPath =
 
 
 [7;49;32m=================================================================[0m
