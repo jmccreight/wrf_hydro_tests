@@ -149,7 +149,7 @@ exitValue=$(($?+$exitValue))
 ## How to handle the exit
 if [[ $inDocker == TRUE ]]; then
     if [[ $testExitValue -ne 0 ]]; then
-        echo -e "Entering docker interactively because some tests failed."
+        echo -e "\e[5;49;31mEntering docker interactively because some tests failed.\e[0m"
         exec /bin/bash
     else
         exit 0

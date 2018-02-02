@@ -2,8 +2,10 @@
 ###################################
 ##q Compile Candidate Binary
 ##q Question: Does the candidate binary compile?
-##q Directory: Either $REPO_DIR/candidate (if code is remote), or
-##q            $candidateLocalPath if code is local.
+##q Directory: Either
+##q            $REPO_DIR/candidate = $candidateRepoDir if remote repo,
+##q            or
+##q            $candidateLocalPath if local (HOST) repo.
 ###################################
 
 ###################################
@@ -38,8 +40,8 @@ else
     echo -e "\e[7;49;32mCandidate fork: LOCAL: `pwd` \e[0m"
     echo -e "\e[0;49;32mCandidate branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
     
-    gitDiffInd=`git diff-index HEAD -- `
-    if [[ -z $gitDiffInd ]]; then 
+    gitDiffLen=`git diff | wc -l`
+    if [[ $gitDiffLen -eq 0 ]]; then 
         echo -e "\e[0;49;32mTesting commit:\e[0m"
         git log -n1 | cat
     else 
@@ -59,6 +61,24 @@ if [[ -z $candidateLocalPath ]]; then
 	{ echo "Unale to cd to $candidateRepoDir/trunk/NDHMS/. Exiting."; exit 1; }
     theCompDir=$candidateRepoDir/trunk/NDHMS/
 else
+
+
+    if [[ $inDocker == TRUE ]]; then
+        ## because (at least under default GCC) compilation is not possible on
+        ## a mounted volume inside docker, we have to copy the repo into an internal
+        ## directory on docker. Hopefully this issue will go away as we adopt newer GCC.
+        echo "*************************************************************************"
+        echo  "Note: Because of docker compile issues with mounted volumes, code from" 
+        echo "\$candidateLocalPath=$candidateLocalPath"
+        echo "is being copied to "
+        echo "\$candidateRepoDir=$candidateRepoDir"
+        echo "for compilation. Make logs and .f files reside only inside the container."
+        echo "*************************************************************************"
+        if [[ ! -d $candidateRepoDir ]]; then mkdir -p $candidateRepoDir; fi
+        cp -r $candidateLocalPath/. $candidateRepoDir
+        candidateLocalPath=$candidateRepoDir
+    fi
+    
     cd $candidateLocalPath/trunk/NDHMS/ || \
 	{ echo "Unale to cd to $candidateLocalPath/trunk/NDHMS/. Exiting."; exit 1; }
     theCompDir=$candidateLocalPath/trunk/NDHMS/

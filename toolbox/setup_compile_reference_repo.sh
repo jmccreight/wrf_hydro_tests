@@ -27,8 +27,8 @@ else
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mReference fork: LOCAL: `pwd` \e[0m"
     echo -e "\e[0;49;32mReference branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
-    gitDiffInd=`git diff-index HEAD -- `
-    if [[ -z $gitDiffInd ]]; then 
+    gitDiffLen=`git diff | wc -l`
+    if [[ $gitDiffLen -eq 0 ]]; then 
         echo -e "\e[0;49;32mTesting commit:\e[0m"
         git log -n1 | cat
     else 
@@ -53,6 +53,23 @@ if [[ -z $referenceLocalPath ]]; then
     cd $refRepoDir/trunk/NDHMS/
     theCompDir=$refRepoDir/trunk/NDHMS/
 else
+
+    if [[ $inDocker == TRUE ]]; then
+        ## because (at least under default GCC) compilation is not possible on
+        ## a mounted volume inside docker, we have to copy the repo into an internal
+        ## directory on docker. Hopefully this issue will go away as we adopt newer GCC.
+        echo "*************************************************************************"
+        echo  "Note: Because of docker compile issues with mounted volumes, code from" 
+        echo "\$referenceLocalPath=$referenceLocalPath"
+        echo "is being copied to "
+        echo "\$refRepoDir=$refRepoDir"
+        echo "for compilation. Make logs and .f files reside only inside the container."
+        echo "*************************************************************************"
+        if [[ ! -d $refRepoDir ]]; then mkdir -p $refRepoDir; fi
+        cp -r $referenceLocalPath/* $refRepoDir
+        referenceLocalPath=$refRepoDir
+    fi
+
     cd $referenceLocalPath/trunk/NDHMS/
     theCompDir=$referenceLocalPath/trunk/NDHMS/
 fi
