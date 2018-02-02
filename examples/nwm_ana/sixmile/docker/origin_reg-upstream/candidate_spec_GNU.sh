@@ -48,7 +48,6 @@ export WRF_HYDRO_COMPILER='GNU'
 #####################################################################################
 
 
-
 export TEST_WALL_TIME=00:05
 ## The wall time to use with a job scheduler.
 
@@ -112,7 +111,7 @@ export referenceFork=jmccreight/wrf_hydro_nwm
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 
-export referenceBranchCommit=master
+export referenceBranchCommit=95ff36990801de0a3a819001d1fa9573bca3cfec
 #master
 # Default = master
 # A branch or commit on referenceFork. 
