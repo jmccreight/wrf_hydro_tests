@@ -10,7 +10,10 @@ _Testing on a machine near you:_ This code is meant to work on any
 linux distribution. The requirements are bash, python3, and the
 dependencies of the WRF-Hydro model. It has been run on Docker and on
 Chyenne (using qsub requires the wrf\_hydro\_tools repository at this
-time) and is meant to be highly protable between different environments. 
+time) and is meant to be highly protable between different
+environments. Example usages on both Docker and Cheyenne are provided
+in the examples directory.
+
 
 # Overview / Definitions #
 
@@ -19,58 +22,165 @@ Purpose of this section
 1. Define terms ("test" can be in multiple, ambiguous ways),
 1. Give the user an idea of how to "take_tests",
 
-## take_test.sh ##
+
+## `take_test.sh` ##
 
 A *candidate* takes a *test*. The take\_test name emphasizes that there
-are two parts: the taker and the test. The take_test script is a
-top-level driver routine which brings the two together and handles:
+are two parts: the taker and the test. The `take_test` script is a
+top-level driver routine which brings the two together. The first
+argument to `take_test` is the candidate specification and the second
+argument is the test specification. Running `take_tests` with no
+arguments (or less than 2 arguments) produces help on both its
+arguments
 
-    1. Logging
-    1. Setup of the candidate
-    1. Taking of the test
-    1. Tearing down the candidate (optional).
-    1. Exiting
+The `take_test` script broadly handles the following tasks:
+
+1. Logging
+1. Setup of the candidate
+1. Taking of the test (including applying the answer keys)
+1. Tearing down the candidate (optional)
+1. Exiting
+
 
 ## The candidate ##
 
 A *candidate* is ALL the particulars of what is necessary to take a
 test. The candidate consists of two files:
 
-    1. The machine specification file, which is nearly static for a given
-       machine. 
-    1. The
+1. Machine specification file: nearly static for a given machine. 
+1. Candidate specification file: the more dynamic parts.
+
+These two files shoud uniquely identify a candidate. If you
+dont find that to be true, please log an issue! 
 
 
-The candidate specification file
-(candidate\_spec\_file\_template.sh) is tailored by the user to specifiy the
-candidate. Broadly, these are the groups of "moving parts" or
-uniqueness to be specified for a candidate: 
+### Machine specification file ###
 
-1. Domain Group
-1. Machine Group : static configuration for each machine?
-1. Model Group
-1. Numer of Cores Group
-1. *Github group* Could be removed as it is nearly static.
-1. Repository Groups (2)
+The file `template_machine_spec.sh` (in the top level) provides a
+template for the machine specifications. These should be installed
+individually for each machine the first time it is used. Generally, we
+recommend that the machine specification file for each machine be
+installed in `~/.wrf_hydro_tests_machine_spec.sh` for each
+user. However, this default location can be overridden in the
+candidate specification file (described in the next subsection).
 
-There are currently a total of 25 variables in these 6 groups. Many are
-optional. We believe these uniquely identify a *candidate*. If you
-dont find that to be true, definitely log an issue! We believe that it
-is best to work with the template file, and when your test is tweaked
-to your liking, name it something special. 
+We note that there is a single machine specification file for our
+Docker containers which can be found in `CI/machine_spec.sh` and also
+with some of the docker examples,
+i.e. `examples/nwm_ana/sixmile/docker/origin_reg-upstream/machine_spec.sh`. 
+
+The machine specification file is commented to guide the user in its
+setup. There is some conditional logic for modules on cheyenne, for
+both GNU and intel compiler choices. 
+
+In the "Getting Started" section there are detailed instructions on
+setting up automated github authentication. If you need to clone any
+private repositories, this will be required.
+
+The function used to run the model is one of the more complicated
+pieces of this file. When `mpirun` can be used, there is a function
+which will work. When a job scheduler must be invoked, alternative
+functions can be used. There is a function which runs on cheyenne but
+requires functionality of the `wrf_hydro_tools` repository to
+work. However, for each machine, this is is a one time problem even
+across all users of `wrf_hydro_tests` on that machine.
+
+
+### Candidate specification file ###
+The file `template_candidate_spec.sh` (in the top level) needs
+tailored by the user to specifiy the more dynamic parts of the
+candidate. There are broad groups of "moving parts" to be specified
+for a candidate:
+
+1. Domain group
+1. Compiler
+1. Numer of cores group
+1. Model compile options group
+1. Candidate repository group
+1. Reference repository group
+
+There are currently a total of 22 variables which fall mostly in these
+6 groups. Many are optional. The file is well commented and fairly
+straight forward. This is the main file which you will use and become
+familiar with.
+
 
 ## Test specification file ##
 
-The second argument to take_test is the test specification
-file. *Tests*  are collections of *questions*. That is all. Tests are
-one of the simplest parts of the system. (For CI on CircleCI, tests
-are simply expressed in YAML mardown.) You may desire to develop
-custom tests for you development purposes. Custom tests may simply mix
-and match stock questions. More advanced users will want to develop
-custom tests with custom questions. Questions are described in the
-next section. 
+The second argument to `take_test` is the test specification or test
+specification file. There are pre-canned tests in the `tests/`
+directory which can be invoked by simply using a tag (which is simply
+the name of each *.sh file in that directory minus its extenstion.)
+Running `take_tests` with no arguments prodoces help on this argument
+and lists all the currently available tags.
 
-## Questions ##
+If pre-canned tests do not meet your needs, an arbitrary test
+specification file can be passed. *Tests*  are simply collections of
+*questions*. Tests are one of the simplest parts of the system. (For
+CI on CircleCI, tests are re-expressed in YAML mardown.) Custom tests
+may simply mix and match stock questions. More advanced users will
+want to develop custom tests with custom questions. Questions are
+described in the Advanced Usage section below.
+
+
+# Getting Started #
+
+Before diving in to examples, we deal with some necessary details. 
+
+
+## Managing the GITHUB environment variables. ##
+
+In order to clone private repos (e.g. `wrf_hydro_nwm` or even
+`wrf_hydro_tests` currently, though this should go public shortly),
+without providing your authentication, you'll need to configure how
+your github "authtoken". In the machine specification file you will
+provide your github username. But the token is nice to keep
+secret. The machine specification file assumes (i.e. if not modified
+to look elsewhere) that your authtoken is store in your
+`~/.github\_authtoken` file. This file should be READ-ONLY BY OWNER
+(500). For example: 
+```
+jamesmcc@chimayo[736]:~/WRF_Hydro/wrf_hydro_docker/testing> ls -l ~/.github_authtoken 
+-r--------  1 jamesmcc  rap  40 Nov  3 10:18 /Users/jamesmcc/.github_authtoken
+```
+The file contains the user authtoken from github with no carriage return or other 
+whitespace in the file. See 
+
+[https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
+
+for information on getting your github authtoken.
+
+
+## take_test in your path ##
+
+After you run some of the canned examples, you'll want to start
+calling `take_tests` in arbitrary locations where you put your own
+candidate specification files. We recommend the following addition to
+your ~/.bashrc or ~/.bash_profile. If you are not a bash user, you
+are just screwed... 
+
+```
+## wrf_hydro_tests
+function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
+
+```
+
+# Running tests #
+
+## Examples ##
+
+The easiest way to get started is to use Docker and run 
+
+
+See the examples directory. 
+
+
+
+
+
+# Advanced 
+
+# Questions #
 
 Questions may 
 
@@ -140,107 +250,6 @@ the code. Because of their size, it is simply not feasible to keep
 domain files 
 
 
-# Getting Started #
-
-## Local Machine Configuration. ##
-
-The static, machine-dependent specifics of the candidate are separated 
-from the main candidate specification file and placed into the following 
-file _for each machine_:  `~/.wrf_hydro_tests_machine_spec.sh`. An 
-example copy of this file is provided in the top level of this repository
-but it must be moved into the correct place and editied to work properly. 
-
-
-We recommend (though the sourcing is optional, the second line 
-appears to put `take_test` in your path:
-
-```
-## wrf_hydro_tests
-function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
-
-```
-
-# Running tests #
-
-For now, testing (actually, configuration) requires two repos. 
-
-Testing is intended to work
-
-1) locally (e.g. cheyenne) 
-2) on Docker containers (e.g. your desktop), and
-3) CircleCI 
-
-using the approach in this repo with minor adaptations for each
-application. 
-
-Testing currently depends on a suite of environment variables. 
-
-Required:
-
-Environment Variable   | Description 
----                    |---
-WRF\_HYDRO\_TESTS\_DIR | The local path to the wrf\_hydro\_tests dir.
-REPO\_DIR              | Where repositories cloned from github shall be placed (in subfolders)
-domainSourceDir        | Where the domain and pre-established run directories live.
-testName               | A valid subdirectory of wrf\_hydro\_tests/tests where desired test lives.
-WRF_HYDRO              | Compile time option to the model (1 for off-line runs)
-NETCDF                 | Where NetCDF resides on your system
-
-
-Optional:
-
-Environment Variable   | Description 
----                    |---
-domainTestDir          |If not running in Docker, clone the domainSourceDir here to keep the original clean. 
-**Model group:**       |
-HYDRO_D SPATIAL_SOIL   | See model reference for these
-WRFIO_NCD_LARGE_FILE_SUPPORT | " "
-WRF_HYDRO_RAPID        | " "
-HYDRO_REALTIME         | " "(may be defunct now)
-NCEP_WCOSS             | " "
-WRF_HYDRO_NUDGING      | " "
-**Github group:** | If getting repositories from github.
-GITHUB\_USERNAME       |If cloning repositories from github, these are required.
-GITHUB\_AUTHTOKEN      |for above user on github (see below for details)
-**Test group:**  | Testing repository is the one you have been working on. It may come from github or a local path.
-testFork               |A named fork on github. Default = ${GITHUB\_USERNAME}/wrf\_hydro\_nwm
-testBranchCommit       |A branch or commit on testFork. Default = master
-_OR_ |
-testLocalPath          |A path on local machine where the current state of the repo (potentially uncommitted) is compiled. This supercedes BOTH testFork and testBranchCommit if set. Default =''
-**Reference group:** | Reference repository is the one that provides the reference for regression testing. It may come from github or a local path.
-referenceFork          |A named fork on github. Default = NCAR/wrf\_hydro\_nwm
-referenceBranchCommit  |A branch or commit on referenceFork. Default = master   
-_OR_ |
-referenceLocalPath     |A path on local machine where the current state of the repo (potentially uncommitted) is compiled. This supercedes BOTH referenceFork and referenceBranchCommit if set. Default =''
-
-
-## Examples ##
-
-See the examples directory. 
-
-## Managing the GITHUB environment variables. 
-Configure your ~/.bashrc with the following
-
-```
-export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
-export GITHUB_USERNAME=jmccreight
-```
-
-The file `~/.github_authtoken` should be READ-ONLY BY OWNER (500). For example:
-
-```
-jamesmcc@chimayo[736]:~/WRF_Hydro/wrf_hydro_docker/testing> ls -l ~/.github_authtoken 
--r--------  1 jamesmcc  rap  40 Nov  3 10:18 /Users/jamesmcc/.github_authtoken
-```
-
-The file contains the user authtoken from github with no carriage return or other 
-whitespace in the file. See 
-
-[https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
-
-for information on getting your github authtoken.
-
-
 # Customizing & Contributing
 Answer-changing code development:
 1. Actuall answer changing parts should be isolated to a single commit
@@ -249,3 +258,8 @@ You should write diagnostic tests in the flexible framework of
 wrf\_hydro\_tests as you are developing code and evaluating its
 impact. All such diagnostic testing can be used by others (and
 yourself) next time the same variables are being worked on.
+
+
+
+
+
