@@ -11,8 +11,13 @@
 ## Where do all the parts live for the test?
 candidateRepoDir=$REPO_DIR/candidate
 refRepoDir=$REPO_DIR/reference
-if [[ ! -z $candidateLocalPath ]]; then candidateRepoDir=$candidateLocalPath; fi
-if [[ ! -z $referenceLocalPath ]]; then refRepoDir=$referenceLocalPath; fi
+if [[ ! -z $candidateLocalPath ]] && [[ $inDocker == FALSE ]]; then
+    candidateRepoDir=$candidateLocalPath
+fi
+if [[ ! -z $referenceLocalPath ]] && [[ $inDocker == FALSE ]]; then
+    refRepoDir=$referenceLocalPath
+fi
+
 export candidateRepoDir=$candidateRepoDir
 export refRepoDir=$refRepoDir
 
@@ -30,7 +35,7 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ## non-docker applications.
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
-inDocker=FALSE
+export inDocker=FALSE
 if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
 
 if [[ ! -z $domainRunDir ]]; then
