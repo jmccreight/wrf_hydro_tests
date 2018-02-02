@@ -9,7 +9,7 @@ domains. This IS the way for developers to compile.
 _Testing on a machine near you:_ This code is meant to work on any
 linux distribution. The requirements are bash, python3, and the
 dependencies of the WRF-Hydro model. It has been run on Docker and on
-Chyenne (using qsub requires the wrf_hydro_tools repository at this
+Chyenne (using qsub requires the wrf\_hydro\_tools repository at this
 time) and is meant to be highly protable between different environments. 
 
 # Overview / Definitions #
@@ -18,8 +18,6 @@ Purpose of this section
 
 1. Define terms ("test" can be in multiple, ambiguous ways),
 1. Give the user an idea of how to "take_tests",
-1. Point the way towards users developing custom tests and questions
-   (advanced usage).
 
 ## take_test.sh ##
 
@@ -27,15 +25,23 @@ A *candidate* takes a *test*. The take\_test name emphasizes that there
 are two parts: the taker and the test. The take_test script is a
 top-level driver routine which brings the two together and handles:
 
-1. Logging
-1. Setup of the candidate
-1. Taking of the test
-1. Tearing down the candidate (optional).
+    1. Logging
+    1. Setup of the candidate
+    1. Taking of the test
+    1. Tearing down the candidate (optional).
+    1. Exiting
 
-## Candidate specification file ##
+## The candidate ##
 
 A *candidate* is ALL the particulars of what is necessary to take a
-test. The candidate specification file
+test. The candidate consists of two files:
+
+    1. The machine specification file, which is nearly static for a given
+       machine. 
+    1. The
+
+
+The candidate specification file
 (candidate\_spec\_file\_template.sh) is tailored by the user to specifiy the
 candidate. Broadly, these are the groups of "moving parts" or
 uniqueness to be specified for a candidate: 
