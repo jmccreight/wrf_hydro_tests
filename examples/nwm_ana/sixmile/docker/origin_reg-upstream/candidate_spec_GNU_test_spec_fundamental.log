@@ -1,10 +1,10 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 02 00:13:46 UTC
+Date                  : 2018 Feb 02 00:51:14 UTC
 User                  : docker
-Machine               : f6d45551e6a8
-wrf_hydro_tests commit: f2786ff4bf5a8694e490e8093ccc88f05864da86
+Machine               : e594e53b0c43
+wrf_hydro_tests commit: f8832c24364586f048f1bb2f40c0643e673586f4
 There are uncommitted changes to wrf_hydro_tests.
 candidateSpecFile     : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
@@ -101,14 +101,14 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
 Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-14-00.stdout 2> 2018-02-02_00-14-00.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-51-27.stdout 2> 2018-02-02_00-51-27.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
 Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-14-01.stdout 2> 2018-02-02_00-14-01.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-51-28.stdout 2> 2018-02-02_00-51-28.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -125,7 +125,7 @@ All restart file comparisons pass
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
 Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_00-14-01.stdout 2> 2018-02-02_00-14-01.stderr
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_00-51-28.stdout 2> 2018-02-02_00-51-28.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -230,7 +230,7 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-14-16.stdout 2> 2018-02-02_00-14-16.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_00-51-42.stdout 2> 2018-02-02_00-51-42.stderr
 [0;49;32mReference binary: run successful.[0m
 
 [0;49;32mQuestion: Do candidate results regress on to reference results?[0m
@@ -285,19 +285,14 @@ Files compared are in the directories:
 [7;49;32mLogging the candidateSpecFile.                                   [0m
 ---------------------------------------------------------------------------
 Machine spec group: 
-WRF_HYDRO_TESTS_DIR:
-/wrf_hydro_tests
+WRF_HYDRO_TESTS_DIR = /wrf_hydro_tests
 
-GITHUB_USERNAME:
-jmccreight
-GITHUB_AUTHTOKEN:
-********************
+GITHUB_USERNAME = jmccreight
+GITHUB_AUTHTOKEN = ********************
 
-WRF_HYDRO_MODULES:
+WRF_HYDRO_MODULES =
 
-
-NETCDF:
-/usr/local
+NETCDF = /usr/local
 
 * Run group *
 WRF_HYDRO_RUN:
@@ -307,63 +302,42 @@ WRF_HYDRO_RUN:
 Candidate spec file group: 
 
 * Domain Group *
-domainSourceDir:
-/test_domain
+domainSourceDir = /test_domain
 
-domainRunDir:
-/test_domain
+domainRunDir = /test_domain
 
 * Compiler *
-WRF_HYDRO_COMPILER:
-GNU
+WRF_HYDRO_COMPILER = GNU
 
 * Run Group*
-TEST_WALL_TIME:
-00:05
+TEST_WALL_TIME = 00:05
 
-nCoresDefault:
-2
+nCoresDefault = 2
 
-nCoresTest:
-1
+nCoresTest = 1
 
 * Model compile options *
-WRF_HYDRO:
-1
-HYDRO_D:
-0
-SPATIAL_SOIL:
-1
-WRFIO_NCD_LARGE_FILE_SUPPORT:
-1
-WRF_HYDRO_RAPID:
-0
-HYDRO_REALTIME:
-1
-NCEP_WCOSS:
-0
-WRF_HYDRO_NUDGING:
-1
+WRF_HYDRO = 1
+HYDRO_D = 0
+SPATIAL_SOIL = 1
+WRFIO_NCD_LARGE_FILE_SUPPORT = 1
+WRF_HYDRO_RAPID = 0
+HYDRO_REALTIME = 1
+NCEP_WCOSS = 0
+WRF_HYDRO_NUDGING = 1
 
 * Repo Groups *
-REPO_DIR:
-/home/docker/test_repos
+REPO_DIR = /home/docker/test_repos
 
 ** Candidate repo subgroup **
-candidateFork:
-NCAR/wrf_hydro_nwm
-candidateBranchCommit:
-master
-candidateLocalPath:
-
+candidateFork = NCAR/wrf_hydro_nwm
+candidateBranchCommit = master
+candidateLocalPath =
 
 ** Reference repo subgroup **
-referenceFork:
-jmccreight/wrf_hydro_nwm
-referenceBranchCommit:
-95ff36990801de0a3a819001d1fa9573bca3cfec
-referenceLocalPath:
-
+referenceFork = jmccreight/wrf_hydro_nwm
+referenceBranchCommit = 95ff36990801de0a3a819001d1fa9573bca3cfec
+referenceLocalPath =
 
 
 [7;49;32m=================================================================[0m
