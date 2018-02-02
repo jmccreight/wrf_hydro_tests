@@ -97,6 +97,7 @@ echo "wrf_hydro_tests commit: $whTestsCommit"                 2>&1 | tee -a $log
 if [[ $whTestsUncommitted -eq 1 ]]; then
     echo "There are uncommitted changes to wrf_hydro_tests."  2>&1 | tee -a $logFile
 fi
+echo "machine spec file     : $WRF_HYDRO_TESTS_MACHINE_SPEC"  2>&1 | tee -a $logFile
 echo "candidateSpecFile     : $candidateSpecFile"             2>&1 | tee -a $logFile
 echo "testSpecFile          : $testSpecFile"                  2>&1 | tee -a $logFile  
 echo "Log file              : $logFile"                       2>&1 | tee -a $logFile       
