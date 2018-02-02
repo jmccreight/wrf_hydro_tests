@@ -1,14 +1,13 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 02 18:21:49 UTC
-User                  : docker
-Machine               : de298ddf65a8
-wrf_hydro_tests commit: 97c57c038ae9e81caf34f407923cbc7b092199a2
-There are uncommitted changes to wrf_hydro_tests.
-candidateSpecFile     : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.sh
+Date                  : 2018 Feb 02 19:56:54 UTC
+User                  : root
+Machine               : 9be884f5f5d7
+wrf_hydro_tests commit: da6918e402ffbb0edf04f571598af28bc850eea5
+candidateSpecFile     : /test_specs_logs/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
-Log file              : /wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU_test_spec_fundamental.log
+Log file              : /test_specs_logs/candidate_spec_GNU_test_spec_fundamental.log
 Will echo candidateSpecFile to log at end.
 
 [7;49;32m=================================================================[0m
@@ -20,10 +19,10 @@ Will echo candidateSpecFile to log at end.
 [0;49;32m-----------------------------------[0m
 [7;49;32mCandidate fork: NCAR/wrf_hydro_nwm[0m
 [7;49;32mCandidate branch/commit: master[0m
-Cloning into '/home/docker/test_repos/candidate'...
+Cloning into '/root/test_repos/candidate'...
 Already on 'master'
 Your branch is up-to-date with 'origin/master'.
-[0;49;32mRepo moved to[0m /home/docker/test_repos/candidate
+[0;49;32mRepo moved to[0m /root/test_repos/candidate
 [0;49;32mCandidate branch:[0m    master
 [0;49;32mTesting commit:[0m
 commit df77ba9b8927940af8784a7ccff3cf4e0eb80913
@@ -39,7 +38,7 @@ Date:   Wed Jan 31 17:41:17 2018 -0700
 [7;49;32mcompile.sh:[0m
 [0;49;32mQuestion: Does candidate binary compile?[0m
 Compiling with GNU
-Compiling in /home/docker/test_repos/candidate/trunk/NDHMS/
+Compiling in /root/test_repos/candidate/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -101,14 +100,14 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
 Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_18-22-02.stdout 2> 2018-02-02_18-22-02.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_19-57-07.stdout 2> 2018-02-02_19-57-07.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
 Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_18-22-03.stdout 2> 2018-02-02_18-22-03.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_19-57-08.stdout 2> 2018-02-02_19-57-08.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -125,7 +124,7 @@ All restart file comparisons pass
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
 Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_18-22-04.stdout 2> 2018-02-02_18-22-04.stderr
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-02_19-57-09.stdout 2> 2018-02-02_19-57-09.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -143,7 +142,7 @@ All restart file comparisons pass
 [0;49;32m-----------------------------------[0m
 [7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
 [7;49;32mReference branch/commit: 95ff36990801de0a3a819001d1fa9573bca3cfec[0m
-Cloning into '/home/docker/test_repos/reference'...
+Cloning into '/root/test_repos/reference'...
 Note: checking out '95ff36990801de0a3a819001d1fa9573bca3cfec'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -156,7 +155,7 @@ do so (now or later) by using -b with the checkout command again. Example:
   git checkout -b <new-branch-name>
 
 HEAD is now at 95ff369... Merge pull request #99 from logankarsten/community_v5.0_release
-[0;49;32mRepo in[0m /home/docker/test_repos/reference
+[0;49;32mRepo in[0m /root/test_repos/reference
 [0;49;32mReference branch:[0m    HEAD
 [0;49;32mReference commit:[0m
 commit 95ff36990801de0a3a819001d1fa9573bca3cfec
@@ -171,7 +170,7 @@ Date:   Thu Jan 4 17:27:11 2018 -0700
 [0;49;32m-----------------------------------[0m
 [7;49;32mregression.sh:[0m
 [0;49;32mCompiling reference binary.[0m
-Compiling in /home/docker/test_repos/reference/trunk/NDHMS/
+Compiling in /root/test_repos/reference/trunk/NDHMS/
 
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
@@ -230,7 +229,7 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_18-22-18.stdout 2> 2018-02-02_18-22-18.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-02_19-57-23.stdout 2> 2018-02-02_19-57-23.stderr
 [0;49;32mReference binary: run successful.[0m
 
 [0;49;32mQuestion: Do candidate results regress on to reference results?[0m
@@ -334,7 +333,7 @@ WRF_HYDRO_NUDGING = 1
 
 * Repo Groups *
 
-REPO_DIR = /home/docker/test_repos
+REPO_DIR = /root/test_repos
 
 ** Candidate repo subgroup **
 
