@@ -201,6 +201,9 @@ the top-level pieces of information which differentiate candidates.
 
 ## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
 
+You do not need to be able to run this example to see the complete
+results. 
+
 Here the National Water Model's "analysis and assimilation" cycle is
 the configuration. This is a reference to both run time and
 compile-time options, but mostly indicates the run-time options or
@@ -236,6 +239,36 @@ this file shows what it looks like when a test runs. Only the `Logging
 the candidateSpecFile` section is different, it does not appear in the
 terminal when run interactively. We strive to log all the pertient
 information at each step of the test. 
+
+The top-level sections are:
+
+1. Boilerplate: Logging some of the more fundamental information about
+   the candidate and the test.
+1. Setting up the candidate: establishing everything needed for the
+   test to be taken. (Little or nothing currently printed here
+1. Testing the candidate:
+   a. Candidate fork: Getting and logging the fork + commit-ish (state of
+   repo).
+   b. Question: Compile?
+   c. Question: Run?
+   d. Question: Perfect restarts?
+   e. Question: Number of cores tests?
+   f. Reference fork: Getting and logging the fork + commit-ish (state
+   of repo).
+   g. Question: Regression test?
+1. Results of all tests
+1. Taking down the candidate
+1. Logging the candidate
+
+The regression test in this example intentionally fails to illustrate
+what that looks like. 
+
+Why v1.2-fixes? This example also illustrates that when the
+configuration (the namelists, mostly) are not embedded with the model
+code repo and not referenced against DOMAIN files, we have to build
+separate run directories for each configuration. These configurations
+have namelists which evolve over time. 
+
 
 ## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
 
