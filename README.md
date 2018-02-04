@@ -185,9 +185,35 @@ function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.
 ```
 If you are not a bash user, you should let us know what works for you.
 
+# Think globally develop locally #
+
+The recommended development workflow is:
+
+1. On your local machine: write code
+2. On your local machine: replace your compilation step with
+   wrf\_hydro\_tests, using a toy domain. If your local machine is not
+   Linux, setup and use docker locally. 
+3. On cheyenne (or your large cluster): Periodically run tests on your
+   code using larger domains and the intel compiler. This should
+   eventually be handled by automated CI and cron-testing systems, but
+   porting the testing to different domains on different machines
+   should require minimal effort using wrf\_hydro\_tests.
+   
+The above workflow allows you the freedom to 1) not be connected to a
+remote machine, 2) not be subject to downtime on a remote machine, 3)
+understand not only if your code compiles at each step but also if any
+fundamental engineering (or other) tests have changed, 4) save core
+hour allocations on clusters. 
+
+Note that code does NOT need to be committed to be tested under
+wrf\_hydro\_tests when running locally (ie not under CI).
+   
+
 # Examples #
 
-Below the `examples/` directory, we have choosen to organize our
+We begin with an example configured for cheyenne. 
+
+Within the `examples/` directory, we have choosen to organize our
 candidate files and examples of take_test calls using the following
 directory/file structure:
 
@@ -229,6 +255,9 @@ take_test.sh would be called on the candidate and paired with a stock
 test. These commands would normally just be executed by a user on the
 command line. 
 
+machine spec file: qCleanRun function needs wrf\_hydro\_tools. What
+else is of interest here?
+
 The results of having run this test are logged to the file
 `candidate_spec_intel_test_spec_fundamental-regress-v1-2-release-w-upgrades.log`. The
 log file names derive from the candidate names and the test names, the
@@ -247,15 +276,17 @@ The top-level sections are:
 1. Setting up the candidate: establishing everything needed for the
    test to be taken. (Little or nothing currently printed here
 1. Testing the candidate:
-   a. Candidate fork: Getting and logging the fork + commit-ish (state of
-   repo).
-   b. Question: Compile?
-   c. Question: Run?
-   d. Question: Perfect restarts?
-   e. Question: Number of cores tests?
-   f. Reference fork: Getting and logging the fork + commit-ish (state
-   of repo).
-   g. Question: Regression test?
+
+    1. Candidate fork: Getting and logging the fork + commit-ish (state of
+           repo).
+    1. Question: Compile?
+    1. Question: Run?
+    1. Question: Perfect restarts?
+    1. Question: Number of cores tests?
+    1. Reference fork: Getting and logging the fork + commit-ish (state
+    of repo).
+    1. Question: Regression test?
+
 1. Results of all tests
 1. Taking down the candidate
 1. Logging the candidate
@@ -270,9 +301,16 @@ separate run directories for each configuration. These configurations
 have namelists which evolve over time. 
 
 
-## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
+## 2. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
 
-
+This example is almost identical to the above except that we change
+the compiler. Note that the WALL_TIME variable is also left out as
+run-time may change significantly under different compilers. The
+candidate spec file shows the poor-man's inheritance provided by
+sourcing bash scripts and overriding pre-defined defaults. This
+inheritance could be leveraged more than we are doing currently,
+inside the directory structure we've established (but the inheritance
+is a fairly new feature, so we've not fully exploited it).
 
 
 
