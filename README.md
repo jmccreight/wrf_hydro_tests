@@ -10,9 +10,9 @@ _Testing on a machine near you:_ This code is meant to work on any
 linux distribution. The requirements are bash, python3, and the
 dependencies of the WRF-Hydro model. It has been run on Docker and on
 Chyenne (using qsub requires the wrf\_hydro\_tools repository at this
-time) and is meant to be highly protable between different
+time) and is meant to be highly portable between different
 environments. Example usages on both Docker and Cheyenne are provided
-in the examples directory.
+in the `examples/` directory.
 
 
 # Overview / Definitions #
@@ -31,17 +31,14 @@ deferred to a later section.
 A *candidate* takes a *test*. The take\_test name emphasizes that there
 are two parts: the taker and the test. The `take_test` script is a
 top-level driver routine which brings the two together. This is shown
-in Figure 1 below. 
+on the left-hand side in Figure 1 below. 
 
-Inline-style: 
 ![Figure 1](schematic.png "Figure1: wrf_hydro_tests schematic")
 
-
-The first
-argument to `take_test` is the candidate specification and the second
-argument is the test specification. Running `take_tests` with no
-arguments (or less than 2 arguments) produces help on both its
-arguments
+The first argument to `take_test` is the candidate specification and
+the second argument is the test specification. Running `take_tests`
+with no arguments (or less than 2 arguments) produces help on both its
+arguments. 
 
 The `take_test` script broadly handles the following tasks:
 
@@ -54,9 +51,9 @@ The `take_test` script broadly handles the following tasks:
 
 ## The candidate ##
 
-The *candidate* is the most important aspect for new users to
-master. The candidate is ALL the necessary parts to
-take a test. The candidate consists of two files:
+*The candidate is the most important aspect for new users to
+master*. The candidate is ALL the necessary parts to
+take a test. The particulars of the candidate are recorded in two files:
 
 1. Machine specification file: nearly static for a given machine. 
 1. Candidate specification file: the more dynamic parts.
@@ -64,6 +61,10 @@ take a test. The candidate consists of two files:
 These two files shoud uniquely identify a candidate. If you
 dont find that to be true, please log an issue! 
 
+Though wrf\_hydro\_tests can use environment variables defined outside
+these two files (and we employ this fact in Docker applications), we
+strongly encourage specifying all the necessary variables in the
+candidate files.
 
 ### Machine specification file ###
 
@@ -84,9 +85,10 @@ The machine specification file is commented to guide the user in its
 setup. There is some conditional logic for modules on cheyenne, for
 both GNU and intel compiler choices. 
 
-In the "Getting Started" section there are detailed instructions on
-setting up automated github authentication. If you need to clone any
-private repositories, this will be required.
+In the "Getting Started" section below, there are detailed
+instructions on setting up automated github authentication. If you
+need to clone any private repositories, this will be required. This
+will likely be the most foreign step of the entire process for users.
 
 The function used to run the model is one of the more complicated
 pieces of this file. When `mpirun` can be used, there is a function
@@ -115,6 +117,13 @@ There are currently a total of 22 variables which fall mostly in these
 straight forward. This is the main file which you will use and become
 familiar with.
 
+In the `examples/` directory and the Examples section below, we offer
+one way of oganizing candidate specification files for your
+tests. "Inheritance" is possible for candidate specification files,
+where a previous specification is used as the basis for a new
+specification. For example, if only the compiler is changed, then the
+previous specification is invoked followed by a change to the desired
+compiler name. 
 
 ## Test specification file ##
 
@@ -167,31 +176,76 @@ for information on getting your github authtoken.
 After you run some of the canned examples, you'll want to start
 calling `take_tests` in arbitrary locations where you put your own
 candidate specification files. We recommend the following addition to
-your ~/.bashrc or ~/.bash_profile. If you are not a bash user, you
-are just screwed... 
+your ~/.bashrc or ~/.bash_profile. 
 
 ```
 ## wrf_hydro_tests
 function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
 
 ```
+If you are not a bash user, you should let us know what works for you.
 
-# Running tests #
+# Examples #
 
-## Examples ##
+Below the `examples/` directory, we have choosen to organize our
+candidate files and examples of take_test calls using the following
+directory/file structure:
 
-The easiest way to get started is to use Docker and run 
+`configuration/domain/machine/candidate-repo_reg-regression_repo/candidate_spec.sh`
+
+Where the candidate specification may contain further indications of
+details in the candidate necessary to differentiate from other
+candidates in the same directory. The directory path specifies five of
+the top-level pieces of information which differentiate candidates.
 
 
-See the examples directory. 
+## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
+
+Here the National Water Model's "analysis and assimilation" cycle is
+the configuration. This is a reference to both run time and
+compile-time options, but mostly indicates the run-time options or
+namelists which are used by the candidate in the tests. The domain is
+specified next, as the sixmile creek domain, outside Ithaca N.Y. The
+machine is cheyenne. The users remote origin fork on github will be
+tested. Regression test will be against a branch refered to here as
+"v1.2-fixes". Finally, the compiler is intel. 
+
+This directory/file naming convention gives some strong insight into
+what this test is about. However, the details are fully documented by
+the `machine_spec.sh` and the `candidate_spec_intel.sh` files in this
+directory. Reading these files will illuminate the paths to where the
+compiled code resides, where the domains are found , where the runs
+are actually performed, the exact modules loaded, the number of cores,
+the WRF-Hydro compile options, and the locations of both the candidate
+and reference repos (among other things). Please read and become
+familiar with all the variables defined in the machine_spec.sh and
+candidate_spec.sh files
+
+The `how_to_take_test_intel_fundamental-regress-v1-2.sh` shows how
+take_test.sh would be called on the candidate and paired with a stock
+test. These commands would normally just be executed by a user on the
+command line. 
+
+The results of having run this test are logged to the file
+`candidate_spec_intel_test_spec_fundamental-regress-v1-2-release-w-upgrades.log`. The
+log file names derive from the candidate names and the test names, the
+two things combined by `take_test.sh`. The log files are always placed
+in the same directory as the candidate files and start with the
+candidate spec filename for obvious collocation. Invoking `cat` on
+this file shows what it looks like when a test runs. Only the `Logging
+the candidateSpecFile` section is different, it does not appear in the
+terminal when run interactively. We strive to log all the pertient
+information at each step of the test. 
+
+## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
 
 
 
 
 
-# Advanced 
+# Advanced #
 
-# Questions #
+## Questions ##
 
 Questions may 
 
