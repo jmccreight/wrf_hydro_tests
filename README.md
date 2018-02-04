@@ -19,15 +19,25 @@ in the examples directory.
 
 Purpose of this section
 
-1. Define terms ("test" can be in multiple, ambiguous ways),
-1. Give the user an idea of how to "take_tests",
+1. Define terms ("test" can be use in multiple, ambiguous ways),
+1. Introduce users to what they need to get started. 
+
+Advanced usage (defining custom tests or other development) is
+deferred to a later section. 
 
 
 ## `take_test.sh` ##
 
 A *candidate* takes a *test*. The take\_test name emphasizes that there
 are two parts: the taker and the test. The `take_test` script is a
-top-level driver routine which brings the two together. The first
+top-level driver routine which brings the two together. This is shown
+in Figure 1 below. 
+
+Inline-style: 
+![Figure 1](schematic.png "Figure1: wrf_hydro_tests schematic")
+
+
+The first
 argument to `take_test` is the candidate specification and the second
 argument is the test specification. Running `take_tests` with no
 arguments (or less than 2 arguments) produces help on both its
@@ -44,8 +54,9 @@ The `take_test` script broadly handles the following tasks:
 
 ## The candidate ##
 
-A *candidate* is ALL the particulars of what is necessary to take a
-test. The candidate consists of two files:
+The *candidate* is the most important aspect for new users to
+master. The candidate is ALL the necessary parts to
+take a test. The candidate consists of two files:
 
 1. Machine specification file: nearly static for a given machine. 
 1. Candidate specification file: the more dynamic parts.

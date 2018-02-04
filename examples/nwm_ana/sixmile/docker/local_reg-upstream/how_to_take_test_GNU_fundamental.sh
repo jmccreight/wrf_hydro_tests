@@ -5,15 +5,16 @@
 # * Use the current wrf_hydro_tests upstream/master for testing.
 # * Test code which is in LOCAL a repository (NOT on github), that
 #   is the code lives on your host machine.
-# * Specify the tests using the candidate_spec_GNU.sh file
-#   in this directory.
+# * Use the candidate_spec_GNU.sh file in this directory.
 # * Capture the test log in this directory.
 
 # Details:
 # * To pull private repos (e.g. wrf_hydro_nwm) we must specify the github
 #   username and authtoken to the docker environment. These are passed
 #   using the '-e' flag. See the README.md file for details on getting
-#   these in your HOST environment so they can be passed.
+#   these in your HOST environment so they can be passed. Note that in
+#   machine_spec.sh file in this directory, these variables are not
+#   set. The take_test.sh file gets them from the environment.
 # * To use the candidate and machine specification files in the current
 #   directory and to capture the test log, we have to to mount the
 #   current directory. This is done with the '-v' flag. We choose the
