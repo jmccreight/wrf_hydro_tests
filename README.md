@@ -1,43 +1,34 @@
-<style
-  type="text/css">
+# Table of Contents #
 
-h1 { counter-reset: h2counter; }
-h2 { counter-reset: h3counter; }
-h3 { counter-reset: h4counter; }
-h4 { counter-reset: h5counter; }
-h5 { counter-reset: h6counter; }
-h6 {}
-
-h2:before {
-    counter-increment: h2counter;
-    content: counter(h2counter) ".\0000a0\0000a0";
-}
-
-h3:before {
-    counter-increment: h3counter;
-    content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
-}
-
-h4:before {
-    counter-increment: h4counter;
-    content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) ".\0000a0\0000a0";
-}
-
-h5:before {
-    counter-increment: h5counter;
-    content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) ".\0000a0\0000a0";
-}
-
-h6:before {
-    counter-increment: h6counter;
-    content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) "." counter(h6counter) ".\0000a0\0000a0";
-}
-</style>
+   * [1. wrf_hydro_tests: Testing for the WRF-Hydro model.](#1-wrf_hydro_tests-testing-for-the-wrf-hydro-model)
+      * [1.1 Why?](#11-why)
+      * [1.2 What ?](#12-what-)
+      * [1.3 When ?](#13-when-)
+      * [1.4 Where ?](#14-where-)
+      * [1.5 Who ?](#15-who-)
+      * [1.6 How ?](#16-how-)
+   * [2. Overview &amp; Definitions](#2-overview--definitions)
+      * [2.1 take_test.sh](#21-take_testsh)
+      * [2.2 The candidate](#22-the-candidate)
+         * [2.2.1 Machine specification file](#221-machine-specification-file)
+         * [2.2.2 Candidate specification file](#222-candidate-specification-file)
+      * [2.3 Test specification file](#23-test-specification-file)
+   * [3. Getting Started](#3-getting-started)
+      * [3.1 Managing the GITHUB environment variables.](#31-managing-the-github-environment-variables)
+      * [3.2 take_test in your path](#32-take_test-in-your-path)
+   * [4. Workflow: Think globally develop locally](#4-workflow-think-globally-develop-locally)
+   * [5. Examples](#5-examples)
+      * [5.1 examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh](#51-examplesnwm_anasixmilecheyenneorigin_reg-v12-fixescandidate_spec_intelsh)
+      * [5.2 examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh](#52-examplesnwm_anasixmilecheyenneorigin_reg-v12-fixescandidate_spec_intelsh)
+   * [6. Deficiencies, on-going, &amp; future work](#6-deficiencies-on-going--future-work)
+   * [7. Advanced Usage](#7-advanced-usage)
+      * [7.1 Customizing &amp; Contributing](#71-customizing--contributing)
+      * [7.2 Custom Questions](#72-custom-questions)
 
 # 1. wrf\_hydro\_tests: Testing for the WRF-Hydro model. #
 
 
-## 1. Why? ##
+## 1.1 Why? ##
 
 *Why test the WRF-Hydro model?*
 
@@ -69,7 +60,7 @@ confidence:
 1. Probably more reasons.... 
 
 
-## 1. What ? ##
+## 1.2 What ? ##
 
 *What is wrf wrf\_hydro\_tests?* 
 
@@ -97,7 +88,7 @@ features yourself, please still log a feature request so that the
 development is coordinated. (See 
 
 
-## When ? ##
+## 1.3 When ? ##
 
 *When should I test?* 
 
@@ -111,7 +102,7 @@ customized by developers to focus only on certain aspects of the
 testing with each compile (covered in "Advanced Usage".)
 
 
-## Where ? ##
+## 1.4 Where ? ##
 
 *Where should I test?* 
 
@@ -136,16 +127,16 @@ include guidance to understanding (and potentially customizing) Docker
 usage (if necessary).
 
 
-## Who ? ##
+## 1.5 Who ? ##
 
 Every person who edits the WRF-Hydro source code. 
 
-## How ? ##
+## 1.6 How ? ##
 
 This is the main subject of this README, please read on.
 
 
-# Overview & Definitions #
+# 2. Overview & Definitions #
 
 Purpose of this section
 
@@ -156,7 +147,7 @@ Advanced usage (defining custom tests or other development) is
 deferred to a later section. 
 
 
-## `take_test.sh` ##
+## 2.1 `take_test.sh` ##
 
 A *candidate* takes a *test*. The take\_test name emphasizes that there
 are two parts: the taker and the test. The `take_test.sh` (bash)
@@ -189,7 +180,7 @@ The `take_test` script broadly handles the following tasks:
 1. Exiting
 
 
-## The candidate ##
+## 2.2 The candidate ##
 
 *The candidate is the most important aspect for new users to
 master*. The candidate is ALL the necessary parts to
@@ -206,7 +197,7 @@ these two files (and we employ this fact in Docker applications), we
 strongly encourage specifying all the necessary variables in the
 candidate files.
 
-### Machine specification file ###
+### 2.2.1 Machine specification file ###
 
 The file `template_machine_spec.sh` (in the top level) provides a
 template for the machine specifications. These should be installed
@@ -239,7 +230,7 @@ work. However, for each machine, this is is a one time problem even
 across all users of `wrf_hydro_tests` on that machine.
 
 
-### Candidate specification file ###
+### 2.2.2 Candidate specification file ###
 The file `template_candidate_spec.sh` (in the top level) needs
 tailored by the user to specifiy the more dynamic parts of the
 candidate. There are broad groups of "moving parts" to be specified
@@ -265,7 +256,7 @@ specification. For example, if only the compiler is changed, then the
 previous specification is invoked followed by a change to the desired
 compiler name. 
 
-## Test specification file ##
+## 2.3 Test specification file ##
 
 The second argument to `take_test` is the test specification or test
 specification file. There are pre-canned tests in the `tests/`
@@ -283,12 +274,12 @@ want to develop custom tests with custom questions. Questions are
 described in the Advanced Usage section below.
 
 
-# Getting Started #
+# 3. Getting Started #
 
 Before diving in to examples, we deal with some necessary details. 
 
 
-## Managing the GITHUB environment variables. ##
+## 3.1 Managing the GITHUB environment variables. ##
 
 In order to clone private repos (e.g. `wrf_hydro_nwm` or even
 `wrf_hydro_tests` currently, though this should go public shortly),
@@ -311,7 +302,7 @@ whitespace in the file. See
 for information on getting your github authtoken.
 
 
-## take_test in your path ##
+## 3.2 `take_test` in your path ##
 
 After you run some of the canned examples, you'll want to start
 calling `take_tests` in arbitrary locations where you put your own
@@ -329,7 +320,7 @@ alias take_test /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh
 ```
 
 
-# Think globally develop locally #
+# 4. Workflow: Think globally develop locally #
 
 The recommended development workflow is:
 
@@ -353,7 +344,7 @@ Note that code does NOT need to be committed to be tested under
 wrf\_hydro\_tests when running locally (ie not under CI).
    
 
-# Examples #
+# 5. Examples #
 
 We begin with an example configured for cheyenne. 
 
@@ -369,7 +360,7 @@ candidates in the same directory. The directory path specifies five of
 the top-level pieces of information which differentiate candidates.
 
 
-## 1. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
+## 5.1 `examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh` ##
 
 You do not need to be able to run this example to see the complete
 results. 
@@ -445,7 +436,7 @@ separate run directories for each configuration. These configurations
 have namelists which evolve over time. 
 
 
-## 2. examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh ##
+## 5.2 `examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh` ##
 
 This example is almost identical to the above except that we change
 the compiler. Note that the WALL_TIME variable is also left out as
@@ -456,7 +447,7 @@ inheritance could be leveraged more than we are doing currently,
 inside the directory structure we've established (but the inheritance
 is a fairly new feature, so we've not fully exploited it).
 
-# Deficiencies, on-going, & future work #
+# 6. Deficiencies, on-going, & future work #
 
 *Namelist management* As noted, the candidate specification file does
 not currently specify a model run-time configuration (set of namelist
@@ -485,9 +476,9 @@ programatically.
 the code. Because of their size, it is simply not feasible to keep
 domain files 
 
-# Advanced Usage #
+# 7. Advanced Usage #
 
-## Customizing & Contributing ##
+## 7.1 Customizing & Contributing ##
 
 Answer-changing code development:
 1. Actuall answer changing parts should be isolated to a single commit
@@ -497,7 +488,7 @@ wrf\_hydro\_tests as you are developing code and evaluating its
 impact. All such diagnostic testing can be used by others (and
 yourself) next time the same variables are being worked on.
 
-## Questions ##
+## 7.2 Custom Questions ##
 
 Questions may 
 
