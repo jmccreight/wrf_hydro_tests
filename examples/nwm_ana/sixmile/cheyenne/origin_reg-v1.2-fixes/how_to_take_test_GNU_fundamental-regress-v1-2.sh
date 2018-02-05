@@ -3,10 +3,9 @@
 # Under normal circumstances, this invokation
 # would just happen on the command line. 
 
-# The following is strongly suggested for your ~/.bashrc, where 
-# you specify the absolute path to take_test.sh on dependent on
-# your location of wrf_hydro_tests.
-#function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
+# Something like the following is strongly suggested for 
+# your ~/.bashrc (or similar for your ~/.cshrc) see README 
+# for more details. 
 WRF_HYDRO_TESTS_DIR=`readlink -e ../../../../../`
 function take_test { $WRF_HYDRO_TESTS_DIR/take_test.sh $@; }
 

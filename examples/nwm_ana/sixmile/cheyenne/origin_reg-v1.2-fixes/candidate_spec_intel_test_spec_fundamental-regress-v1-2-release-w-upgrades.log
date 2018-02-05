@@ -1,11 +1,12 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 01 14:04:04 MST
+Date                  : 2018 Feb 05 11:42:17 MST
 User                  : jamesmcc
-Machine               : cheyenne1
-wrf_hydro_tests commit: d923389742e5d2afd807df65a5c187f7972aed2f
+Machine               : cheyenne6
+wrf_hydro_tests commit: c45f115bc3d214d5ef507bdd8c026cffdcc9ee3b
 There are uncommitted changes to wrf_hydro_tests.
+machine spec file     : 
 candidateSpecFile     : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel.sh
 testSpecFile          : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/tests/fundamental-regress-v1-2-release-w-upgrades.sh
 Log file              : /glade/p/work/jamesmcc/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/cheyenne/origin_reg-v1.2-fixes/candidate_spec_intel_test_spec_fundamental-regress-v1-2-release-w-upgrades.log
@@ -86,7 +87,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158472.chadmin1
+PBS_JOBID: 4231968.chadmin1
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
@@ -102,7 +103,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158475.chadmin1
+PBS_JOBID: 4231969.chadmin1
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -128,7 +129,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158476.chadmin1
+PBS_JOBID: 4231974.chadmin1
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -205,7 +206,7 @@ wallTime = 00:05
 queue    = regular
 project  = NRAL0017
 
-PBS_JOBID: 4158483.chadmin1
+PBS_JOBID: 4232046.chadmin1
 [0;49;32mReference binary: run successful.[0m
 
 [0;49;32mQuestion: Do candidate results regress on to reference results?[0m
@@ -238,21 +239,18 @@ Files compared are in the directories:
 [7;49;32mLogging the candidateSpecFile.                                   [0m
 ---------------------------------------------------------------------------
 Machine spec group: 
-WRF_HYDRO_TESTS_DIR:
-/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
 
-GITHUB_USERNAME:
-jmccreight
-GITHUB_AUTHTOKEN:
-********************
+WRF_HYDRO_TESTS_DIR = /glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
 
-WRF_HYDRO_MODULES:
-intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2
+GITHUB_USERNAME = jmccreight
+GITHUB_AUTHTOKEN = ********************
 
-NETCDF:
-/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+WRF_HYDRO_MODULES = intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2
+
+NETCDF = /glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
 
 * Run group *
+
 WRF_HYDRO_RUN:
 qCleanFunc is a function
 qCleanFunc () 
@@ -284,63 +282,49 @@ qCleanFunc ()
 Candidate spec file group: 
 
 * Domain Group *
-domainSourceDir:
-/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
 
-domainRunDir:
-/glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental
+domainSourceDir = /glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
+
+domainRunDir = /glade/scratch/jamesmcc/sixmile_test_domain_run_fundamental
 
 * Compiler *
-WRF_HYDRO_COMPILER:
-intel
+
+WRF_HYDRO_COMPILER = intel
 
 * Run Group*
-TEST_WALL_TIME:
-00:05
 
-nCoresDefault:
-2
+TEST_WALL_TIME = 00:05
 
-nCoresTest:
-1
+nCoresDefault = 2
+
+nCoresTest = 1
 
 * Model compile options *
-WRF_HYDRO:
-1
-HYDRO_D:
-0
-SPATIAL_SOIL:
-1
-WRFIO_NCD_LARGE_FILE_SUPPORT:
-1
-WRF_HYDRO_RAPID:
-0
-HYDRO_REALTIME:
-1
-NCEP_WCOSS:
-0
-WRF_HYDRO_NUDGING:
-1
+
+WRF_HYDRO = 1
+HYDRO_D = 0
+SPATIAL_SOIL = 1
+WRFIO_NCD_LARGE_FILE_SUPPORT = 1
+WRF_HYDRO_RAPID = 0
+HYDRO_REALTIME = 1
+NCEP_WCOSS = 0
+WRF_HYDRO_NUDGING = 1
 
 * Repo Groups *
-REPO_DIR:
-/glade/scratch/jamesmcc/test_repos
+
+REPO_DIR = /glade/scratch/jamesmcc/test_repos
 
 ** Candidate repo subgroup **
-candidateFork:
-NCAR/wrf_hydro_nwm
-candidateBranchCommit:
-master
-candidateLocalPath:
 
+candidateFork = NCAR/wrf_hydro_nwm
+candidateBranchCommit = master
+candidateLocalPath =
 
 ** Reference repo subgroup **
-referenceFork:
-jmccreight/wrf_hydro_nwm
-referenceBranchCommit:
-v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
-referenceLocalPath:
 
+referenceFork = jmccreight/wrf_hydro_nwm
+referenceBranchCommit = v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
+referenceLocalPath =
 
 
 [7;49;32m=================================================================[0m
