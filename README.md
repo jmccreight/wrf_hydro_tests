@@ -128,17 +128,14 @@ script is a top-level driver routine which brings the two
 together. This is shown on the left-hand side in Figure 1 below. 
 
 <table class="image">
-    <caption align="bottom">Figure 1. Schematic overview of the wrf_hydro_tests system.</caption>
     <tr>
-        <td><img src="schematic.png" alt="Figure 1: wrf_hydro_tests schematic"/></td>
+        <td><img src="schematic.png" alt="Figure 1: wrf_hydro_tests
+        schematic"/></td>
+        Figure 1. Schematic overview of the wrf_hydro_tests system.
     </tr>
 </table>
 
 
-<figure class="image">
-    <img src="schematic.png" alt="Figure 1: wrf_hydro_tests schematic">
-    <figcaption>Figure 1. Schematic overview of the wrf_hydro_tests system.</figcaption>
-</figure>
 
 The first argument to `take_test` is the candidate specification and
 the second argument is the test specification. Running `take_tests`
