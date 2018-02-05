@@ -11,7 +11,7 @@ confidence:
 1. Protect production code.
 1. Check that _your_ development preserves key, tested
    requirements of the model (dont let someone else find your
-   bugs). Transfer responsibilty for not breaking the code to the
+   bugs). Distribute responsibilty for not breaking the code to the
    indivudal developers.
 1. Find bugs faster and when they occur, not after many more merges. 
 1. Continuous integration (CI) and periodic integration: Core hours
@@ -20,7 +20,7 @@ confidence:
 1. Reproducibility/communication: Just communicating about tests is
    complicated because there are literally about a hundred moving
    parts. Defining, managing, and logging the moving parts allows two
-   (or more developers) to reduce barriers to being on the same page
+   (or more) developers to reduce barriers to being on the same page
    and collaboratively managing bugs and feature development.
 1. Benchmarking and regression: The vast majority of code development
    does not involve changing the answers. For these cases, regression
@@ -28,7 +28,7 @@ confidence:
    confidence. When development does change the answers, this
    development should be isolated as possible (in terms of changes to
    the code) and the effects should be well-documented, or
-   "benchmarked". The testing framework places an emphasis
+   "benchmarked". The testing framework places an emphasis on
    benchmarking answer-changing development on upstream repository.
 1. Probably more reasons.... 
 
@@ -37,16 +37,21 @@ confidence:
 
 *What is wrf wrf\_hydro\_tests?* 
 
-The wrf\_hydro\_tests software is
-under active development. That means that it is evolving and it can
-evolve to meet your needs if you become involved. 
+The wrf\_hydro\_tests software is _the_ code for testing the WRF-Hydro
+model and the National Water Model instance of WRF-Hydro. 
+
+The testing code base is under active development. That means that it
+is evolving and it can evolve to meet your needs if you become involved. 
 
 Currently: 
 * Testing of the offline WRF-Hydro model only. 
 * Engineering tests are limited to the fundamentals, but will expand
   with increased community usage.
+* The system is used for on-demand, CI (ising CircleCI), and periodic
+  testing. 
 * There is flexibilty for users to develop their own custom tests and
-  questions (covered in the Advanced usage section).  
+  questions (covered in the "Advanced Usage" section).
+* Users are encouraged to develop tests that can be used by others.
 * The full set of required features has not yet been implemented
   (covered in the "Deficiencies, on-going, & future work" section").
   
@@ -61,23 +66,25 @@ development is coordinated. (See
 *When should I test?* 
 
 Test with every compile. Using selected toy domains, testing with each
-compile results in minimal added overhead. This can be termed "Testing
-for the price of compiling." Except for cases when compiling is the
-focus of the development activity, this IS the way for developers to
-compile. Tests can also be customized by developers to focus only on
-certain aspects of the testing with each compile. 
+compile results in minimal added overhead. This can be termed "testing
+for the price of compiling." *The wrf\_hydro\_tests function*
+`take_test` *should replace your compile step.* Except for cases when
+compiling is the focus of the development activity, this IS the way
+for developers to compile: compile + test. Tests can also be easily 
+customized by developers to focus only on certain aspects of the
+testing with each compile (covered in "Advanced Usage".)
 
 
 ## Where ? ##
 
 *Where should I test?* 
 
-Testing on a machine near you! The wrf\_hydro\_tests code is meant to
+Test on a machine near you! The wrf\_hydro\_tests code is meant to
 work on any linux distribution. The requirements are bash4, python3,
 and the dependencies of the WRF-Hydro model. It has been run on Docker
 and on Chyenne (using qsub requires the wrf\_hydro\_tools repository
-at this time) and is meant to be highly portable between different
-environments. 
+at this time) and is intended to be portable between different
+linux environments. 
 
 It is *highly* recommended to develop and test primarily on a local
 machine (laptop or desktop), using Docker if necessary, so that tests
@@ -99,7 +106,7 @@ Every person who edits the WRF-Hydro source code.
 
 ## How ? ##
 
-This is the main subject of this README, please keep reading.
+This is the main subject of this README, please read on.
 
 
 # Overview & Definitions #
@@ -116,11 +123,18 @@ deferred to a later section.
 ## `take_test.sh` ##
 
 A *candidate* takes a *test*. The take\_test name emphasizes that there
-are two parts: the taker and the test. The `take_test` script is a
-top-level driver routine which brings the two together. This is shown
-on the left-hand side in Figure 1 below. 
+are two parts: the taker and the test. The `take_test.sh` (bash)
+script is a top-level driver routine which brings the two
+together. This is shown on the left-hand side in Figure 1 below. 
 
-![Figure 1](schematic.png "Figure1: wrf_hydro_tests schematic")
+<table class="image">
+<caption align="bottom">{{ Figure 1. Schematic overview of the
+wrf\_hydro\_tests system. }}</caption>
+<tr><td><img src="{{ schematic.png }}" alt="{{ Figure1: wrf_hydro_tests schematic }}"/></td></tr>
+</table>
+
+
+![Figure 1](schematic.png "")
 
 The first argument to `take_test` is the candidate specification and
 the second argument is the test specification. Running `take_tests`
