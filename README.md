@@ -130,8 +130,10 @@ together. This is shown on the left-hand side in Figure 1 below.
 <table class="image">
     <tr>
         <td><img src="schematic.png" alt="Figure 1: wrf_hydro_tests
-        schematic"/></td>
-        Figure 1. Schematic overview of the wrf_hydro_tests system.
+        schematic"/>
+        <br>
+        <b>Figure 1. Schematic overview of the wrf_hydro_tests system.</b>
+        </td>
     </tr>
 </table>
 
