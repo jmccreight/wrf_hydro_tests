@@ -135,13 +135,12 @@ Every person who edits the WRF-Hydro source code.
 
 This is the main subject of this README, please read on.
 
-
 # 2. Overview & Definitions #
 
 The purpose of this section is to define the terms used in the design
 of the wrf\_hydro\_tests. Introduce the basics so that new users can
-become familiar with basic usage. [Figure 1](#2-overview--definitions) shows the components of the
-system and roughly groups these into "basic usage" and "advanced usge".
+become familiar with basic usage. [Figure 1](#2-overview--definitions)
+shows the components of the system and roughly groups these into "basic usage" and "advanced usge".
 
 <table class="image">
     <tr>
