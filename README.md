@@ -261,7 +261,7 @@ specification. For example, if only the compiler is changed, then the
 previous specification is invoked followed by a change to the desired
 compiler name. 
 
-## 2.3 Test specification file ##
+## 2.3 Test specification ##
 
 The second argument to `take_test` is the test specification or test
 specification file. There are pre-canned tests in the `tests/`
