@@ -11,7 +11,7 @@ export WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests
 
 #export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
 #export GITHUB_USERNAME=jmccreight
-# Set by CircleCI web interface.
+# These are passed to docker by the host. 
 
 export NETCDF=$(dirname `nc-config --includedir`)
 # REQUIRED

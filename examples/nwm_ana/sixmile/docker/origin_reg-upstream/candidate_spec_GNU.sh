@@ -62,7 +62,7 @@ export nCoresTest=1
 
 
 ###########################################################################
-# * Model compile options *
+# * Model compile options group *
 
 export WRF_HYDRO=1
 export HYDRO_D=0
@@ -93,6 +93,7 @@ export candidateFork=NCAR/wrf_hydro_nwm
 export candidateBranchCommit=master
 # Default = master
 # A branch or commit on candidateFork. 
+
 # --- OR ---
 
 export candidateLocalPath=''
