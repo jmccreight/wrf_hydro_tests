@@ -1,21 +1,108 @@
 # wrf\_hydro\_tests: Testing for the WRF-Hydro model. #
 
-Why use wrf\_hydro\_tests?
 
-_Testing for the price of compiling:_ Developers can run engineering
-tests with each compile with minimal added overhead when using toy
-domains. This IS the way for developers to compile.
+## Why? ##
 
-_Testing on a machine near you:_ This code is meant to work on any
-linux distribution. The requirements are bash, python3, and the
-dependencies of the WRF-Hydro model. It has been run on Docker and on
-Chyenne (using qsub requires the wrf\_hydro\_tools repository at this
-time) and is meant to be highly portable between different
-environments. Example usages on both Docker and Cheyenne are provided
-in the `examples/` directory.
+*Why test the WRF-Hydro model?*
+
+Test for your sanity and efficiency. Develop faster and with more
+confidence:
+
+1. Protect production code.
+1. Check that _your_ development preserves key, tested
+   requirements of the model (dont let someone else find your
+   bugs). Transfer responsibilty for not breaking the code to the
+   indivudal developers.
+1. Find bugs faster and when they occur, not after many more merges. 
+1. Continuous integration (CI) and periodic integration: Core hours
+   are much cheaper than person hours. Run automated checks of the
+   code as frequently as necessary to reduce wasted person time.
+1. Reproducibility/communication: Just communicating about tests is
+   complicated because there are literally about a hundred moving
+   parts. Defining, managing, and logging the moving parts allows two
+   (or more developers) to reduce barriers to being on the same page
+   and collaboratively managing bugs and feature development.
+1. Benchmarking and regression: The vast majority of code development
+   does not involve changing the answers. For these cases, regression
+   testing helps developers implement code changes with
+   confidence. When development does change the answers, this
+   development should be isolated as possible (in terms of changes to
+   the code) and the effects should be well-documented, or
+   "benchmarked". The testing framework places an emphasis
+   benchmarking answer-changing development on upstream repository.
+1. Probably more reasons.... 
 
 
-# Overview / Definitions #
+## What ? ##
+
+*What is wrf wrf\_hydro\_tests?* 
+
+The wrf\_hydro\_tests software is
+under active development. That means that it is evolving and it can
+evolve to meet your needs if you become involved. 
+
+Currently: 
+* Testing of the offline WRF-Hydro model only. 
+* Engineering tests are limited to the fundamentals, but will expand
+  with increased community usage.
+* There is flexibilty for users to develop their own custom tests and
+  questions (covered in the Advanced usage section).  
+* The full set of required features has not yet been implemented
+  (covered in the "Deficiencies, on-going, & future work" section").
+  
+Please direct all bug reports and feature requests to the github
+issues for the wrf\_hydro\_tests repo. If you begin development on
+features yourself, please still log a feature request so that the
+development is coordinated. (See 
+
+
+## When ? ##
+
+*When should I test?* 
+
+Test with every compile. Using selected toy domains, testing with each
+compile results in minimal added overhead. This can be termed "Testing
+for the price of compiling." Except for cases when compiling is the
+focus of the development activity, this IS the way for developers to
+compile. Tests can also be customized by developers to focus only on
+certain aspects of the testing with each compile. 
+
+
+## Where ? ##
+
+*Where should I test?* 
+
+Testing on a machine near you! The wrf\_hydro\_tests code is meant to
+work on any linux distribution. The requirements are bash4, python3,
+and the dependencies of the WRF-Hydro model. It has been run on Docker
+and on Chyenne (using qsub requires the wrf\_hydro\_tools repository
+at this time) and is meant to be highly portable between different
+environments. 
+
+It is *highly* recommended to develop and test primarily on a local
+machine (laptop or desktop), using Docker if necessary, so that tests
+are fast (not in the queue), frequent, and free. Combined, with
+periodically moving the code and running tests on supercomupters 
+(e.g. Cheyenne where one can test larger domains and the intel
+compiler), the testing strategy is both efficient and robust.
+
+Example usages on both Docker and Cheyenne are provided in the
+`examples/` directory. Running with docker also requires Docker to be
+installed. There are several self-contained Docker examples which
+include guidance to understanding (and potentially customizing) Docker
+usage (if necessary).
+
+
+## Who ? ##
+
+Every person who edits the WRF-Hydro source code. 
+
+## How ? ##
+
+This is the main subject of this README, please keep reading.
+
+
+# Overview & Definitions #
 
 Purpose of this section
 
@@ -312,9 +399,46 @@ inheritance could be leveraged more than we are doing currently,
 inside the directory structure we've established (but the inheritance
 is a fairly new feature, so we've not fully exploited it).
 
+# Deficiencies, on-going, & future work #
 
+*Namelist management* As noted, the candidate specification file does
+not currently specify a model run-time configuration (set of namelist
+options). Run-time configurations are currently static, which means
+that different domain run directories have to be specified for
+different model run-time configurations (the namelists live inside 
+the established run directories for each domain). 
 
-# Advanced #
+Work has begun to integrate JSON collections of preconfigured
+namelists in to the code repository so that configurations can
+
+1. be named,
+1. be generated programatically at run time,
+1. evolve with the code base, 
+1. be guaranteed to work and produce consistent results across versions.
+
+Perhaps the biggest probelm this will solve is tracking a given
+configurations specific namelists across the development history (and
+guaranteeing this by testing the code with the namelist maintained
+across versions). The flexibility of mixing domains and configurations
+will tremendously simply the complexity of testing as well. The above
+work will also produce tools for generating and comparing namelists
+programatically. 
+
+*Domain file management* Domain files are continually evolving with
+the code. Because of their size, it is simply not feasible to keep
+domain files 
+
+# Advanced Usage #
+
+## Customizing & Contributing ##
+
+Answer-changing code development:
+1. Actuall answer changing parts should be isolated to a single commit
+1. Should be diagnosed (on CONUS). 
+You should write diagnostic tests in the flexible framework of
+wrf\_hydro\_tests as you are developing code and evaluating its
+impact. All such diagnostic testing can be used by others (and
+yourself) next time the same variables are being worked on.
 
 ## Questions ##
 
@@ -356,44 +480,7 @@ questions/
       constructing domains. 
 	* 
 
-## Deficiencies, on-going, & future work
 
-*Namelist management* As noted, the candidate specification file does
-not currently specify a model run-time configuration (set of namelist
-options). Run-time configurations are currently static, which means
-that different domain run directories have to be specified for
-different model run-time configurations (the namelists live inside 
-the established run directories for each domain). 
-
-Work has begun to integrate JSON collections of preconfigured
-namelists in to the code repository so that configurations can
-
-1. be named,
-1. be generated programatically at run time,
-1. evolve with the code base, 
-1. be guaranteed to work and produce consistent results across versions.
-
-Perhaps the biggest probelm this will solve is tracking a given
-configurations specific namelists across the development history (and
-guaranteeing this by testing the code with the namelist maintained
-across versions). The flexibility of mixing domains and configurations
-will tremendously simply the complexity of testing as well. The above
-work will also produce tools for generating and comparing namelists
-programatically. 
-
-*Domain file management* Domain files are continually evolving with
-the code. Because of their size, it is simply not feasible to keep
-domain files 
-
-
-# Customizing & Contributing
-Answer-changing code development:
-1. Actuall answer changing parts should be isolated to a single commit
-1. Should be diagnosed (on CONUS). 
-You should write diagnostic tests in the flexible framework of
-wrf\_hydro\_tests as you are developing code and evaluating its
-impact. All such diagnostic testing can be used by others (and
-yourself) next time the same variables are being worked on.
 
 
 
