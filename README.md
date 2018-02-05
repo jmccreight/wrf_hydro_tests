@@ -77,7 +77,7 @@ Currently:
 * The system is used for on-demand, CI (ising CircleCI), and periodic
   testing. 
 * There is flexibilty for users to develop their own custom tests and
-  questions (covered in the "Advanced Usage" section).
+  questions (covered in the [Advanced Usage](#7-advanced-usage) section).
 * Users are encouraged to develop tests that can be used by others.
 * The full set of required features has not yet been implemented
   (covered in the "Deficiencies, on-going, & future work" section").
@@ -99,7 +99,7 @@ for the price of compiling." *The wrf\_hydro\_tests function*
 compiling is the focus of the development activity, this IS the way
 for developers to compile: compile + test. Tests can also be easily 
 customized by developers to focus only on certain aspects of the
-testing with each compile (covered in "Advanced Usage".)
+testing with each compile (covered in [Advanced Usage](#7-advanced-usage).)
 
 
 ## 1.4 Where ? ##
@@ -138,21 +138,10 @@ This is the main subject of this README, please read on.
 
 # 2. Overview & Definitions #
 
-Purpose of this section
-
-1. Define terms ("test" can be use in multiple, ambiguous ways),
-1. Introduce users to what they need to get started. 
-
-Advanced usage (defining custom tests or other development) is
-deferred to a later section. 
-
-
-## 2.1 `take_test.sh` ##
-
-A *candidate* takes a *test*. The take\_test name emphasizes that there
-are two parts: the taker and the test. The `take_test.sh` (bash)
-script is a top-level driver routine which brings the two
-together. This is shown on the left-hand side in Figure 1 below. 
+The purpose of this section is to define the terms used in the design
+of the wrf\_hydro\_tests. Introduce the basics so that new users can
+become familiar with basic usage. [Figure 1](#2-overview--definitions) shows the components of the
+system and roughly groups these into "basic usage" and "advanced usge".
 
 <table class="image">
     <tr>
@@ -164,12 +153,24 @@ together. This is shown on the left-hand side in Figure 1 below.
     </tr>
 </table>
 
+Advanced usage (defining custom tests and other development) is
+deferred to a [later section](#7-advanced-usage). 
 
 
-The first argument to `take_test` is the candidate specification and
-the second argument is the test specification. Running `take_tests`
-with no arguments (or less than 2 arguments) produces help on both its
-arguments. 
+## 2.1 `take_test.sh` ##
+
+A *candidate* takes a *test*. The take\_test name emphasizes that there
+are two parts: the taker and the test. The `take_test.sh` (bash)
+script is a top-level driver routine which brings the two
+together. The `take_tests` script is shown on the left-hand side in
+[Figure 1](#2-overview--definitions), above.
+
+The first argument to `take_test` is the candidate specification file
+and the second argument is the test specification. These two inputs
+are shown in [Figure 1](#2-overview--definitions) with their
+relationship to other parts of the system. Note that running
+`take_tests` with no arguments (or less than 2 arguments) produces
+help on both its arguments. 
 
 The `take_test` script broadly handles the following tasks:
 
@@ -190,7 +191,10 @@ take a test. The particulars of the candidate are recorded in two files:
 1. Candidate specification file: the more dynamic parts.
 
 These two files shoud uniquely identify a candidate. If you
-dont find that to be true, please log an issue! 
+dont find that to be true, please log an issue! The two files are
+shown in [Figure 1](#2-overview--definitions), grouped by the blue box
+that indicates the abstract idea of the candidate as consisting of the
+two files. 
 
 Though wrf\_hydro\_tests can use environment variables defined outside
 these two files (and we employ this fact in Docker applications), we
@@ -236,11 +240,12 @@ tailored by the user to specifiy the more dynamic parts of the
 candidate. There are broad groups of "moving parts" to be specified
 for a candidate:
 
+1. (Configuration - to be implemented)
 1. Domain group
 1. Compiler
-1. Numer of cores group
 1. Model compile options group
 1. Candidate repository group
+1. Numer of cores group
 1. Reference repository group
 
 There are currently a total of 22 variables which fall mostly in these
