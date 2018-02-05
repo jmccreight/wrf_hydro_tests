@@ -1,3 +1,7 @@
+echo
+echo -e "\e[0;49;32m-----------------------------------\e[0m"
+echo -e "\e[7;49;32m${questionFileName}:\e[0m"
+echo
 ###################################
 ## Clone reference fork into repos directory
 ###################################
@@ -10,7 +14,7 @@ if [[ -z $referenceLocalPath ]]; then
 	fi
 	mkdir -p $refRepoDir
 	cd $refRepoDir
-	echo -e "\e[0;49;32m-----------------------------------\e[0m"
+#	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
 	echo -e "\e[7;49;32mReference branch/commit: $referenceBranchCommit\e[0m"
 	git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
@@ -24,7 +28,7 @@ if [[ -z $referenceLocalPath ]]; then
 else
     cd $referenceLocalPath
     echo
-    echo -e "\e[0;49;32m-----------------------------------\e[0m"
+#    echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mReference fork: LOCAL: `pwd` \e[0m"
     echo -e "\e[0;49;32mReference branch:\e[0m    `git rev-parse --abbrev-ref HEAD`"
     gitDiffLen=`git diff | wc -l`
@@ -44,8 +48,6 @@ fi
 ## This should, in theory, never fail. Though could be possible is unexpected/untested
 ## compile options are passed to the reference build.
 echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32m${questionFileName}:\e[0m"
 echo -e "\e[0;49;32mCompiling reference binary.\e[0m"
 ## This should, in theory, never fail. Though could be possible is unexpected/untested
 ## compile options are passed to the reference build.

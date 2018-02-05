@@ -283,11 +283,15 @@ candidate specification files. We recommend the following addition to
 your ~/.bashrc or ~/.bash_profile. 
 
 ```
-## wrf_hydro_tests
 function take_test { /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh $@; }
+```
+If you are c-shell variant users, then please add an alias like the
+following to your ~/.cshrc (or similar file): 
 
 ```
-If you are not a bash user, you should let us know what works for you.
+alias take_test /glade/u/home/`whoami`/some_path/wrf_hydro_tests/take_test.sh
+```
+
 
 # Think globally develop locally #
 
