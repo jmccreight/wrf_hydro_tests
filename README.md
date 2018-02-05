@@ -129,10 +129,12 @@ usage (if necessary).
 
 ## 1.5 Who ? ##
 
+*Who uses wrf\_hydro\_tests?* 
 Every person who edits the WRF-Hydro source code. 
 
 ## 1.6 How ? ##
 
+*How do I use wrf\_hydro\_tests?* 
 This is the main subject of this README, please read on.
 
 # 2. Overview & Definitions #
