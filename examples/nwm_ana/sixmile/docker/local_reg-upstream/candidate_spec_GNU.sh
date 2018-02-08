@@ -95,7 +95,8 @@ export candidateBranchCommit=master
 # A branch or commit on candidateFork. 
 # --- OR ---
 
-export candidateLocalPath='/wrf_hydro_nwm'
+export candidateLocalPath=''
+#/wrf_hydro_nwm'
 # Default ='' : NOT used.
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH candidateFork and candidateBranchCommit if set. 

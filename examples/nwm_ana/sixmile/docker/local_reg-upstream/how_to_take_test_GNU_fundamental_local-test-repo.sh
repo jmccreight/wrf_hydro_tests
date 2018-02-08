@@ -32,9 +32,11 @@ WRF_HYDRO_NWM_DIR=/Users/jamesmcc/WRF_Hydro/wrf_hydro_nwm_myFork/
 docker run -it \
        -e GITHUB_USERNAME=$GITHUB_USERNAME \
        -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
+       -e GITHUB_SSH_PRIV_KEY=/.ssh/id_rsa_chimayo_ucar \
        -v $WRF_HYDRO_TESTS_DIR:/wrf_hydro_tests \
        -v `pwd`:/test_specs_logs \
        -v $WRF_HYDRO_NWM_DIR:/wrf_hydro_nwm \
+       -v ~/.ssh:/.ssh \
        wrfhydro/domains:sixmile \
        /wrf_hydro_tests/take_test.sh \
        /test_specs_logs/candidate_spec_GNU.sh \
