@@ -17,7 +17,9 @@
 
 ###########################################################################
 # * Machine spec file path *
-export WRF_HYDRO_TESTS_MACHINE_SPEC=''
+
+
+export WRF_HYDRO_TESTS_MACHINE_SPEC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/machine_spec.sh"
 # Default (if not set) = ~/.wrf_hydro_tests_machine_spec.sh
 # We recommend the default. If using an alternative location, then
 # variable consists of the path/file for the machine specification. 
@@ -29,7 +31,7 @@ export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
-export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_fundamental
+export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_reg-v1.2-fixes
 # REQUIRED if NOT running in docker (i.e. locally):
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # Default = domainSourceDir if on docker.
@@ -81,7 +83,7 @@ export WRF_HYDRO_NUDGING=1
 ###########################################################################
 # * Repo groups *
 
-export REPO_DIR=/glade/scratch/`whoami`/test_repos
+export REPO_DIR=/glade/scratch/`whoami`/remote_repos
 # Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
 
 # ** Candidate repo subgroup **
@@ -113,7 +115,6 @@ export referenceFork=jmccreight/wrf_hydro_nwm
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 
 export referenceBranchCommit=v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
-#master
 # Default = master
 # A branch or commit on referenceFork. 
 # --- OR ---
