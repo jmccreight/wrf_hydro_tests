@@ -63,13 +63,9 @@ fi
 ###################################
 ## Setup github authitcation
 ###################################
-if [[ -z ${GITHUB_USERNAME} ]]; then
-    echo "The required environment variable GITHUB_USERNAME has 
-          not been supplied. Exiting."
-    exit 1
-fi
 
 if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
+
     if [ -z `printenv | grep SSH_AGENT_PID` ]; then
         echo "Initialising new SSH agent..."
         ssh-agent -k 
@@ -77,16 +73,27 @@ if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
         ssh-add $GITHUB_SSH_PRIV_KEY
     fi
     export GIT_PROTOCOL=ssh
-elif [[ -z ${GITHUB_AUTHTOKEN} ]]; then
-    echo "The required environment variable GITHUB_AUTHTOKEN has 
-          not been supplied. (A local ssh private key has also not 
-          been supplied). You will be required to authenticate 
-          over  https."
-    export authInfo=${GITHUB_USERNAME}
-    export GIT_PROTOCOL=https
-else 
-    export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
-    export GIT_PROTOCOL=https
+
+else
+
+    if [[ -z ${GITHUB_USERNAME} ]]; then
+        echo "The required environment variable GITHUB_USERNAME has 
+               not been supplied. Exiting."
+        exit 1
+    fi
+
+    if [[ -z ${GITHUB_AUTHTOKEN} ]]; then
+        echo "The required environment variable GITHUB_AUTHTOKEN has 
+               not been supplied. (A local ssh private key has also not 
+          bee  n supplied). You will be required to authenticate 
+          over    https."
+        export authInfo=${GITHUB_USERNAME}
+        export GIT_PROTOCOL=https
+    else 
+        export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+        export GIT_PROTOCOL=https
+    fi
+    
 fi
 
 

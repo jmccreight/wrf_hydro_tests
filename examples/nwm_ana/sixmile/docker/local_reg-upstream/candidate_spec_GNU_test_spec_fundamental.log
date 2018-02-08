@@ -1,10 +1,10 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 08 21:29:09 UTC
+Date                  : 2018 Feb 08 21:58:54 UTC
 User                  : root
-Machine               : e59696e08e70
-wrf_hydro_tests commit: 84a1ed99a6f3fa8d0998d67691bf64d70e1a9589
+Machine               : 20691986454a
+wrf_hydro_tests commit: d590ad79eba61dbecc0785dd6c006b02fddf1d43
 There are uncommitted changes to wrf_hydro_tests.
 machine spec file     : /test_specs_logs/machine_spec.sh
 candidateSpecFile     : /test_specs_logs/candidate_spec_GNU.sh
@@ -22,7 +22,7 @@ Will echo candidateSpecFile to log at end.
 [7;49;32mCandidate fork: NCAR/wrf_hydro_nwm[0m
 [7;49;32mCandidate branch/commit: master[0m
 Cloning into '/root/test_repos/candidate'...
-Warning: Permanently added 'github.com,192.30.253.113' (RSA) to the list of known hosts.
+Warning: Permanently added 'github.com,192.30.253.112' (RSA) to the list of known hosts.
 Already on 'master'
 Your branch is up-to-date with 'origin/master'.
 [0;49;32mRepo moved to[0m /root/test_repos/candidate
@@ -103,14 +103,14 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
 Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-29-30.stdout 2> 2018-02-08_21-29-30.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-59-17.stdout 2> 2018-02-08_21-59-17.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
 Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-29-31.stdout 2> 2018-02-08_21-29-31.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-59-18.stdout 2> 2018-02-08_21-59-18.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
@@ -127,7 +127,7 @@ All restart file comparisons pass
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
 Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-08_21-29-32.stdout 2> 2018-02-08_21-29-32.stderr
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-08_21-59-18.stdout 2> 2018-02-08_21-59-18.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
@@ -149,6 +149,7 @@ All restart file comparisons pass
 [7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
 [7;49;32mReference branch/commit: 95ff36990801de0a3a819001d1fa9573bca3cfec[0m
 Cloning into '/root/test_repos/reference'...
+Warning: Permanently added the RSA host key for IP address '192.30.253.113' to the list of known hosts.
 Note: checking out '95ff36990801de0a3a819001d1fa9573bca3cfec'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -233,7 +234,7 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 [0;49;32mReference binary: compilation under GNU successful.[0m
 
 [0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-29-47.stdout 2> 2018-02-08_21-29-47.stderr
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-08_21-59-34.stdout 2> 2018-02-08_21-59-34.stderr
 [0;49;32mReference binary: run successful.[0m
 
 [0;49;32mQuestion: Do candidate results regress on to reference results?[0m
