@@ -4,7 +4,7 @@
 #          variables defined therein.
 
 
-export WRF_HYDRO_TESTS_DIR=/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
+export WRF_HYDRO_TESTS_DIR=/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests_2
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
@@ -89,13 +89,13 @@ function qCleanFunc
 ## This function maybe highly tailored to qsub on cheyenne.
 
 
-if [[ $HOSTNAME == *cheyenne* ]]; then 
-    export -f qCleanFunc
-    export WRF_HYDRO_RUN=qCleanFunc
-else 
+#if [[ $HOSTNAME == *cheyenne* ]]; then 
+#    export -f qCleanFunc
+#    export WRF_HYDRO_RUN=qCleanFunc
+#else 
     export -f mpiRunFunc
     export WRF_HYDRO_RUN=mpiRunFunc
-fi
+#fi
 # REQUIRED: export -f funcName
 # First the desired function must be exported.
 # REQUIRED: export WRF_HYDRO_RUN=funcName

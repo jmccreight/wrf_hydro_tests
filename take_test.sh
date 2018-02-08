@@ -1,7 +1,8 @@
 #!/bin/bash
 
+TAKE_TEST_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 currentTestTags=\
-`for i in $WRF_HYDRO_TESTS_DIR/tests/*.sh; do 
+`for i in $TAKE_TEST_DIR/tests/*.sh; do 
 echo "           "$(basename $i) | rev | cut -c4- | rev; 
 done`
 
@@ -41,10 +42,9 @@ testSpecFile=`readlink -e ${2}`
 # Establish the candidate variables.
 source $candidateSpecFile
 if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
-    source ~/.wrf_hydro_tests_machine_spec.sh
-else 
-    source $WRF_HYDRO_TESTS_MACHINE_SPEC
+    WRF_HYDRO_TESTS_MACHINE_SPEC=~/.wrf_hydro_tests_machine_spec.sh
 fi
+source $WRF_HYDRO_TESTS_MACHINE_SPEC
 
 #does testSpecFile exist? If not, does its tag yield a file in the repo?
 # If $2 was not a file, then $testSpecFile will be null
