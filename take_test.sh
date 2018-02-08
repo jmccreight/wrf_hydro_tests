@@ -24,7 +24,9 @@ Arguments:
         questions) to run on the candidate, 
      or 
      2) A known tag for a canned test. The
-        current list of tags: 
+        current list of tags (relative to 
+        where take_test lives, not necessarily
+        the same as $WRF_HYDRO_TESTS_DIR): 
 
 $currentTestTags
 "
