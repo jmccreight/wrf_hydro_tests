@@ -86,12 +86,12 @@ export REPO_DIR=/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/remote_repos
 
 # ** Candidate repo subgroup **
 
-export candidateFork=NCAR/wrf_hydro_nwm
+export candidateFork=jmccreight/wrf_hydro_nwm
 # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
 # Candidate repository is the one you have been working on. It may come from github or a local path.
 # A named fork on github. 
 
-export candidateBranchCommit=master
+export candidateBranchCommit=config-fix
 # Default = master
 # A branch or commit on candidateFork. 
 # --- OR ---
