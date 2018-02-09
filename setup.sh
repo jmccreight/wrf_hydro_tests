@@ -124,8 +124,13 @@ else
     message="\e[7;49;32mConfiguration information:\e[0m"
     echo -e "$message"
     echo
-    echo "mpif90 --version:"
-    mpif90 --version
+    if [[ $HOSTNAME != *tfe* ]]; then
+	echo "mpif90 --version:"
+	mpif90 --version
+    else
+	echo "mpiifort --version:"
+	mpiifort --version
+    fi	
     echo 
     echo "nc-config --version --fc --fflags --flibs:"
     nc-config --version --fc --fflags --flibs
@@ -133,15 +138,23 @@ fi
 
 
 ###################################
-## Compiler / macros
+## Check the compiler is what was requested
 ###################################
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
     export MACROS_FILE=macros.mpp.ifort
-    mpif90 --version | grep -i intel > /dev/null 2>&1 || {
-        echo 'The requested compiler was not found, exiting.'
-        exit 1
-    }
-fi 
+    if [[ $HOSTNAME != *tfe* ]]; then
+	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    else
+	mpififort --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    fi
+
+fi
 
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
     export MACROS_FILE=macros.mpp.gfort
@@ -150,6 +163,3 @@ if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
         exit 1
     }
 fi 
-
-echo "mpif90 --version:"
-mpif90 --version
