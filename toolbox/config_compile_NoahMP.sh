@@ -9,25 +9,10 @@
 ## TODO JLM: enforce that basename is NDHMS?
 
 #############################################
-## Construct our own mpi90 macros file
+## Configure
 #############################################
-## TODO: how platform independent is this? should be fine. but check.
-
-echo "NETCDF_INC = ${NETCDF}/include" > macros.tmp
-echo "NETCDF_LIB = ${NETCDF}/lib" >> macros.tmp
-echo "NETCDFLIB  = -L\$(NETCDF_LIB) -lnetcdff -lnetcdf" >> macros.tmp
-
-if [[ -e macros ]]; then rm -f macros; fi
-cp arc/${MACROS_FILE} macros 
-cp arc/Makefile.mpp Makefile.comm
-
-if [[ ! -e lib ]]; then mkdir lib; fi
-if [[ ! -e mod ]]; then mkdir mod; fi
-
-if [[ -e macros.tmp ]]; then
-    cat macros macros.tmp > macros.a
-    rm -f macros.tmp; mv macros.a macros
-fi
+if [[ $WRF_HYDRO_COMPILER == GNU ]];   then ./configure gfort;  fi
+if [[ $WRF_HYDRO_COMPILER == intel ]]; then ./configure ifort;  fi
 
 #############################################
 ## Compile
@@ -66,12 +51,13 @@ ln -sf CPL/NoahMP_cpl LandModel_cpl
 make clean 2>/dev/null 1>/dev/null
 rm -f Run/wrf_hydro_NoahMP.exe 
 
-#echo "Compiling, showing only standard error..."
+echo "Compiling, showing only standard error..."
 make 1>/dev/null
 
 if [[ $? -eq 0 ]]; then
     echo
     echo '*****************************************************************'
+    echo
     echo "Make was successful"
 else 
     echo
@@ -80,11 +66,6 @@ else
     echo "Make NOT successful"
     exit 1
 fi
-
-echo '*****************************************************************'
-echo "The envrionment variables use in the compile (alphabetically) AGAIN:"
-henv
-echo '*****************************************************************'
-echo 
+echo
 
 exit 0
