@@ -25,7 +25,7 @@ export WRF_HYDRO_TESTS_MACHINE_SPEC='/home/docker/wrf_hydro_tests/CI/machine_spe
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/home/docker/test_domain/
+export domainSourceDir=/home/docker/domain/
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
