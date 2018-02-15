@@ -25,7 +25,7 @@ export WRF_HYDRO_TESTS_MACHINE_SPEC='/wrf_hydro_ci/wrf_hydro_tests/CI/machine_sp
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/wrf_hydro_ci/test_domain/
+export domainSourceDir=/home/docker/domain/
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
@@ -81,7 +81,7 @@ export WRF_HYDRO_NUDGING=1
 ###########################################################################
 # * Repo groups *
 
-export REPO_DIR=/wrf_hydro_ci/repos/
+export REPO_DIR=/home/docker/repos/
 # Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
 
 # ** Candidate repo subgroup **
@@ -96,7 +96,7 @@ export candidateBranchCommit=''
 # A branch or commit on candidateFork. 
 # --- OR ---
 
-export candidateLocalPath=/wrf_hydro_ci/repos/candidate
+export candidateLocalPath=/home/docker/repos/candidate
 # Default ='' : NOT used.
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH candidateFork and candidateBranchCommit if set. 
