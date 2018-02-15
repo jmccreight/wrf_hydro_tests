@@ -222,9 +222,9 @@ setup. There is some conditional logic for modules on cheyenne, for
 both GNU and intel compiler choices. 
 
 In the "Getting Started" section below, there are detailed
-instructions on setting up automated github authentication. If you
-need to clone any private repositories, this will be required. This
-will likely be the most foreign step of the entire process for users.
+instructions on github authentication. We recommend using the github
+authtoken approach if you need to clone any private repositories, but 
+manual authentication over https and ssh methods are also available. 
 
 The function used to run the model is one of the more complicated
 pieces of this file. When `mpirun` can be used, there is a function
@@ -289,23 +289,42 @@ Before diving in to examples, we deal with some necessary details.
 
 In order to clone private repos (e.g. `wrf_hydro_nwm` or even
 `wrf_hydro_tests` currently, though this should go public shortly),
-without providing your authentication, you'll need to configure how
-your github "authtoken". In the machine specification file you will
-provide your github username. But the token is nice to keep
-secret. The machine specification file assumes (i.e. if not modified
-to look elsewhere) that your authtoken is store in your
-`~/.github\_authtoken` file. This file should be READ-ONLY BY OWNER
-(500). For example: 
+some form of authentication is necessary. The best approach which will
+always work in an automated fashion is to get the github authtoken and
+use as describe below. 
+
+However other options are available. If the GITHUB\_SSH\_PRIV\_KEY
+variable is set in the machine specification file, then this variable
+renders the GITHUB\_USERNAME and GITHUB\_AUTHTOKEN variables
+useless. This method manages the agent and adding the key as much as
+possible, including in docker (though authentication may occur more
+frequently than no a local machine).
+
+If GITHUB\_SSH\_PRIV\_KEY is not set, then GITHUB\_USERNAME is
+required. If GITHUB\_AUTHTOKEN is not set, each pull of a remote
+repository requires manual authentication. 
+
+If GITHUB\_AUTHTOKEN is set, then one never needs to
+authenticate. *This method is highly recommended* because it will make 
+system use as automated as possible, so you can relax or work on other
+things while tests are running. 
+
+To obtain your authtoken from gthe github website, follow the
+instructions here
+
+[https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
+
+The machine specification file assumes (i.e. if not modified
+to look elsewhere) that your authtoken is stored in your
+`~/.github\_authtoken` file. This file should be READ-ONLY BY OWNER in
+order to keep it secret from other users on your machine. For example,
+my file looks like: 
 ```
 jamesmcc@chimayo[736]:~/WRF_Hydro/wrf_hydro_docker/testing> ls -l ~/.github_authtoken 
 -r--------  1 jamesmcc  rap  40 Nov  3 10:18 /Users/jamesmcc/.github_authtoken
 ```
-The file contains the user authtoken from github with no carriage return or other 
-whitespace in the file. See 
-
-[https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/]
-
-for information on getting your github authtoken.
+The file contains the user authtoken from github with _no carriage_
+_return or other whitespace_ in the file. 
 
 
 ## 3.2 `take_test` in your path ##

@@ -4,13 +4,13 @@
 #          variables defined therein.
 
 
-export WRF_HYDRO_TESTS_DIR=/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
+export WRF_HYDRO_TESTS_DIR=/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/wrf_hydro_tests
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
 
 export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
-export GITHUB_USERNAME=jmccreight
+export GITHUB_USERNAME=rsdunlapiv
 # REQUIRED only if cloning any repositories from github.
 # See wrf_hydro_tests/README.md for information and a suggestion on setting these. These can be inherited from the environment
 
@@ -20,6 +20,16 @@ if [[ $HOSTNAME == *cheyenne* ]]; then
         export WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
     else 
         export WRF_HYDRO_MODULES='gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
+    fi
+fi
+
+if [[ $HOSTNAME == *tfe* ]]; then 
+    if [[ $WRF_HYDRO_COMPILER == intel ]]; then
+        #export WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
+	export WRF_HYDRO_MODULES='intel/15.1.133 impi/5.1.1.109 netcdf/4.3.0 nccmp/1.8.2-intel intelpython/3.6.1.0'
+    else 
+        echo "Only intel supported"
+	exit 1
     fi
 fi
 # Modules you want/need loaded on the machine.

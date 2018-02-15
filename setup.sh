@@ -63,20 +63,39 @@ fi
 ###################################
 ## Setup github authitcation
 ###################################
-doExit=0
-if [[ -z ${GITHUB_USERNAME} ]]; then
-    echo "The required environment variable GITHUB_USERNAME has 
-          not been supplied. Exiting."
-    doExit=1
-fi
-if [[ -z ${GITHUB_AUTHTOKEN} ]] ; then
-    echo "The required environment variable GITHUB_AUTHTOKEN has 
-          not been supplied. Exiting."
-    doExit=1
-fi
-if [[ $doExit -eq 1 ]]; then exit 1; fi
 
-export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
+
+    if [ -z `printenv | grep SSH_AGENT_PID` ]; then
+        echo "Initialising new SSH agent..."
+        ssh-agent -k 
+        eval "$(ssh-agent -s)" 
+        ssh-add $GITHUB_SSH_PRIV_KEY
+    fi
+    export GIT_PROTOCOL=ssh
+
+else
+
+    if [[ -z ${GITHUB_USERNAME} ]]; then
+        echo "The required environment variable GITHUB_USERNAME has 
+               not been supplied. Exiting."
+        exit 1
+    fi
+
+    if [[ -z ${GITHUB_AUTHTOKEN} ]]; then
+        echo "The required environment variable GITHUB_AUTHTOKEN has 
+               not been supplied. (A local ssh private key has also not 
+          bee  n supplied). You will be required to authenticate 
+          over    https."
+        export authInfo=${GITHUB_USERNAME}
+        export GIT_PROTOCOL=https
+    else 
+        export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+        export GIT_PROTOCOL=https
+    fi
+    
+fi
+
 
 if [[ -z $candidateLocalPath ]]; then
     if [[ -z ${candidateFork} ]]; then export candidateFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi

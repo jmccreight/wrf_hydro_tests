@@ -17,7 +17,7 @@
 
 ###########################################################################
 # * Machine spec file path *
-export WRF_HYDRO_TESTS_MACHINE_SPEC='/test_specs_logs/machine_spec.sh'
+export WRF_HYDRO_TESTS_MACHINE_SPEC='/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/wrf_hydro_tests/examples/nwm_ana/sixmile/theia/origin_reg-v1.2-fixes/machine_spec.sh'
 # Default (if not set) = ~/.wrf_hydro_tests_machine_spec.sh
 # We recommend the default. If using an alternative location, then
 # variable consists of the path/file for the machine specification. 
@@ -25,11 +25,11 @@ export WRF_HYDRO_TESTS_MACHINE_SPEC='/test_specs_logs/machine_spec.sh'
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/test_domain
+export domainSourceDir=/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/sixmile_test_domain
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
-export domainRunDir=''
+export domainRunDir=/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/sixmile_test_domain_run
 # REQUIRED if NOT running in docker (i.e. locally):
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # Default = domainSourceDir if on docker.
@@ -40,12 +40,13 @@ export domainRunDir=''
 ###########################################################################
 # * Compiler * 
 
-export WRF_HYDRO_COMPILER='GNU'
+export WRF_HYDRO_COMPILER='intel'
 ## Default = 'GNU'
 ## Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
 
 
 #####################################################################################
+
 
 
 export TEST_WALL_TIME=00:05
@@ -80,7 +81,7 @@ export WRF_HYDRO_NUDGING=1
 ###########################################################################
 # * Repo groups *
 
-export REPO_DIR=~/test_repos
+export REPO_DIR=/scratch4/NCEPDEV/nems/noscrub/Rocky.Dunlap/wht/remote_repos
 # Where temporary repositories cloned from github shall be placed (in subfolders candidate/ and reference/)
 
 # ** Candidate repo subgroup **
@@ -96,7 +97,6 @@ export candidateBranchCommit=master
 # --- OR ---
 
 export candidateLocalPath=''
-#/wrf_hydro_nwm'
 # Default ='' : NOT used.
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH candidateFork and candidateBranchCommit if set. 
@@ -105,14 +105,14 @@ export candidateLocalPath=''
 # ** Reference repo subgroup **
 # REQUIRED only for regression testing.
 
-export referenceFork=jmccreight/wrf_hydro_nwm
+export referenceFork=NCAR/wrf_hydro_nwm
 # Default = NCAR/wrf_hydro_nwm.
 # A named fork on github. 
 # Reference repository is the one that provides the reference for regression testing. It may come
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 
-export referenceBranchCommit=95ff36990801de0a3a819001d1fa9573bca3cfec
+export referenceBranchCommit=95ff369
 #master
 # Default = master
 # A branch or commit on referenceFork. 

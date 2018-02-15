@@ -17,7 +17,13 @@ if [[ -z $referenceLocalPath ]]; then
 #	echo -e "\e[0;49;32m-----------------------------------\e[0m"
 	echo -e "\e[7;49;32mReference fork: $referenceFork\e[0m"
 	echo -e "\e[7;49;32mReference branch/commit: $referenceBranchCommit\e[0m"
-	git clone https://${authInfo}@github.com/$referenceFork $refRepoDir    
+
+        if [[ $GIT_PROTOCOL == https ]]; then
+            git clone https://${authInfo}@github.com/$referenceFork $refRepoDir
+        else
+            git clone git@github.com:$referenceFork $refRepoDir
+        fi
+
 	git checkout $referenceBranchCommit || \
             { echo "Unsuccessful checkout of $referenceBranchCommit from $referenceFork."; exit 1; }
 	echo -e "\e[0;49;32mRepo in\e[0m `pwd`"
