@@ -33,6 +33,8 @@ echo "export referenceBranchCommit=$referenceBranchCommit " >> $targetFile
 echo "export referenceLocalPath=$referenceLocalPath " >> $targetFile
 
 # setup
+echo "export GITHUB_USERNAME=$GITHUB_USERNAME " >> $targetFile
+echo "export GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN " >> $targetFile
 echo "export candidateRepoDir=$candidateRepoDir " >> $targetFile
 echo "export refRepoDir=$refRepoDir " >> $targetFile
 echo "export toolboxDir=$toolboxDir " >> $targetFile
