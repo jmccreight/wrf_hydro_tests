@@ -59,17 +59,14 @@ function mpiRunFunc
 
 function qCleanFunc 
 { 
-    
-    whtPath=`grep "wrf_hydro_tools=" ~/.wrf_hydro_tools | cut -d '=' -f2 | tr -d ' '`
-    source $whtPath/utilities/sourceMe.sh || {
-        echo "Your ~/.wrf_hydro_tools does not appear configured correctly."
-        return 1
-    }
     local nCores=$1; 
     local theBinary=$2;
     local jobName=$3
     local wallTime=$4
-    runCmd="qCleanRun -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    
+    # $WRF_HYDRO_TESTS_DIR comes from environment at calling time.
+    local qsub_script_dir=$WRF_HYDRO_TESTS_DIR/toolbox/qsub_scripts/
+    runCmd="$qsub_script_dir/q_run -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
     echo $runCmd
     scriptOutput=`eval $runCmd`
     echo "$scriptOutput"
