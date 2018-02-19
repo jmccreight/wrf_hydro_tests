@@ -25,9 +25,10 @@ fi
 # Currently this includes modules needed for testing (e.g. on cheyenne: python and ncarenv (which contains nccmp))
 
 
-export NETCDF=$(dirname `nc-config --includedir`)
+export NETCDF="export NETCDF=\$(dirname `nc-config --includedir`)"
 # REQUIRED
-# Where NetCDF resides on your system
+# This should not need changed for modern installs of NetCDF. Where NetCDF resides on your system. A delayed evaluation is 
+# necessary only when using modules, but will work regardless. Configure script may also handle any misspecifications.
 
 
 ###########################################################################
