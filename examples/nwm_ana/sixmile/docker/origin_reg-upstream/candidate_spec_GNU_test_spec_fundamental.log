@@ -1,11 +1,11 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 08 20:34:51 UTC
+Date                  : 2018 Feb 19 22:40:53 UTC
 User                  : root
-Machine               : 96acaf704d8a
-wrf_hydro_tests commit: ae77c0b14fd1f71bafaecbd05ae36511088a0769
-machine spec file     : /test_specs_logs/machine_spec.sh
+Machine               : 8b1437157bb7
+wrf_hydro_tests commit: af63f60098981337d4c57a74888a1d6cb849c978
+machine spec file     : /wrf_hydro_tests/machine_spec.sh
 candidateSpecFile     : /test_specs_logs/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
 Log file              : /test_specs_logs/candidate_spec_GNU_test_spec_fundamental.log
@@ -13,3 +13,323 @@ Will echo candidateSpecFile to log at end.
 
 [7;49;32m=================================================================[0m
 [7;49;32mSetting up the candidate                                         [0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mTesting the candidate                                            [0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mCandidate fork: NCAR/wrf_hydro_nwm[0m
+[7;49;32mCandidate branch/commit: master[0m
+Cloning into '/root/test_repos/candidate'...
+Already on 'master'
+Your branch is up-to-date with 'origin/master'.
+[0;49;32mRepo moved to[0m /root/test_repos/candidate
+[0;49;32mCandidate branch:[0m    master
+[0;49;32mTesting commit:[0m
+commit 039329625fd8f907207b93b604fe802d752b4304
+Author: Katelyn FitzGerald <7872563+kafitzgerald@users.noreply.github.com>
+Date:   Fri Feb 16 14:03:04 2018 -0700
+
+    Public updates v2 (#138)
+    
+    * Add DOE to acknowledgements
+    
+    * clean up namelist.hrldas for Noah and remove subwindow options
+    
+    * Clean up NoahMP namelist.hrldas and remove domain subsetting options
+    
+    * Remove urban options from Noah namelist per suggestion from MB
+    
+    * Remove geo and ini options from Noah namelist after testing to make sure they are no longer required
+    
+    * Add comments to NoahMP namelist
+    
+    * Fix a couple of typos in the NoahMP namelist
+    
+    * Add comments to the Noah namelist
+    
+    * Change Noah compile script to only copy required *TBL files
+    
+    * Add back in a README file with a brief description of how to build the code for WRF-Hydro as a standalone model so that this process is documented in publicly available materials
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mcompile.sh:[0m
+[0;49;32mQuestion: Does candidate binary compile?[0m
+Compiling with GNU
+Compiling in /root/test_repos/candidate/trunk/NDHMS/
+
+Configured: gfort
+Compiling (new way), showing only standard error...
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+ar: creating ../lib/libHYDRO.a
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dirs]
+
+[5;49;32mAnswer: Candidate binary compile successful under GNU![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mrun.sh:[0m
+[0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
+Running in /test_domain/run.candidate
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-06.stdout 2> 2018-02-19_22-41-06.stderr
+[5;49;32mAnswer: Candidate binary run successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mperfect_restart.sh:[0m
+[0;49;32mRunning candidate binary from restart (with 2 cores).[0m
+Running in /test_domain/run.candidate.restart
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-07.stdout 2> 2018-02-19_22-41-07.stderr
+[0;49;32mCandidate binary restart run successful.[0m
+
+[0;49;32mQuestion: Perfect restarts?[0m.
+Comparing RESTART files
+Comparing candidate file /test_domain/run.candidate.restart/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate.restart/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate.restart/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Perfect restart comparison successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mnumber_of_cores.sh:[0m
+[0;49;32mRunning candidate binary with 1 cores.[0m
+Running in /test_domain/run.candidate.ncores_test
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-19_22-41-07.stdout 2> 2018-02-19_22-41-07.stderr
+[0;49;32mCandidate binary run successful with 1 cores.[0m
+
+[0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
+Comparing RESTART files
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060200_DOMAIN1
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060112_DOMAIN1
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-01_12:00:00.nc
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-02_00:00:00.nc
+All restart file comparisons pass
+[5;49;32mAnswer: Number of cores test restart comparison successful![0m
+
+[0;49;32m-----------------------------------[0m
+[7;49;32mregression.sh:[0m
+
+[7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
+[7;49;32mReference branch/commit: 95ff36990801de0a3a819001d1fa9573bca3cfec[0m
+Cloning into '/root/test_repos/reference'...
+Note: checking out '95ff36990801de0a3a819001d1fa9573bca3cfec'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at 95ff369... Merge pull request #99 from logankarsten/community_v5.0_release
+[0;49;32mRepo in[0m /root/test_repos/reference
+[0;49;32mReference branch:[0m    HEAD
+[0;49;32mReference commit:[0m
+commit 95ff36990801de0a3a819001d1fa9573bca3cfec
+Merge: 4212313 d7e1173
+Author: logankarsten <karsten@ucar.edu>
+Date:   Thu Jan 4 17:27:11 2018 -0700
+
+    Merge pull request #99 from logankarsten/community_v5.0_release
+    
+    Removing ISNAN per PGI issues and removing hard coding of water class…
+
+[0;49;32mCompiling reference binary.[0m
+Compiling in /root/test_repos/reference/trunk/NDHMS/
+
+*****************************************************************
+The envrionment variables use in the compile (alphabetically):
+HYDRO_D=0
+HYDRO_REALTIME=1
+NCEP_WCOSS=0
+NETCDF=/usr/local
+SPATIAL_SOIL=1
+WRF_HYDRO=1
+WRF_HYDRO_NUDGING=1
+WRF_HYDRO_RAPID=0
+WRFIO_NCD_LARGE_FILE_SUPPORT=1
+*****************************************************************
+
+Compiling, showing only standard error...
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+ar: creating ../lib/libHYDRO.a
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
+f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dirs]
+
+*****************************************************************
+
+Make was successful
+
+[0;49;32mReference binary: compilation under GNU successful.[0m
+
+[0;49;32mRunning reference binary (with 2 cores).[0m
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-22.stdout 2> 2018-02-19_22-41-22.stderr
+[0;49;32mReference binary: run successful.[0m
+
+[0;49;32mQuestion: Do candidate results regress on to reference results?[0m
+Variable Group Count     Sum AbsSum      Min      Max   Range     Mean  StdDev
+ACMELT   /       204 -220433 220433 -1260.66 -879.553 381.107 -1080.56 74.8745
+Variable Group Count     Sum AbsSum      Min      Max   Range     Mean  StdDev
+ACMELT   /       204 -220433 220433 -1260.66 -879.553 381.107 -1080.56 74.8745
+Variable Group Count     Sum  AbsSum         Min     Max   Range     Mean   StdDev
+qlink1   /       126 13.2103 13.2276 -0.00152791 2.11884 2.12037 0.104844 0.327781
+qlink2   /       126 13.2103 13.2276 -0.00152791 2.11884 2.12037 0.104844 0.327781
+Variable Group Count     Sum  AbsSum       Min     Max   Range     Mean  StdDev
+qlink1   /       132 13.6269 17.2787 -0.618923 1.26077 1.87969 0.103234 0.28891
+qlink2   /       132 13.6269 17.2787 -0.618923 1.26077 1.87969 0.103234 0.28891
+Variable        Group Count     Sum AbsSum      Min      Max  Range    Mean StdDev
+model_discharge /       100 -5986.6 5986.6 -596.734 -1.88481 594.85 -59.866 129.45
+Variable        Group Count      Sum  AbsSum      Min      Max  Range     Mean  StdDev
+model_discharge /       196 -6498.22 6498.22 -596.734 -1.88481 594.85 -33.1542 96.2197
+Comparing RESTART files
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060200_DOMAIN1
+None
+Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060112_DOMAIN1
+None
+Comparing HYDRO_RST files
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+None
+Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+None
+Comparing nudgingLastObs files
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-01_12:00:00.nc
+None
+Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-02_00:00:00.nc
+None
+One or more RESTART comparisons failed, see stdout
+One or more RESTART comparisons failed, see stdout
+One or more HYDRO_RST comparisons failed, see stdout
+One or more HYDRO_RST comparisons failed, see stdout
+One or more nudgingLastObs comparisons failed, see stdout
+One or more nudgingLastObs comparisons failed, see stdout
+[5;49;31mAnswer: Regression test restart comparison failed.[0m
+Files compared are in the directories:
+/test_domain/run.candidate
+/test_domain/run.reference
+
+[7;49;32m=================================================================[0m
+[7;49;32mResults of all tests.                                            [0m
+[5;49;31mA total of 1 tests failed.[0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mTaking down the candidate.                                       [0m
+
+[7;49;32m=================================================================[0m
+[7;49;32mLogging the candidateSpecFile.                                   [0m
+---------------------------------------------------------------------------
+Machine spec group: 
+
+WRF_HYDRO_TESTS_DIR = /wrf_hydro_tests
+
+GITHUB_USERNAME = jmccreight
+GITHUB_AUTHTOKEN = ********************
+
+WRF_HYDRO_MODULES =
+
+NETCDF = /usr/local
+
+* Run group *
+
+WRF_HYDRO_RUN:
+
+
+---------------------------------------------------------------------------
+Candidate spec file group: 
+
+* Domain Group *
+
+domainSourceDir = /test_domain
+
+domainRunDir = /test_domain
+
+* Compiler *
+
+WRF_HYDRO_COMPILER = GNU
+
+* Run Group*
+
+TEST_WALL_TIME = 00:05
+
+nCoresDefault = 2
+
+nCoresTest = 1
+
+* Model compile options *
+
+WRF_HYDRO = 1
+HYDRO_D = 0
+SPATIAL_SOIL = 1
+WRFIO_NCD_LARGE_FILE_SUPPORT = 1
+WRF_HYDRO_RAPID = 0
+HYDRO_REALTIME = 1
+NCEP_WCOSS = 0
+WRF_HYDRO_NUDGING = 1
+
+* Repo Groups *
+
+REPO_DIR = /root/test_repos
+
+** Candidate repo subgroup **
+
+candidateFork = NCAR/wrf_hydro_nwm
+candidateBranchCommit = master
+candidateLocalPath =
+
+** Reference repo subgroup **
+
+referenceFork = jmccreight/wrf_hydro_nwm
+referenceBranchCommit = 95ff36990801de0a3a819001d1fa9573bca3cfec
+referenceLocalPath =
+
+
+[7;49;32m=================================================================[0m
+[7;49;32mCandidate testing complete.                                      [0m
