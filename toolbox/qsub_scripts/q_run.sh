@@ -5,13 +5,13 @@
 help="
 q_run :: help
 
-Purpose: 
+Purpose/Requirements: 
 Submit WRF_Hydro jobs to qsub with the following standardizations:
-1) pull default PBS header information from your ~/.wrf_hydro_tests_user_spec 
-   file to reduce the number of arguments needed to submit a job
+1) Required: You default PBS header info (mMA) in your ~/.wrf_hydro_tests_user_spec 
+2) Required: -W HH:MM  wall time in HH:MM (no need for seconds)
 3) log model stdout and stderr to disk and not the limited qsub buffer
    (you can read the model stderr and stdout in real-time)
-4) specify the wall time in HH:MM (no need for seconds)
+4) 
 5) arg 1: number of cores (not number of nodes)
 7) use the following conventions for a given pbs job id which interact
    with other wrf_hydro_tools functions (cleanup, catlast)
@@ -40,33 +40,6 @@ Arguments as for cleanRun...
 $cleanRunHelp
 "
 
-if [ -z $1 ] || [ -z $2 ]; then
-    echo "q_run requires 2 arguments: "
-    echo "  1) # of cores"
-    echo "  2) a wrf-hydro binary"    
-    exit 1
-fi
-
-nCores=$1
-theBinary=$2
-
-## Verify that the number of cores is integer in a reasonable range
-[[ $nCores -gt 0 ]] > /dev/null 2>&1 | { \
-    echo "Number of cores not in valid range. Exiting.";
-    exit 1;
-}
-[[ $nCores -lt 1000000 ]] > /dev/null 2>&1 |  { \
-    echo "Number of cores not in valid range. Exiting.";
-    exit 1;
-}
-
-## Verify the binary in some measure
-ldd $theBinary > /dev/null 2>&1 |  { \
-    echo "The passed binary does not appear to be an executable. Exiting.";
-    exit1;
-}
-
-
 while getopts ":j:W:q:" opt; do
     case $opt in
         j) jobName="${OPTARG}" ;;
@@ -78,26 +51,62 @@ while getopts ":j:W:q:" opt; do
 done
 shift "$((OPTIND-1))" # Shift off the option
 
-if [[ $HOSTNAME = *cheyenne* ]]; then
-    nCoresPerNode=36
-    jobNameDefault=qRunJob
-    wallTimeDefault=11:59
-    queueDefault=regular
-else
-    echo "Default parameters for this host have not been set in"
-    echo "q_run.sh. Please add this machines defaults."
+if [ -z $1 ] | [ -z $2 ]; then
+    echo "q_run requires 2 arguments: "
+    echo "  1) # of cores"
+    echo "  2) a wrf-hydro binary"    
     exit 1
 fi
+nCores=$1
+theBinary=$2
+
+## Verify that the number of cores is integer in a reasonable range
+[[ $nCores -gt 0 ]] > /dev/null 2>&1 || { \
+    echo "Number of cores not in valid range. Exiting.";
+    exit 1;
+}
+[[ $nCores -lt 1000000 ]] > /dev/null 2>&1 ||  { \
+    echo "Number of cores not in valid range. Exiting.";
+    exit 1;
+}
+
+## Verify the binary in some measure
+ldd $theBinary > /dev/null 2>&1 ||  { \
+    echo "The passed binary does not appear to be an executable. Exiting.";
+    exit 1;
+}
    
+function ceiling_div() {
+    echo "($1 + $2 - 1)/$2" | bc; 
+}
+
 IFS=$'\n'
 nNodes=`ceiling_div $nCores ${nCoresPerNode}`
 nNodesM1=`echo "$nNodes - 1" | bc`
 nCoresUnif=`echo "$nNodesM1*${nCoresPerNode}" | bc`
 nCoresLeft=`echo "$nCores - $nCoresUnif" | bc`
 
-if [ -z $jobName ]; then jobName=${jobNameDefault}; fi
-if [ -z $wallTime ]; then wallTime=${wallTimeDefault}; fi
-if [ -z $queue ]; then queue=${queueDefault}; fi
+if [ -z $jobName ]; then 
+    if [[ -z $jobNameDefault ]]; then
+        echo No jobNameDefault set for this machine in the machine_spec.sh file. Exiting.
+        exit 1
+    fi
+    jobName=${jobNameDefault};         
+fi
+if [ -z $wallTime ]; then 
+    if [[ -z $wallTimeDefault ]]; then
+        echo No wallTimeDefault set for this machine in the machine_spec.sh file. Exiting.
+        exit 1
+    fi
+    wallTime=${wallTimeDefault}; 
+fi
+if [ -z $queue ]; then 
+    if [[ -z $queueDefault ]]; then
+        echo No queueDefault set for this machine in the machine_spec.sh file. Exiting.
+        exit 1
+    fi
+    queue=${queueDefault}; 
+fi
 
 echo
 echo "nCores   = $nCores"
@@ -112,7 +121,11 @@ workingDir=`pwd`/
 theDate=`date '+%Y-%m-%d_%H-%M-%S'`
 jobFile=$theDate.q_run.job
 
-qsubHeader=`egrep '^#PBS' ~/.wrf_hydro_tools`
+if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
+    echo "The WRF_HYDRO_TESTS_USER_SPEC env var is not specified. Exiting."
+    exit 1
+fi
+qsubHeader=`egrep '^#PBS' $WRF_HYDRO_TESTS_USER_SPEC`
 qsubHeader=`echo "$(eval "echo \"$qsubHeader\"")"`
 
 projCode=`echo "$qsubHeader" | grep '\-A' | cut -d' ' -f3`
@@ -125,11 +138,10 @@ $qsubHeader
 #PBS -l walltime=${wallTime}:00
 #PBS -q $queue
 #PBS -l select=${nNodesM1}:ncpus=36:mpiprocs=36+1:ncpus=${nCoresLeft}:mpiprocs=${nCoresLeft}
-## Not using standard error and out files to capture model output
+## Not using PBS standard error and out files to capture model output
 ## but these hidden files might catch output and errors from the scheduler.
 #PBS -o ${workingDir}/.${theDate}.pbs.stdout
 #PBS -e ${workingDir}/.${theDate}.pbs.stderr
-
 
 numJobId=\`echo \${PBS_JOBID} | cut -d'.' -f1\`
 echo PBS_JOBID:  \$PBS_JOBID
@@ -144,28 +156,27 @@ echo `pwd`
 ## WTF, this was not previously necessary
 #module load mpt/2.15  
 
-echo
-numJobId=`echo ${PBS_JOBID} | cut -d'.' -f1`
-echo \"mpiexec_mpt ./$theBinary 2> ${cleanRunDateId}.${numJobId}.stderr 1> ${cleanRunDateId}.${numJobId}.stdout\"
-mpiexec_mpt ./$theBinary 2> ${cleanRunDateId}.${numJobId}.stderr 1> ${cleanRunDateId}.${numJobId}.stdout
+numJobId=\$(echo \${PBS_JOBID} | cut -d'.' -f1)
+echo \"mpiexec_mpt $theBinary 2> \${cleanRunDateId}.\${numJobId}.stderr 1> \${cleanRunDateId}.\${numJobId}.stdout\"
+mpiexec_mpt $theBinary 2> \${cleanRunDateId}.\${numJobId}.stderr 1> \${cleanRunDateId}.\${numJobId}.stdout
 
 mpiExecReturn=\$?
 echo \"mpiexec_mpt return: \$mpiExecReturn\"
 
 # Touch these files just to get the cleanRunDateId in their file names. 
 # Can identify the files by jobId and replace contents... 
-touch ${runDir}/\${cleanRunDateId}.\${numJobId}.tracejob
-touch ${runDir}/.\${cleanRunDateId}.\${numJobId}.stdout
-touch ${runDir}/.\${cleanRunDateId}.\${numJobId}.stderr
+touch ${workingDir}/\${cleanRunDateId}.\${numJobId}.tracejob
+touch ${workingDir}/.\${cleanRunDateId}.\${numJobId}.stdout
+touch ${workingDir}/.\${cleanRunDateId}.\${numJobId}.stderr
 
 exit \$mpiExecReturn" > $jobFile
 
-
 jobId=`qsub $jobFile`
 echo "PBS_JOBID: $jobId"
+
+# Background the cleanup and resource summary.
 ${WRF_HYDRO_TESTS_DIR}/toolbox/qsub_scripts/pbsTidyUp.sh "$jobId" "$runDir" > /dev/null 2>&1 &
 
 unset cleanRunDateId
-
 
 exit 0

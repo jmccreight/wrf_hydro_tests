@@ -4,11 +4,22 @@
 #          variables defined therein.
 
 if [[ $HOSTNAME == *cheyenne* ]]; then 
+
+    ## Compiler
     if [[ $WRF_HYDRO_COMPILER == intel ]]; then
         export WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
     else 
         export WRF_HYDRO_MODULES='gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
     fi
+
+    ## basic hardware
+    export nCoresPerNode=36
+
+    ## PBS/qsub defaults
+    export jobNameDefault=qRunJob
+    export wallTimeDefault=11:59
+    export queueDefault=regular
+
 fi
 # Modules you want/need loaded on the machine.
 # These are invoked all at once (order may matter) by `module load`. 
@@ -45,7 +56,7 @@ function mpiRunFunc
 ## This one covers docker. Works on cheyenne too, for small numbers of cores... for now.
 
 
-function qCleanFunc 
+function qSubFunc
 { 
     local nCores=$1; 
     local theBinary=$2;
@@ -54,12 +65,17 @@ function qCleanFunc
     
     # $WRF_HYDRO_TESTS_DIR comes from environment at calling time.
     local qsub_script_dir=$WRF_HYDRO_TESTS_DIR/toolbox/qsub_scripts/
-    runCmd="$qsub_script_dir/q_run -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    runCmd="$qsub_script_dir/q_run.sh -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    #$runCmd
     echo $runCmd
     scriptOutput=`eval $runCmd`
     echo "$scriptOutput"
     jobId=`echo "$scriptOutput" | grep PBS_JOBID | cut -d' ' -f2 | cut -d'.' -f1`
-    #echo jobId: $jobId
+    echo jobId: $jobId
+    if [[ -z $jobId ]]; then 
+        echo "Job submission appeared to fail."
+        return 1
+    fi
     jobStatus='Q'
     while [ "$jobStatus" != "F" ]; do
         sleep 5
@@ -68,15 +84,12 @@ function qCleanFunc
     done
     return 0
 }
-## This one requires wrf_hydro_tools to be correctly configured (only tested on cheyenne). It 
-## takes care of handling logging and performance among other things. Default values (like
-## job code) are set in ~/.wrf_hydro_tools
 ## This function maybe highly tailored to qsub on cheyenne.
 
 
 if [[ $HOSTNAME == *cheyenne* ]]; then 
-    export -f qCleanFunc
-    export WRF_HYDRO_RUN=qCleanFunc
+    export -f qSubFunc
+    export WRF_HYDRO_RUN=qSubFunc
 else 
     export -f mpiRunFunc
     export WRF_HYDRO_RUN=mpiRunFunc

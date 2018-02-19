@@ -3,7 +3,7 @@ export WRF_HYDRO_TESTS_DIR=/glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_tests
 # The local path to the wrf_hydro_tests dir.
 
 
-export GITHUB_SSH__PRIV_KEY=''
+export GITHUB_SSH_PRIV_KEY=''
 export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
 export GITHUB_USERNAME=jmccreight
 # REQUIRED only if cloning any repositories from github.

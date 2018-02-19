@@ -50,7 +50,7 @@ source $candidateSpecFile
 
 # Establish the machine specifications.
 if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
-    WRF_HYDRO_TESTS_MACHINE_SPEC=~/.wrf_hydro_tests_machine_spec.sh
+    WRF_HYDRO_TESTS_MACHINE_SPEC=$WRF_HYDRO_TESTS_DIR/machine_spec.sh
 fi
 ## TODO: test for existence
 source $WRF_HYDRO_TESTS_MACHINE_SPEC
@@ -82,9 +82,8 @@ if [[ ! -e $testSpecFile ]]; then
         exit 1
     fi
 fi
-
-
 #######################################################
+
 # Get the commit of the testing repo being used. 
 cd $WRF_HYDRO_TESTS_DIR
 whTestsCommit=`git rev-parse HEAD`

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # $1 = PBS_JOBID
-# $2 = runDir
 # The ultimate output file will have already been written by the 
 # job so that date tag matches.
 
@@ -12,12 +11,8 @@ while [[ -z "$grepResult" ]]; do
 done
 
 numJobId=`echo $1 | cut -d'.' -f1`
-traceFile=`ls ${2}/*.${numJobId}.tracejob`
-#echo $traceFile 
-if [[ $? -eq 0 ]]; then 
-    tracejob $1 > $traceFile
-else 
-    tracejob $1 > ${2}/${1}.tracejob
-fi 
+traceFile=`ls *.${numJobId}.tracejob`
+echo $traceFile 
+tracejob $1 > $traceFile
 
 exit 0
