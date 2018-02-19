@@ -6,6 +6,13 @@
 ## KEEP THIS SCRIPT AS GENERAL AS POSSIBLE FOR THE SETUP
 
 ###################################
+## Are we in docker?
+################################### 
+export inDocker=FALSE
+if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
+
+
+###################################
 ## Establish the file structure
 ###################################
 ## Where do all the parts live for the test?
@@ -35,8 +42,6 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ## non-docker applications.
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
-export inDocker=FALSE
-if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
 
 if [[ ! -z $domainRunDir ]]; then
     if [[ -e $domainRunDir ]]; then
