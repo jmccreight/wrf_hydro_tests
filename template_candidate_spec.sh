@@ -16,20 +16,6 @@
 ## Comments are BELOW variables.
 
 ###########################################################################
-# * Machine spec file path *
-export WRF_HYDRO_TESTS_MACHINE_SPEC='/test_specs_logs/machine_spec.sh'
-# Default (if not set) = ~/.wrf_hydro_tests_machine_spec.sh
-# We recommend the default. If using an alternative location, then
-# variable consists of the path/file for the machine specification. 
-
-# * Machine spec file path *
-export WRF_HYDRO_TESTS_USER_SPEC='/test_specs_logs/machine_spec.sh'
-# Default (if not set) = ~/.wrf_hydro_tests_machine_spec.sh
-# We recommend the default. If using an alternative location, then
-# variable consists of the path/file for the machine specification. 
-
-
-###########################################################################
 # ** Domain Group **
 
 export domainSourceDir=''
@@ -128,3 +114,21 @@ export referenceLocalPath=''
 # Default ='' : NOT used.
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH referenceFork and referenceBranchCommit if set. 
+
+###########################################################################
+# * User spec file path *
+export WRF_HYDRO_TESTS_USER_SPEC=''
+# Default (if not set) = ~/.wrf_hydro_tests_user_spec.sh
+# We recommend using the default by leaving blank. If using an
+# alternative location, then variable consists of the path/file
+# to the file. 
+
+# * Machine spec file path *
+export WRF_HYDRO_TESTS_MACHINE_SPEC=''
+# Default (if not set) = $WRF_HYDRO_TESTS_DIR/machine_spec.sh
+# We recommend using the default by leaving blank. If using an
+# alternative location, then variable consists of the path/file
+# to the file. 
+
+
+
