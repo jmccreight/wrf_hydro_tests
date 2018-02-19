@@ -148,6 +148,7 @@ fi
 ###################################
 echo "WRF_HYDRO_COMPILER: $WRF_HYDRO_COMPILER"
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
+    export MACROS_FILE=macros.mpp.ifort
     if [[ $HOSTNAME != *tfe* ]]; then
 	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
             echo 'The requested compiler was not found, exiting.'
@@ -163,6 +164,7 @@ if [[ $WRF_HYDRO_COMPILER == intel ]]; then
 fi
 
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
+    export MACROS_FILE=macros.mpp.gfort
     mpif90 --version | grep -i GNU > /dev/null 2>&1 || {
         echo 'The requested compiler was not found, exiting.'
         exit 1
