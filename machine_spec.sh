@@ -2,7 +2,6 @@
 # Purpose: Log all the static information for each machine in this file. This file
 #          is sourced after the candidate specification file and my rely on 
 #          variables defined therein.
-
 if [[ $HOSTNAME == *cheyenne* ]]; then 
 
     ## Compiler

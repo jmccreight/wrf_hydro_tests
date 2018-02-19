@@ -48,16 +48,24 @@ testSpecFile=`readlink -e ${2}`
 ## TODO: test for existence
 source $candidateSpecFile
 
-# Establish the machine specifications.
-if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
-    WRF_HYDRO_TESTS_MACHINE_SPEC=$WRF_HYDRO_TESTS_DIR/machine_spec.sh
+# User specification, first time.
+if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
+    export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
 fi
 ## TODO: test for existence
+source $WRF_HYDRO_TESTS_USER_SPEC
+
+# Establish the machine specifications.
+if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
+    export WRF_HYDRO_TESTS_MACHINE_SPEC=$WRF_HYDRO_TESTS_DIR/machine_spec.sh
+fi
+## TODO: test for existence
+echo "WRF_HYDRO_TESTS_MACHINE_SPEC: $WRF_HYDRO_TESTS_MACHINE_SPEC"
 source $WRF_HYDRO_TESTS_MACHINE_SPEC
 
-# User specification.
+# User specification, again. 
 if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
-    WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
+    export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
 fi
 ## TODO: test for existence
 source $WRF_HYDRO_TESTS_USER_SPEC
