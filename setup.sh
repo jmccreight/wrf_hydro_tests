@@ -68,20 +68,39 @@ fi
 ###################################
 ## Setup github authitcation
 ###################################
-doExit=0
-if [[ -z ${GITHUB_USERNAME} ]]; then
-    echo "The required environment variable GITHUB_USERNAME has 
-          not been supplied. Exiting."
-    doExit=1
-fi
-if [[ -z ${GITHUB_AUTHTOKEN} ]] ; then
-    echo "The required environment variable GITHUB_AUTHTOKEN has 
-          not been supplied. Exiting."
-    doExit=1
-fi
-if [[ $doExit -eq 1 ]]; then exit 1; fi
 
-export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
+
+    if [ -z `printenv | grep SSH_AGENT_PID` ]; then
+        echo "Initialising new SSH agent..."
+        ssh-agent -k 
+        eval "$(ssh-agent -s)" 
+        ssh-add $GITHUB_SSH_PRIV_KEY
+    fi
+    export GIT_PROTOCOL=ssh
+
+else
+
+    if [[ -z ${GITHUB_USERNAME} ]]; then
+        echo "The required environment variable GITHUB_USERNAME has 
+               not been supplied. Exiting."
+        exit 1
+    fi
+
+    if [[ -z ${GITHUB_AUTHTOKEN} ]]; then
+        echo "The required environment variable GITHUB_AUTHTOKEN has 
+               not been supplied. (A local ssh private key has also not 
+          bee  n supplied). You will be required to authenticate 
+          over    https."
+        export authInfo=${GITHUB_USERNAME}
+        export GIT_PROTOCOL=https
+    else 
+        export authInfo=${GITHUB_USERNAME}:${GITHUB_AUTHTOKEN}
+        export GIT_PROTOCOL=https
+    fi
+    
+fi
+
 
 if [[ -z $candidateLocalPath ]]; then
     if [[ -z ${candidateFork} ]]; then export candidateFork=${GITHUB_USERNAME}/wrf_hydro_nwm; fi
@@ -110,8 +129,13 @@ else
     message="\e[7;49;32mConfiguration information:\e[0m"
     echo -e "$message"
     echo
-    echo "mpif90 --version:"
-    mpif90 --version
+    if [[ $HOSTNAME != *tfe* ]]; then
+	echo "mpif90 --version:"
+	mpif90 --version
+    else
+	echo "mpiifort --version:"
+	mpiifort --version
+    fi	
     echo 
     echo "nc-config --version --fc --fflags --flibs:"
     nc-config --version --fc --fflags --flibs
@@ -119,15 +143,23 @@ fi
 
 
 ###################################
-## Compiler / macros
+## Check the compiler is what was requested
 ###################################
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
     export MACROS_FILE=macros.mpp.ifort
-    mpif90 --version | grep -i intel > /dev/null 2>&1 || {
-        echo 'The requested compiler was not found, exiting.'
-        exit 1
-    }
-fi 
+    if [[ $HOSTNAME != *tfe* ]]; then
+	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    else
+	mpififort --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    fi
+
+fi
 
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
     export MACROS_FILE=macros.mpp.gfort
@@ -136,6 +168,3 @@ if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
         exit 1
     }
 fi 
-
-echo "mpif90 --version:"
-mpif90 --version

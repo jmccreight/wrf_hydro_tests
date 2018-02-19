@@ -26,7 +26,13 @@ if [[ -z $candidateLocalPath ]]; then
     echo -e "\e[0;49;32m-----------------------------------\e[0m"
     echo -e "\e[7;49;32mCandidate fork: $candidateFork\e[0m"
     echo -e "\e[7;49;32mCandidate branch/commit: $candidateBranchCommit\e[0m"
-    git clone https://${authInfo}@github.com/$candidateFork $candidateRepoDir
+
+    if [[ $GIT_PROTOCOL == https ]]; then
+        git clone https://${authInfo}@github.com/$candidateFork $candidateRepoDir
+    else
+        git clone git@github.com:$candidateFork $candidateRepoDir
+    fi
+        
     git checkout $candidateBranchCommit || \
         { echo "Unsuccessful checkout of $candidateBranchCommit from $candidateFork."; exit 1; }
     echo -e "\e[0;49;32mRepo moved to\e[0m `pwd`"
