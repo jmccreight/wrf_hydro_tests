@@ -129,6 +129,7 @@ else
     message="\e[7;49;32mConfiguration information:\e[0m"
     echo -e "$message"
     echo
+    ## give the fortran+mpi version
     if [[ $HOSTNAME != *tfe* ]]; then
 	echo "mpif90 --version:"
 	mpif90 --version
@@ -136,24 +137,23 @@ else
 	echo "mpiifort --version:"
 	mpiifort --version
     fi	
-    echo 
+    echo
+    ## give the netcdf version + other info
     echo "nc-config --version --fc --fflags --flibs:"
     nc-config --version --fc --fflags --flibs
 fi
-
 
 ###################################
 ## Check the compiler is what was requested
 ###################################
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
-    export MACROS_FILE=macros.mpp.ifort
     if [[ $HOSTNAME != *tfe* ]]; then
 	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
             echo 'The requested compiler was not found, exiting.'
             exit 1
 	}
     else
-	mpififort --version | grep -i intel > /dev/null 2>&1 || {
+	mpiifort --version | grep -i intel > /dev/null 2>&1 || {
             echo 'The requested compiler was not found, exiting.'
             exit 1
 	}
@@ -162,9 +162,13 @@ if [[ $WRF_HYDRO_COMPILER == intel ]]; then
 fi
 
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
-    export MACROS_FILE=macros.mpp.gfort
     mpif90 --version | grep -i GNU > /dev/null 2>&1 || {
         echo 'The requested compiler was not found, exiting.'
         exit 1
     }
 fi 
+
+###################################
+## NetCDF env variable setup after modules
+###################################
+eval $NETCDF
