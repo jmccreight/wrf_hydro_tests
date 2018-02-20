@@ -6,6 +6,13 @@
 ## KEEP THIS SCRIPT AS GENERAL AS POSSIBLE FOR THE SETUP
 
 ###################################
+## Are we in docker?
+################################### 
+export inDocker=FALSE
+if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
+
+
+###################################
 ## Establish the file structure
 ###################################
 ## Where do all the parts live for the test?
@@ -35,8 +42,6 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ## non-docker applications.
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
-export inDocker=FALSE
-if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
 
 if [[ ! -z $domainRunDir ]]; then
     if [[ -e $domainRunDir ]]; then
@@ -124,24 +129,39 @@ else
     message="\e[7;49;32mConfiguration information:\e[0m"
     echo -e "$message"
     echo
-    echo "mpif90 --version:"
-    mpif90 --version
-    echo 
+    ## give the fortran+mpi version
+    if [[ $HOSTNAME != *tfe* ]]; then
+	echo "mpif90 --version:"
+	mpif90 --version
+    else
+	echo "mpiifort --version:"
+	mpiifort --version
+    fi	
+    echo
+    ## give the netcdf version + other info
     echo "nc-config --version --fc --fflags --flibs:"
     nc-config --version --fc --fflags --flibs
 fi
 
-
 ###################################
-## Compiler / macros
+## Check the compiler is what was requested
 ###################################
+echo "WRF_HYDRO_COMPILER: $WRF_HYDRO_COMPILER"
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
     export MACROS_FILE=macros.mpp.ifort
-    mpif90 --version | grep -i intel > /dev/null 2>&1 || {
-        echo 'The requested compiler was not found, exiting.'
-        exit 1
-    }
-fi 
+    if [[ $HOSTNAME != *tfe* ]]; then
+	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    else
+	mpiifort --version | grep -i intel > /dev/null 2>&1 || {
+            echo 'The requested compiler was not found, exiting.'
+            exit 1
+	}
+    fi
+
+fi
 
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
     export MACROS_FILE=macros.mpp.gfort
@@ -151,5 +171,7 @@ if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
     }
 fi 
 
-echo "mpif90 --version:"
-mpif90 --version
+###################################
+## NetCDF env variable setup after modules
+###################################
+eval $NETCDF

@@ -10,7 +10,7 @@
 theRunDir=$domainRunDir/run.candidate-channel-only
 echo
 echo -e "\e[0;49;32m-----------------------------------\e[0m"
-echo -e "\e[7;49;32mrun.sh:\e[0m"
+echo -e "\e[7;49;32mrun-channel-only.sh:\e[0m"
 echo -e "\e[0;49;32mQuestion: Does the candidate binary channel-only mode run? (using $nCoresDefault cores).\e[0m"
 cd $theRunDir || \
     { echo "Can not cd to $theRunDir. Exiting."; exit 1; }
