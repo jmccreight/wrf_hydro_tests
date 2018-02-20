@@ -37,36 +37,62 @@ if [[ -z $1 ]] || [[ -z $2 ]]; then
     exit 1
 fi
 
-#Convert the specification patsh to absolute paths if needed.
+#Convert the specification paths to absolute paths if needed.
 candidateSpecFile=`readlink -f ${1}`
 testSpecFile=`readlink -e ${2}`
 
-# Establish the candidate variables.
-source $candidateSpecFile
-if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
-    WRF_HYDRO_TESTS_MACHINE_SPEC=~/.wrf_hydro_tests_machine_spec.sh
+#######################################################
+# Read the 4 specification files: candidate, machine, user, test.
+
+# User specification, first time.
+if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
+    export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
 fi
+## TODO: test for existence
+source $WRF_HYDRO_TESTS_USER_SPEC
+
+## Candidate specification
+## TODO: test for existence
+source $candidateSpecFile
+
+# Establish the machine specifications.
+if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
+    export WRF_HYDRO_TESTS_MACHINE_SPEC=$WRF_HYDRO_TESTS_DIR/machine_spec.sh
+fi
+## TODO: test for existence
+echo "WRF_HYDRO_TESTS_MACHINE_SPEC: $WRF_HYDRO_TESTS_MACHINE_SPEC"
 source $WRF_HYDRO_TESTS_MACHINE_SPEC
 
-#does testSpecFile exist? If not, does its tag yield a file in the repo?
+# User specification, again. 
+if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
+    export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
+fi
+## TODO: test for existence
+source $WRF_HYDRO_TESTS_USER_SPEC
+
+# Does test specification testSpecFile exist? If not, does its tag yield a file in the repo?
 # If $2 was not a file, then $testSpecFile will be null
-if [[ -z $testSpecFile ]]; then
+if [[ ! -e $testSpecFile ]]; then
     testSpecFile=`readlink -e $WRF_HYDRO_TESTS_DIR/tests/${2}.sh`
-    if [[ -z $testSpecFile ]]; then
+    if [[ ! -e $testSpecFile ]]; then
         echo
-        echo The second argument, the test specification file:
-        echo `readlink -f $WRF_HYDRO_TESTS_DIR/tests/${2}.sh`
-        echo Does not exist. Printing help: 
-        echo 
-        echo "$theHelp"
+        echo The second argument, the test specification, does not
+        echo indicate any file. 
+        echo Neither:
+	echo `readlink -e ${2}`
+	echo nor
+	echo `readlink -e $WRF_HYDRO_TESTS_DIR/tests/${2}.sh`
+	echo is a file.
+        # echo "$theHelp"
+	# Echoing help is potentially confusing because the $WRF_HYDRO_RESTS_DIR
+	# may not match the users expectation (pulled remote vs local).
         echo Exiting. 
         exit 1
     fi
 fi
+#######################################################
 
-## TODO JLM: Check all the 3 above files for existence.
-
-#cd $WRF_HYDRO_TESTS_DIR
+# Get the commit of the testing repo being used. 
 cd $WRF_HYDRO_TESTS_DIR
 whTestsCommit=`git rev-parse HEAD`
 git diff-index --quiet HEAD --
@@ -74,16 +100,16 @@ whTestsUncommitted=$?
 cd - > /dev/null 2>&1
 
 # Determine log file name
-## JLM TODO: seems like the name of test should be embedded in the name of the logFile.
 logFile=`$WRF_HYDRO_TESTS_DIR/toolbox/make_log_file_name.sh $candidateSpecFile $testSpecFile`
 
-## Assume failure for this script if the first
-## addition is zero, exitValue is set to zero. Aggregated after that.
+# Assume failure for this script if the first
+# addition is zero, exitValue is set to zero. Aggregated after that.
 exitValue=1 
 
-
+# Reuse this
 horizBar='\e[7;49;32m=================================================================\e[0m'
 
+## TODO JLM: write a teeFunction to write the logging below just once.
 
 ## Boiler plate
 echo
