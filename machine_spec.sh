@@ -62,10 +62,12 @@ function qSubFunc
     local theBinary=$2;
     local jobName=$3
     local wallTime=$4
+    local queue=$5
     
     # $WRF_HYDRO_TESTS_DIR comes from environment at calling time.
     local qsub_script_dir=$WRF_HYDRO_TESTS_DIR/toolbox/qsub_scripts/
-    runCmd="$qsub_script_dir/q_run.sh -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    runCmd= \
+        "$qsub_script_dir/q_run.sh -j $jobName -W $wallTime -q $queue $nCores ./`basename $theBinary`"
     #$runCmd
     echo $runCmd
     scriptOutput=`eval $runCmd`

@@ -28,16 +28,9 @@ X) option for exit script
 
 Examples: 
 
-## 'Vanilla'
-q_run -j someJob -W00:20 720 wrf_hydro.exe
+## Run job econJob with wall time 20mins in the economy queue using 360 cores.
+q_run -j econJob -W00:20 -q economy 360 wrf_hydro.exe
 
-## Run in economy and run in the new_run_dir
-q_run -j econJob -W00:20 -qeconomy 360 wrf_hydro.exe new_run_dir
-
-Other header items to qsub may need adjusted on an individual basis.
-
-Arguments as for cleanRun...
-$cleanRunHelp
 "
 
 while getopts ":j:W:q:" opt; do

@@ -44,16 +44,16 @@ testSpecFile=`readlink -e ${2}`
 #######################################################
 # Read the 4 specification files: candidate, machine, user, test.
 
-## Candidate specification
-## TODO: test for existence
-source $candidateSpecFile
-
 # User specification, first time.
 if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
     export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
 fi
 ## TODO: test for existence
 source $WRF_HYDRO_TESTS_USER_SPEC
+
+## Candidate specification
+## TODO: test for existence
+source $candidateSpecFile
 
 # Establish the machine specifications.
 if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
