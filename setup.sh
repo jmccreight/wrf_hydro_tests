@@ -18,6 +18,8 @@ if [[ -f /.dockerenv ]]; then inDocker=TRUE; fi
 ## Where do all the parts live for the test?
 candidateRepoDir=$REPO_DIR/candidate
 refRepoDir=$REPO_DIR/reference
+## actually establish these later.
+
 if [[ ! -z $candidateLocalPath ]] && [[ $inDocker == FALSE ]]; then
     candidateRepoDir=$candidateLocalPath
 fi

@@ -19,7 +19,7 @@ cp $candidateBinary . || {
     exit 1;}
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
-$WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_run $TEST_WALL_TIME
+$WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_run $TEST_WALL_TIME $TEST_QUEUE
 
 ## did the model finish successfully?
 ## This grep is >>>> FRAGILE <<<<. But fortran return codes are un reliable. 
