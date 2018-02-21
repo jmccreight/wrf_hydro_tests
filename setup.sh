@@ -176,4 +176,8 @@ fi
 ###################################
 ## NetCDF env variable setup after modules
 ###################################
-eval $NETCDF
+netcdfStr=`echo $NETCDF | cut -d' ' -f1`
+if [[ $netcdfStr == *export* ]]; then
+    eval $NETCDF
+fi
+
