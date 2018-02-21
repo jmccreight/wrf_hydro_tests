@@ -1,10 +1,11 @@
 [7;49;32mtake_test.sh: A wrf_hydro candidate takes a test.                [0m
 
 [0;49;32mBoilerplate:[0m
-Date                  : 2018 Feb 19 22:40:53 UTC
-User                  : root
-Machine               : 8b1437157bb7
-wrf_hydro_tests commit: af63f60098981337d4c57a74888a1d6cb849c978
+Date                  : 2018 Feb 21 18:13:33 UTC
+User                  : docker
+Machine               : 905758cc174e
+wrf_hydro_tests commit: 2c140a7c3b98da3d74f7e1c1f6382485f106fc71
+There are uncommitted changes to wrf_hydro_tests.
 machine spec file     : /wrf_hydro_tests/machine_spec.sh
 candidateSpecFile     : /test_specs_logs/candidate_spec_GNU.sh
 testSpecFile          : /wrf_hydro_tests/tests/fundamental.sh
@@ -20,10 +21,10 @@ Will echo candidateSpecFile to log at end.
 [0;49;32m-----------------------------------[0m
 [7;49;32mCandidate fork: NCAR/wrf_hydro_nwm[0m
 [7;49;32mCandidate branch/commit: master[0m
-Cloning into '/root/test_repos/candidate'...
+Cloning into '/home/docker/test_repos/candidate'...
 Already on 'master'
 Your branch is up-to-date with 'origin/master'.
-[0;49;32mRepo moved to[0m /root/test_repos/candidate
+[0;49;32mRepo moved to[0m /home/docker/test_repos/candidate
 [0;49;32mCandidate branch:[0m    master
 [0;49;32mTesting commit:[0m
 commit 039329625fd8f907207b93b604fe802d752b4304
@@ -56,7 +57,7 @@ Date:   Fri Feb 16 14:03:04 2018 -0700
 [7;49;32mcompile.sh:[0m
 [0;49;32mQuestion: Does candidate binary compile?[0m
 Compiling with GNU
-Compiling in /root/test_repos/candidate/trunk/NDHMS/
+Compiling in /home/docker/test_repos/candidate/trunk/NDHMS/
 
 Configured: gfort
 Compiling (new way), showing only standard error...
@@ -91,44 +92,44 @@ f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dir
 [0;49;32m-----------------------------------[0m
 [7;49;32mrun.sh:[0m
 [0;49;32mQuestion: Does the candidate binary run? (using 2 cores).[0m
-Running in /test_domain/run.candidate
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-06.stdout 2> 2018-02-19_22-41-06.stderr
+Running in /home/docker/domain/sixmile_NY/run.candidate
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-21_18-13-46.stdout 2> 2018-02-21_18-13-46.stderr
 [5;49;32mAnswer: Candidate binary run successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mperfect_restart.sh:[0m
 [0;49;32mRunning candidate binary from restart (with 2 cores).[0m
-Running in /test_domain/run.candidate.restart
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-07.stdout 2> 2018-02-19_22-41-07.stderr
+Running in /home/docker/domain/sixmile_NY/run.candidate.restart
+mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-21_18-13-47.stdout 2> 2018-02-21_18-13-47.stderr
 [0;49;32mCandidate binary restart run successful.[0m
 
 [0;49;32mQuestion: Perfect restarts?[0m.
 Comparing RESTART files
-Comparing candidate file /test_domain/run.candidate.restart/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate.restart/RESTART.2013060200_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate/RESTART.2013060200_DOMAIN1
 Comparing HYDRO_RST files
-Comparing candidate file /test_domain/run.candidate.restart/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate.restart/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1
 Comparing nudgingLastObs files
-Comparing candidate file /test_domain/run.candidate.restart/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate.restart/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /home/docker/domain/sixmile_NY/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc
 All restart file comparisons pass
 [5;49;32mAnswer: Perfect restart comparison successful![0m
 
 [0;49;32m-----------------------------------[0m
 [7;49;32mnumber_of_cores.sh:[0m
 [0;49;32mRunning candidate binary with 1 cores.[0m
-Running in /test_domain/run.candidate.ncores_test
-mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-19_22-41-07.stdout 2> 2018-02-19_22-41-07.stderr
+Running in /home/docker/domain/sixmile_NY/run.candidate.ncores_test
+mpirun -np 1 ./wrf_hydro.exe 1> 2018-02-21_18-13-47.stdout 2> 2018-02-21_18-13-47.stderr
 [0;49;32mCandidate binary run successful with 1 cores.[0m
 
 [0;49;32mQuestion: Are restarts unchanged with the number of cores used?[0m
 Comparing RESTART files
-Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060200_DOMAIN1
-Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/RESTART.2013060112_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/RESTART.2013060200_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/RESTART.2013060112_DOMAIN1
 Comparing HYDRO_RST files
-Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-02_00:00_DOMAIN1
-Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.candidate.ncores_test/HYDRO_RST.2013-06-01_12:00_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/HYDRO_RST.2013-06-02_00:00_DOMAIN1
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/HYDRO_RST.2013-06-01_12:00_DOMAIN1
 Comparing nudgingLastObs files
-Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-01_12:00:00.nc
-Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.candidate.ncores_test/nudgingLastObs.2013-06-02_00:00:00.nc
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/nudgingLastObs.2013-06-01_12:00:00.nc
+Comparing candidate file /home/docker/domain/sixmile_NY/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /home/docker/domain/sixmile_NY/run.candidate.ncores_test/nudgingLastObs.2013-06-02_00:00:00.nc
 All restart file comparisons pass
 [5;49;32mAnswer: Number of cores test restart comparison successful![0m
 
@@ -137,7 +138,7 @@ All restart file comparisons pass
 
 [7;49;32mReference fork: jmccreight/wrf_hydro_nwm[0m
 [7;49;32mReference branch/commit: 95ff36990801de0a3a819001d1fa9573bca3cfec[0m
-Cloning into '/root/test_repos/reference'...
+Cloning into '/home/docker/test_repos/reference'...
 Note: checking out '95ff36990801de0a3a819001d1fa9573bca3cfec'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
@@ -150,7 +151,7 @@ do so (now or later) by using -b with the checkout command again. Example:
   git checkout -b <new-branch-name>
 
 HEAD is now at 95ff369... Merge pull request #99 from logankarsten/community_v5.0_release
-[0;49;32mRepo in[0m /root/test_repos/reference
+[0;49;32mRepo in[0m /home/docker/test_repos/reference
 [0;49;32mReference branch:[0m    HEAD
 [0;49;32mReference commit:[0m
 commit 95ff36990801de0a3a819001d1fa9573bca3cfec
@@ -163,8 +164,10 @@ Date:   Thu Jan 4 17:27:11 2018 -0700
     Removing ISNAN per PGI issues and removing hard coding of water class…
 
 [0;49;32mCompiling reference binary.[0m
-Compiling in /root/test_repos/reference/trunk/NDHMS/
+Compiling in /home/docker/test_repos/reference/trunk/NDHMS/
 
+cp: omitting directory 'arc/'
+cat: macros: No such file or directory
 *****************************************************************
 The envrionment variables use in the compile (alphabetically):
 HYDRO_D=0
@@ -179,82 +182,16 @@ WRFIO_NCD_LARGE_FILE_SUPPORT=1
 *****************************************************************
 
 Compiling, showing only standard error...
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-ar: creating ../lib/libHYDRO.a
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../../MPP’ [-Wmissing-include-dirs]
-f951: Warning: Nonexistent include directory ‘../mod’ [-Wmissing-include-dirs]
+/bin/sh: 1: CPL_WRF.o: not found
+make[2]: *** [CPL_WRF.o] Error 127
+make[1]: *** [BASIC] Error 2
+make: *** [all] Error 2
 
 *****************************************************************
 
-Make was successful
-
-[0;49;32mReference binary: compilation under GNU successful.[0m
-
-[0;49;32mRunning reference binary (with 2 cores).[0m
-mpirun -np 2 ./wrf_hydro.exe 1> 2018-02-19_22-41-22.stdout 2> 2018-02-19_22-41-22.stderr
-[0;49;32mReference binary: run successful.[0m
-
-[0;49;32mQuestion: Do candidate results regress on to reference results?[0m
-Variable Group Count     Sum AbsSum      Min      Max   Range     Mean  StdDev
-ACMELT   /       204 -220433 220433 -1260.66 -879.553 381.107 -1080.56 74.8745
-Variable Group Count     Sum AbsSum      Min      Max   Range     Mean  StdDev
-ACMELT   /       204 -220433 220433 -1260.66 -879.553 381.107 -1080.56 74.8745
-Variable Group Count     Sum  AbsSum         Min     Max   Range     Mean   StdDev
-qlink1   /       126 13.2103 13.2276 -0.00152791 2.11884 2.12037 0.104844 0.327781
-qlink2   /       126 13.2103 13.2276 -0.00152791 2.11884 2.12037 0.104844 0.327781
-Variable Group Count     Sum  AbsSum       Min     Max   Range     Mean  StdDev
-qlink1   /       132 13.6269 17.2787 -0.618923 1.26077 1.87969 0.103234 0.28891
-qlink2   /       132 13.6269 17.2787 -0.618923 1.26077 1.87969 0.103234 0.28891
-Variable        Group Count     Sum AbsSum      Min      Max  Range    Mean StdDev
-model_discharge /       100 -5986.6 5986.6 -596.734 -1.88481 594.85 -59.866 129.45
-Variable        Group Count      Sum  AbsSum      Min      Max  Range     Mean  StdDev
-model_discharge /       196 -6498.22 6498.22 -596.734 -1.88481 594.85 -33.1542 96.2197
-Comparing RESTART files
-Comparing candidate file /test_domain/run.candidate/RESTART.2013060200_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060200_DOMAIN1
-None
-Comparing candidate file /test_domain/run.candidate/RESTART.2013060112_DOMAIN1 against reference file /test_domain/run.reference/RESTART.2013060112_DOMAIN1
-None
-Comparing HYDRO_RST files
-Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-02_00:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-02_00:00_DOMAIN1
-None
-Comparing candidate file /test_domain/run.candidate/HYDRO_RST.2013-06-01_12:00_DOMAIN1 against reference file /test_domain/run.reference/HYDRO_RST.2013-06-01_12:00_DOMAIN1
-None
-Comparing nudgingLastObs files
-Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-01_12:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-01_12:00:00.nc
-None
-Comparing candidate file /test_domain/run.candidate/nudgingLastObs.2013-06-02_00:00:00.nc against reference file /test_domain/run.reference/nudgingLastObs.2013-06-02_00:00:00.nc
-None
-One or more RESTART comparisons failed, see stdout
-One or more RESTART comparisons failed, see stdout
-One or more HYDRO_RST comparisons failed, see stdout
-One or more HYDRO_RST comparisons failed, see stdout
-One or more nudgingLastObs comparisons failed, see stdout
-One or more nudgingLastObs comparisons failed, see stdout
-[5;49;31mAnswer: Regression test restart comparison failed.[0m
-Files compared are in the directories:
-/test_domain/run.candidate
-/test_domain/run.reference
+Make NOT successful
+[5;49;31mReference binary: compilation under GNU failed unexpectedly.[0m
+See results in /home/docker/test_repos/reference/trunk/NDHMS/
 
 [7;49;32m=================================================================[0m
 [7;49;32mResults of all tests.                                            [0m
@@ -287,9 +224,9 @@ Candidate spec file group:
 
 * Domain Group *
 
-domainSourceDir = /test_domain
+domainSourceDir = /home/docker/domain/sixmile_NY
 
-domainRunDir = /test_domain
+domainRunDir = /home/docker/domain/sixmile_NY
 
 * Compiler *
 
@@ -316,7 +253,7 @@ WRF_HYDRO_NUDGING = 1
 
 * Repo Groups *
 
-REPO_DIR = /root/test_repos
+REPO_DIR = /home/docker/test_repos
 
 ** Candidate repo subgroup **
 

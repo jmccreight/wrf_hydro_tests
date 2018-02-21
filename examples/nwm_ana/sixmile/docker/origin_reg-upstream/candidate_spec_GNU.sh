@@ -18,7 +18,7 @@
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/test_domain
+export domainSourceDir=/home/docker/domain/sixmile_NY
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
@@ -98,7 +98,7 @@ export candidateLocalPath=''
 # ** Reference repo subgroup **
 # REQUIRED only for regression testing.
 
-export referenceFork=jmccreight/wrf_hydro_nwm
+export referenceFork=${GITHUB_USERNAME}/wrf_hydro_nwm
 # Default = NCAR/wrf_hydro_nwm.
 # A named fork on github. 
 # Reference repository is the one that provides the reference for regression testing. It may come

@@ -52,7 +52,11 @@ source $candidateSpecFile
 if [[ -z $WRF_HYDRO_TESTS_USER_SPEC ]]; then
     export WRF_HYDRO_TESTS_USER_SPEC=~/.wrf_hydro_tests_user_spec.sh
 fi
-## TODO: test for existence
+if [[ ! -e $WRF_HYDRO_TESTS_USER_SPEC ]]; then
+    echo The user spec file: $WRF_HYDRO_TESTS_USER_SPEC
+    echo does not exist. Exiting.
+    exit 1
+fi
 source $WRF_HYDRO_TESTS_USER_SPEC
 
 # Establish the machine specifications.
@@ -60,7 +64,6 @@ if [[ -z $WRF_HYDRO_TESTS_MACHINE_SPEC ]]; then
     export WRF_HYDRO_TESTS_MACHINE_SPEC=$WRF_HYDRO_TESTS_DIR/machine_spec.sh
 fi
 ## TODO: test for existence
-echo "WRF_HYDRO_TESTS_MACHINE_SPEC: $WRF_HYDRO_TESTS_MACHINE_SPEC"
 source $WRF_HYDRO_TESTS_MACHINE_SPEC
 
 # User specification, again. 
