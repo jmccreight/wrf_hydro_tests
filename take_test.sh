@@ -135,7 +135,7 @@ echo                                                        2>&1 | tee -a $logFi
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
 message="\e[7;49;32mSetting up the candidate                                         \e[0m"
 echo -e "$message"                                          2>&1 | tee -a $logFile
-source $WRF_HYDRO_TESTS_DIR/setup.sh
+source $WRF_HYDRO_TESTS_DIR/setup.sh                        2>&1 | tee -a $logFile
 
 echo                                                        2>&1 | tee -a $logFile
 echo -e "$horizBar"                                         2>&1 | tee -a $logFile
