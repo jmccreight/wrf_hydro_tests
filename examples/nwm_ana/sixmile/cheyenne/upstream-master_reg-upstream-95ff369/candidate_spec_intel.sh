@@ -18,7 +18,7 @@
 ###########################################################################
 # * Domain Group *
 
-export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/sixmile_test_domain
+export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/v1.2_nwm/sixmile_NY/NWM-AnA
 # REQUIRED
 # Where the domain and pre-established run directories live.
 

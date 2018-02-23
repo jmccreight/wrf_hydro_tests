@@ -14,7 +14,12 @@ echo -e "\e[0;49;32mRunning candidate binary from restart (with $nCoresDefault c
 cd $domainRunDir/run.candidate.restart || \
     { echo "Can not cd to $domainRunDir/run.candidate.restart. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate.restart"
-cp $candidateBinary .
+cp $candidateBinary . || {
+    echo -e "Candidate binary not found";
+    exit 1;}
+cp $candidateRepoDir/trunk/NDHMS/Run/*TBL . || {
+    echo -e "Candidate parameter tables not found";
+    exit 1;}
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $candidateBinary question_perfect_restart $TEST_WALL_TIME

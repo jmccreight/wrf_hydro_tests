@@ -15,7 +15,12 @@ echo -e "\e[0;49;32mRunning candidate binary with $nCoresTest cores.\e[0m"
 cd $domainRunDir/run.candidate.ncores_test || \
     { echo "Can not cd to $domainRunDir/run.candidate.ncores_test. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate.ncores_test"
-cp $candidateBinary .
+cp $candidateBinary . || {
+    echo -e "Candidate binary not found";
+    exit 1;}
+cp $candidateRepoDir/trunk/NDHMS/Run/*TBL . || {
+    echo -e "Candidate parameter tables not found";
+    exit 1;}
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresTest $candidateBinary question_n_cores $TEST_WALL_TIME

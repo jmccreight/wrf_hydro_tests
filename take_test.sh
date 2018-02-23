@@ -94,6 +94,7 @@ fi
 
 ## Now establish logging.
 export logFile=`$WRF_HYDRO_TESTS_DIR/toolbox/make_log_file_name.sh $candidateSpecFile $testSpecFile`
+rm -f $logFile
 function echoTee { echo "$@" 2>&1 | tee -a $logFile; }
 
 
