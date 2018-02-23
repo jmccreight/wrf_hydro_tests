@@ -23,7 +23,18 @@ echo
 echo -e "\e[0;49;32mRunning reference binary (with $nCoresDefault cores).\e[0m"
 cd $domainRunDir/run.reference || \
     { echo "Can not cd to ${domainRunDir}/run.reference Exiting."; exit 1; }
-cp $referenceBinary .
+cp $referenceBinary . || {
+    echo -e "Reference binary not found";
+    exit 1;}
+cp $refRepoDir/trunk/NDHMS/Run/*TBL . || {
+    echo -e "Reference parameter tables not found in Run/ attempting to find in template/HYDRO ";
+    cp $refRepoDir/trunk/NDHMS/template/HYDRO/*TBL . && \
+        cp $refRepoDir/trunk/NDHMS/template/NoahMP/*TBL . || {
+        echo -e "Reference parameter tables not found  find in template/HYDRO ";
+        exit 1;} ;
+}
+
+
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_regression $TEST_WALL_TIME
