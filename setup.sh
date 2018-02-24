@@ -45,6 +45,14 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
 
+
+if [[ ! -d $domainSourceDir ]]; then
+    echo "The domain source: $domainSourceDir"
+    echo "does not exist. Exiting."
+    exit 1
+fi
+## should the above live elsewhere?
+
 if [[ ! -z $domainRunDir ]]; then
     if [[ -e $domainRunDir ]]; then
         chmod -R 755 $domainRunDir
@@ -55,6 +63,7 @@ if [[ ! -z $domainRunDir ]]; then
     else
 	cp -as `pwd`/$domainSourceDir $domainRunDir
     fi
+    chmod -R 755 $domainRunDir
 else
     if [[ $inDocker == "FALSE" ]]; then
 	## JLM: this does not catch drives mounted from host into the docker container.

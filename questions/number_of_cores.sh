@@ -18,13 +18,12 @@ echo "Running in $domainRunDir/run.candidate.ncores_test"
 cp $candidateBinary . || {
     echo -e "Candidate binary not found";
     exit 1;}
-cp $candidateRepoDir/trunk/NDHMS/Run/*TBL . || {
-    echo -e "Candidate parameter tables not found in Run/ attempting to find in template/HYDRO ";
-    cp $candidateRepoDir/trunk/NDHMS/template/HYDRO/*TBL . && \
-        cp $candidateRepoDir/trunk/NDHMS/template/NoahMP/*TBL . || {
-        echo -e "Candidate parameter tables not found  find in template/HYDRO ";
-        exit 1;} ;
-}
+
+
+export paramsRepoDir=$candidateRepoDir
+export paramsCanRef=Candidate
+source $WRF_HYDRO_TESTS_DIR/toolbox/get_noahMP_params.sh
+
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresTest $candidateBinary question_n_cores $TEST_WALL_TIME
