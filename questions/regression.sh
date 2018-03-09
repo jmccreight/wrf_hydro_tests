@@ -23,7 +23,15 @@ echo
 echo -e "\e[0;49;32mRunning reference binary (with $nCoresDefault cores).\e[0m"
 cd $domainRunDir/run.reference || \
     { echo "Can not cd to ${domainRunDir}/run.reference Exiting."; exit 1; }
-cp $referenceBinary .
+cp $referenceBinary . || {
+    echo -e "Reference binary not found";
+    exit 1;}
+
+
+export paramsRepoDir=$refRepoDir
+export paramsCanRef=Reference
+source $WRF_HYDRO_TESTS_DIR/toolbox/get_noahMP_params.sh
+
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresDefault $referenceBinary question_regression $TEST_WALL_TIME

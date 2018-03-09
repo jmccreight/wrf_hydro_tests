@@ -4,7 +4,7 @@
 #          variables defined therein.
 
 
-export WRF_HYDRO_TESTS_DIR=/wrf_hydro_ci/wrf_hydro_tests
+export WRF_HYDRO_TESTS_DIR=/home/docker/wrf_hydro_tests
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 

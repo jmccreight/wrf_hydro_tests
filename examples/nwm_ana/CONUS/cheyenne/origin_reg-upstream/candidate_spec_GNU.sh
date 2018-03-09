@@ -16,13 +16,13 @@
 ## Comments are BELOW variables.
 
 ###########################################################################
-# * Domain Group *
+# ** Domain Group **
 
-export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/v1.2_nwm/sixmile_NY/NWM-AnA
+export domainSourceDir=/glade/p/work/jamesmcc/TEST_DOMAINS/conus_nwm_v1.2_test_domain
 # REQUIRED
 # Where the domain and pre-established run directories live.
 
-export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_upstream-master_reg-upstream-95ff369
+export domainRunDir=/glade/scratch/`whoami`/conus_test_domain_run_fundamental
 # REQUIRED if NOT running in docker (i.e. locally):
 # Clone the domainSourceDir to domainRunDir to keep the original clean.
 # Default = domainSourceDir if on docker.
@@ -33,7 +33,7 @@ export domainRunDir=/glade/scratch/`whoami`/sixmile_test_domain_run_upstream-mas
 ###########################################################################
 # * Compiler * 
 
-export WRF_HYDRO_COMPILER='intel'
+export WRF_HYDRO_COMPILER='GNU'
 ## Default = 'GNU'
 ## Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
 
@@ -41,22 +41,23 @@ export WRF_HYDRO_COMPILER='intel'
 #####################################################################################
 
 
-
-export TEST_WALL_TIME=00:05
+export TEST_WALL_TIME=00:35
 ## The wall time to use with a job scheduler.
 
+export TEST_QUEUE=regular
+## The queue to use on the job scheduler.
+
 # ** Number of cores group **
-export nCoresDefault=2
+export nCoresDefault=828
 # REQUIRED
 # default number of cores to use for runs
 
-export nCoresTest=1
+export nCoresTest=827
 # REQUIRED for # cores tests.
 # A different number of cores than above for performing an mpi number of cores test.
 
-
 ###########################################################################
-# * Model compile options *
+# * Model compile options group *
 
 export WRF_HYDRO=1
 export HYDRO_D=0
@@ -70,7 +71,6 @@ export WRF_HYDRO_NUDGING=1
 # Compile time options to the model
 # Caveat Emptor:  there is nothing sacred about whatever values you may find here. 
 
-
 ###########################################################################
 # * Repo groups *
 
@@ -79,14 +79,15 @@ export REPO_DIR=/glade/scratch/`whoami`/remote_repos
 
 # ** Candidate repo subgroup **
 
-export candidateFork=NCAR/wrf_hydro_nwm
+export candidateFork=${GITHUB_USERNAME}/wrf_hydro_nwm
 # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
 # Candidate repository is the one you have been working on. It may come from github or a local path.
-# A named fork on github. 
+# A named fork on github.
 
-export candidateBranchCommit=master
+export candidateBranchCommit=''
 # Default = master
 # A branch or commit on candidateFork. 
+
 # --- OR ---
 
 export candidateLocalPath=''
@@ -105,18 +106,16 @@ export referenceFork=NCAR/wrf_hydro_nwm
 # from github or a local path.
 # If both referenceFork and referenceLocalPath equal '', the reference fork is not used (no regression testing).
 
-export referenceBranchCommit=95ff369
-#v1.2_release-gwFix-qstrmvolrtFix-muskCungeChanges
-#master
+export referenceBranchCommit=''
 # Default = master
 # A branch or commit on referenceFork. 
+
 # --- OR ---
 
 export referenceLocalPath=''
 # Default ='' : NOT used.
 # A path on local machine where the current state of the repo (potentially uncommitted) is compiled.
 # This supercedes BOTH referenceFork and referenceBranchCommit if set. 
-
 
 ###########################################################################
 # * User spec file path *
@@ -132,4 +131,6 @@ export WRF_HYDRO_TESTS_MACHINE_SPEC=''
 # We recommend using the default by leaving blank. If using an
 # alternative location, then variable consists of the path/file
 # to the file. 
+
+
 

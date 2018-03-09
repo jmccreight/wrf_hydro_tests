@@ -7,8 +7,10 @@ if [[ $HOSTNAME == *cheyenne* ]]; then
     ## Compiler
     if [[ $WRF_HYDRO_COMPILER == intel ]]; then
         export WRF_HYDRO_MODULES='intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1 nco/4.6.2 python/3.6.2'
+        export NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
     else 
         export WRF_HYDRO_MODULES='gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1 nco/4.6.2 python/3.6.2'
+        export NETCDF=/glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
     fi
 
     ## basic hardware
@@ -25,7 +27,9 @@ fi
 # Currently this includes modules needed for testing (e.g. on cheyenne: python and ncarenv (which contains nccmp))
 
 
-export NETCDF="export NETCDF=\$(dirname `nc-config --includedir`)"
+if [[ -z $NETCDF ]]; then 
+    export NETCDF="export NETCDF=\$(dirname `nc-config --includedir`)"
+fi
 # REQUIRED
 # This should not need changed for modern installs of NetCDF. Where NetCDF resides on your system. A delayed evaluation is 
 # necessary only when using modules, but will work regardless. Configure script may also handle any misspecifications.
@@ -62,10 +66,16 @@ function qSubFunc
     local theBinary=$2;
     local jobName=$3
     local wallTime=$4
+    local queue=$5
     
+    ## Let queue be optional
+    if [[ ! -z $queue ]]; then 
+        queue="-q $queue"
+    fi
+
     # $WRF_HYDRO_TESTS_DIR comes from environment at calling time.
     local qsub_script_dir=$WRF_HYDRO_TESTS_DIR/toolbox/qsub_scripts/
-    runCmd="$qsub_script_dir/q_run.sh -j $jobName -W $wallTime $nCores ./`basename $theBinary`";
+    runCmd="$qsub_script_dir/q_run.sh -j $jobName -W $wallTime $queue $nCores ./`basename $theBinary`"
     #$runCmd
     echo $runCmd
     scriptOutput=`eval $runCmd`

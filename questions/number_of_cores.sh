@@ -15,7 +15,15 @@ echo -e "\e[0;49;32mRunning candidate binary with $nCoresTest cores.\e[0m"
 cd $domainRunDir/run.candidate.ncores_test || \
     { echo "Can not cd to $domainRunDir/run.candidate.ncores_test. Exiting."; exit 1; }
 echo "Running in $domainRunDir/run.candidate.ncores_test"
-cp $candidateBinary .
+cp $candidateBinary . || {
+    echo -e "Candidate binary not found";
+    exit 1;}
+
+
+export paramsRepoDir=$candidateRepoDir
+export paramsCanRef=Candidate
+source $WRF_HYDRO_TESTS_DIR/toolbox/get_noahMP_params.sh
+
 
 if [[ -z $WRF_HYDRO_RUN ]]; then source $toolboxDir/mpiRun.sh; fi
 $WRF_HYDRO_RUN $nCoresTest $candidateBinary question_n_cores $TEST_WALL_TIME
