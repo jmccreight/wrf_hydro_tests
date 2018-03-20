@@ -1,0 +1,13 @@
+# REQUIRED
+# The local path to the wrf_hydro_tests dir.
+wrf_hydro_tests_dir : /wrf_hydro_tests
+
+# Not needed for docker, these are passed to docker by the host.
+# They must be available in the host.
+#export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
+#export GITHUB_USERNAME=jmccreight
+
+# Function used to run 
+# Default='' will use a canned mpiRun function from the tool box.
+wrf_hydro_run : ''
+
