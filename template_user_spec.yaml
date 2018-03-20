@@ -1,0 +1,25 @@
+# REQUIRED: The local path to the wrf_hydro_tests dir.
+wrf_hydro_tests_dir : ~/WRF_Hydro/wrf_hydro_tests
+
+
+# REQUIRED only if cloning any repositories from github.
+# See wrf_hydro_tests/README.md for information and a suggestion on setting these. These can be inherited from the environment
+github:
+  authtoken_file : ~/.github_authtoken
+  username       : jmccreight
+  ssh_priv_key   : ''
+
+
+## Your PBS header fields. Edit to your needs Do NOT include others here.
+## These appear commented, but PBS looks for lines beginning with #PBS
+#PBS -m abe 
+#PBS -M `whoami`@ucar.edu
+#PBS -A NRAL0017
+
+
+#######################################################
+# Overrides to machine_spec.sh
+# Place any environment variables you would like modified
+# compared to the machine_spec.sh file.
+
+marchine_spec_overrides:

@@ -35,7 +35,7 @@ wrf_hydro_tests:
 # We recommend using the default by leaving blank. If using an
 # alternative location, then variable consists of the path/file
 # to the file. 
-    user_spec : '/test_specs_logs/user_spec.sh'
+    user_spec : ''
 # * Machine spec file path *
 # Default (if not set) = $WRF_HYDRO_TESTS_DIR/machine_spec.sh
 # We recommend using the default by leaving blank. If using an

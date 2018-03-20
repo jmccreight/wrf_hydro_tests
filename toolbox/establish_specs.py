@@ -1,6 +1,10 @@
 import yaml
 import os
 from boltons.iterutils import remap
+from color_logs import log
+
+# A few generic utils followed by functions for individual spec files which
+# can acommodate customization.
 
 # ######################################################
 # Remapping nested values
@@ -35,8 +39,19 @@ def establish_spec(spec_file):
 
 
 def establish_user_spec(user_spec_file):
+    log.info('Establish user spec.')
     user_spec = establish_spec(user_spec_file)
     return(user_spec)
+
+
+# ######################################################
+# Machine spec
+
+
+def establish_machine_spec(machine_spec_file):
+    log.info('Establish machine spec.')
+    machine_spec = establish_spec(machine_spec_file)
+    return(machine_spec)
 
 
 # ######################################################
@@ -44,7 +59,7 @@ def establish_user_spec(user_spec_file):
 
 
 def establish_candidate(candidate_spec_file):
-
+    log.info('Establish candidate spec.')
     candidate_spec = establish_spec(candidate_spec_file)
 
     # Keep as a dict or transform to an object?

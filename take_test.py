@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import logging
 from pprint import pprint
@@ -14,8 +16,8 @@ from establish_specs import *
 # ######################################################
 # Agruments
 #candidate_spec_file = str(argv[1])
-domain              = str(argv[2])
-test_spec           = str(argv[3])
+#domain              = str(argv[2])
+#test_spec           = str(argv[3])
 
 candidate_spec_file = '/Users/james/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.yaml'
 
@@ -51,11 +53,12 @@ candidate_spec = establish_candidate(candidate_spec_file)
 
 # ######################################################
 # User spec file.
-
+user_spec_file=None
 if ('wrf_hydro_tests' in candidate_spec) and \
    ('user_spec' in candidate_spec['wrf_hydro_tests']):
     user_spec_file = candidate_spec['wrf_hydro_tests']['user_spec']
-else:
+
+if user_spec_file == '' or user_spec_file is None:
     if 'WRF_HYDRO_TESTS_USER_SPEC' in env_vars: 
         user_spec_file = env_vars['WRF_HYDRO_TESTS_USER_SPEC']
     else:
@@ -64,14 +67,18 @@ else:
 user_spec = establish_user_spec(user_spec_file)
 # WARN if DNE
 
+# TODO JLM: User spec is supposed to allow overrides to machine spec....
+
 # ######################################################
-# Marchine spec file
+# Machine spec file
 if ('wrf_hydro_tests_dir' in user_spec):
-    machine_spec_file = user_spec['wrf_hydro_tests_dir']/machine_spec.sh
+    machine_spec_file = user_spec['wrf_hydro_tests_dir']+'/machine_spec.sh'
 else:
     machine_spec_file = env_vars['WRF_HYDRO_TESTS_MACHINE_SPEC']
 
 machine_spec = establish_machine_spec(user_spec_file)
+
+# Apply overrides from user_spec
 
 # ######################################################
 # Test specification.
