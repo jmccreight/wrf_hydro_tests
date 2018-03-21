@@ -21,8 +21,8 @@ cheyenne:
     mpirun: ${WRF_HYDRO_TESTS_DIR}/toolbox/submit_mpirun.sh
   
   PBS_defaults:
-    job_name : qRunJob
-    wall_time: 11:59
+    job_name : wh_test
+    wall_time: 11\:59
     queue    : regular
 
 #docker:

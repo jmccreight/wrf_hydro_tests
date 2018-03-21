@@ -5,7 +5,9 @@ wrf_hydro_tests_dir : ~/WRF_Hydro/wrf_hydro_tests
 # REQUIRED only if cloning any repositories from github.
 # See wrf_hydro_tests/README.md for information and a suggestion on setting these. These can be inherited from the environment
 github:
-  authtoken_file : ~/.github_authtoken
+  # Authtoken can either be a file or an env var.
+  authtoken : $GITHUB_AUTHTOKEN
+  # authtoken_file : ~/.github_authtoken
   username       : jmccreight
   ssh_priv_key   : ''
 
