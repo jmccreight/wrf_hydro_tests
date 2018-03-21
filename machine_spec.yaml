@@ -1,0 +1,32 @@
+# wrf_hydro_tests: machine configuration file.
+# Purpose: Log all the static information for each machine in this file. This file
+#          is sourced after the candidate specification file and my rely on 
+#          variables defined therein.
+cheyenne:
+
+  base_modules: nco/4.6.2 python/3.6.2
+  
+  intel:
+    modules: intel/16.0.3 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15f netcdf/4.4.1
+    netcdf : /glade/u/apps/ch/opt/netcdf/4.4.1/intel/16.0.1
+    
+  GNU:
+    modules: gnu/7.1.0 ncarenv/1.2 ncarcompilers/0.4.1 mpt/2.15 netcdf/4.4.1.1
+    netcdf : /glade/u/apps/ch/opt/netcdf/4.4.1.1/gnu/7.1.0
+
+  cores_per_node: 36
+
+  submit:
+    qsub:   ${WRF_HYDRO_TESTS_DIR}/toolbox/qsub_scripts/submit_cheyenne.sh
+    mpirun: ${WRF_HYDRO_TESTS_DIR}/toolbox/submit_mpirun.sh
+  
+  PBS_defaults:
+    job_name : qRunJob
+    wall_time: 11:59
+    queue    : regular
+
+#docker:
+
+
+
+

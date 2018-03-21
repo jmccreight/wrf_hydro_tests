@@ -1,6 +1,8 @@
 import logging
 from termcolor import colored
+
 # from https://gist.github.com/brainsik/1238935
+
 
 class ColorLog(object):
 
@@ -22,5 +24,6 @@ class ColorLog(object):
                 colored(s, **self.colormap[name]), *args)
 
         return getattr(self._log, name)
-    
+
+
 log = ColorLog(logging.getLogger(__name__))
