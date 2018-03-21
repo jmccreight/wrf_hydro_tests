@@ -33,7 +33,7 @@ def clone(repo_tag, candidate_spec, user_spec, dir_for_clone):
     log.debug('Cloning '+candidate_spec[repo_tag]['fork'] +
               ' into '+str(dir_for_clone))
     repo = pygit2.clone_repository( url, str(dir_for_clone) )
-
+    return(repo)
 
 
 def establish_repo(repo_tag, candidate_spec, user_spec):
@@ -52,8 +52,14 @@ def establish_repo(repo_tag, candidate_spec, user_spec):
 
         Path.mkdir(dir_for_clone, parents=True)
 
-        clone(repo_tag, candidate_spec, user_spec, dir_for_clone)
-          
+        repo = clone(repo_tag, candidate_spec, user_spec, dir_for_clone)
+
+        # THis is total failure
+        #repo.checkout(refname='1b18d3317012ee96725f6a090524e18e7d09845e')
+        # https://stackoverflow.com/questions/43886483/replicating-git-checkout-commit-with-pygit2
+        # TODO JLM: move to GitPython
+        #subprocess.Popen(["git","checkout 1b18d3317012ee96725f6a090524e18e7d09845e"],
+        #                 stdout=subprocess.PIPE)
         
         
         
