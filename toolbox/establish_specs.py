@@ -12,15 +12,31 @@ from color_logs import log
 # Remapping nested values
 # http://sedimental.org/remap.html
 
+# These visit all levels of a nested dictionary and expand ${} and ~.
 
-def visit(path, key, value):
+
+def visit_expand(path, key, value):
     if isinstance(value, str):
         return key, os.path.expanduser(os.path.expandvars(value))
     return key, value
 
 
-def remap_spec(spec_file):
-    return(remap(spec_file, visit))
+def remap_vars(spec_file):
+    return(remap(spec_file, visit_expand))
+
+
+# These visit all levels of a nested dictionary and transform '' to None.
+
+
+def visit_blanks(path, key, value):
+    if isinstance(value, str):
+        if value == '':
+            return key, None
+    return key, value
+
+
+def remap_blanks(spec_file):
+    return(remap(spec_file, visit_blanks))
 
 
 # ######################################################
@@ -32,7 +48,8 @@ def establish_spec(spec_file):
     with open(spec_file) as ff:
         spec_dict = yaml.safe_load(ff)
 
-    spec = remap_spec(spec_dict)
+    spec = remap_vars(spec_dict)
+    spec = remap_vars(spec)
 
     return(spec)
 

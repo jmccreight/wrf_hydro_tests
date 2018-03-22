@@ -1,7 +1,5 @@
 # Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
-log_file: test_example.log
-
-compiler : gfort
+compiler : 'GNU'
 
 wall_time : 00:05
 
@@ -9,7 +7,6 @@ n_cores:
       default : 2
       test    : 1
 
-      
 # Where temp repositories cloned from github shall be placed
 #   (in subfolders candidate/ and reference/)
 repos_dir : ~/test_repos
@@ -18,7 +15,6 @@ candidate_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
     fork       : NCAR/wrf_hydro_nwm  
     commitish  : master
-    #1b18d3317012ee96725f6a090524e18e7d09845e
     # --- OR ---
     # A path on local machine where the current state of the repo (potentially uncommitted)
     # is compiled. This supercedes BOTH candidateFork and candidateBranchCommit if set. 
@@ -26,7 +22,7 @@ candidate_repo:
 
 reference_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
-    fork       : NCAR/wrf_hydro_nwm  
+    fork       : ${GITHUB_USERNAME}/wrf_hydro_nwm  
     commitish  : master
     # --- OR ---
     # A path on local machine where the current state of the repo (potentially uncommitted)
@@ -34,15 +30,16 @@ reference_repo:
     local_path : 
 
 wrf_hydro_tests:    
-    # * User spec file path *
-    # Default (if not set) = ~/.wrf_hydro_tests_user_spec.sh
-    # We recommend using the default by leaving blank. If using an
-    # alternative location, then variable consists of the path/file
-    # to the file. 
+# * User spec file path *
+# Default (if not set) = ~/.wrf_hydro_tests_user_spec.sh
+# We recommend using the default by leaving blank. If using an
+# alternative location, then variable consists of the path/file
+# to the file. 
     user_spec :
-    # * Machine spec file path *
-    # Default (if not set) = $WRF_HYDRO_TESTS_DIR/machine_spec.sh
-    # We recommend using the default by leaving blank. If using an
-    # alternative location, then variable consists of the path/file
-    # to the file. 
-    machine_spec : ''
+# * Machine spec file path *
+# Default (if not set) = $WRF_HYDRO_TESTS_DIR/machine_spec.sh
+# We recommend using the default by leaving blank. If using an
+# alternative location, then variable consists of the path/file
+# to the file. 
+    machine_spec : 
+    
