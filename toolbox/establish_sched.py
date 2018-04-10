@@ -1,11 +1,14 @@
 from pprint import pprint
+import re
 import sys
-sys.path.insert(0, '/Users/jamesmcc/WRF_Hydro/wrf_hydro_tests/toolbox/')
+import os
+home = os.path.expanduser("~/")
+sys.path.insert(0, home + '/WRF_Hydro/wrf_hydro_tests/toolbox/')
 from establish_specs import establish_spec
 
-machine_spec_file='/Users/jamesmcc/WRF_Hydro/wrf_hydro_tests/machine_spec.yaml'
-candidate_spec_file='/Users/jamesmcc/WRF_Hydro/wrf_hydro_tests/template_candidate_spec.yaml'
-user_spec_file='/Users/jamesmcc/WRF_Hydro/wrf_hydro_tests/template_user_spec.yaml'
+machine_spec_file= home +'/WRF_Hydro/wrf_hydro_tests/machine_spec.yaml'
+candidate_spec_file= home + '/WRF_Hydro/wrf_hydro_tests/template_candidate_spec.yaml'
+user_spec_file= home + '/WRF_Hydro/wrf_hydro_tests/template_user_spec.yaml'
 
 #def get_sched_args_from_specs(machine_spec_file:   str=None,
 #                              user_spec_file:      str=None,
@@ -42,7 +45,9 @@ if candidate_spec_file:
 
 pprint(spec)
 
-machine = 'cheyenne'
+machine_raw = os.path.expandvars('$HOSTNAME')
+if re.search('cheyenne',machine_raw): machine = 'cheyenne'
+
 scheduler_name = spec[machine]['scheduler']['name']
 compiler_name = spec['compiler']
 
@@ -59,7 +64,7 @@ sad['walltime'] = spec['wall_time']
 #sad['np'] = spec # pass as arg?
 #sad['nodes'] = spec
 sad['ppn'] = spec[machine]['cores_per_node']
-sad['command'] = spec[machine]['scheduler_name']
+sad['exe_cmd'] = spec[machine]['exe_cmd'][scheduler_name]
 sad['sched_name'] = scheduler_name
 
 sad['modules'] = spec[machine]['modules'][compiler_name]
@@ -67,4 +72,19 @@ if 'base' in spec[machine]['modules'].keys():
     sad['modules'] += ' ' + spec[machine]['modules']['base']
     
 
+pprint(sched_args_dict)
+
+
+import wrfhydropy
+sys.path.insert(0, home + '/WRF_Hydro/wrf_hydro_py/wrfhydropy/core/')
+from schedulers import *
+
+sad['name']='fu_job'
+sad['nnodes']= 1
+sad['nproc']= 36
+sad['binary_file']= 'wrf_HYDRO.EXE'
+sad['run_dir'] = '/foo/'
+
+j = Job( **sad )
+j.script()
 
