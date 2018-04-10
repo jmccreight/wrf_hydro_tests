@@ -14,6 +14,10 @@ n_cores:
 #   (in subfolders candidate/ and reference/)
 repos_dir : ~/test_repos
 
+# Where model runs are performed
+test_dir : ~/test_dir_tmp 
+
+
 candidate_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
     fork       : NCAR/wrf_hydro_nwm  

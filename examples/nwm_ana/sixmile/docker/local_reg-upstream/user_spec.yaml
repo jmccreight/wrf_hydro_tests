@@ -1,0 +1,20 @@
+# REQUIRED
+# The local path to the wrf_hydro_tests dir.
+wrf_hydro_tests_dir : /home/docker/wrf_hydro_tests
+
+# Not needed for docker, these are passed to docker by the host.
+# They must be available in the host.
+github:
+  # Authtoken can either be a file or an env var.
+  authtoken : $GITHUB_AUTHTOKEN
+  authtoken_file : ~/.github_authtoken
+  username       : jmccreight
+  # Note: setting ssh_priv_key overrides using authtoken.
+  # No value results in None.
+  ssh_priv_key   :
+    #/Users/jamesmcc/.ssh/id_rsa_chimayo_ucar
+
+# Function used to run 
+# Default='' will use a canned mpiRun function from the tool box.
+wrf_hydro_run : ''
+

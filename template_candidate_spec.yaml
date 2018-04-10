@@ -1,8 +1,7 @@
 # Choices are currently 'GNU' and 'intel'. (currently case-sensitive).
-compiler : 'GNU'
-
+compiler : 'gfort'
+queue : 'regular'
 wall_time : 00:05
-
 n_cores:
       default : 2
       test    : 1

@@ -5,19 +5,15 @@ from pprint import pprint, pformat
 
 # Anything local/custom below here
 import sys
+from wrfhydropy import *
+
 sys.path.insert(0, 'toolbox/')
 from color_logs import log
 from establish_specs import *
 from log_boilerplate import log_boilerplate
 from establish_repo import *
 
-sys.path.insert(0, 'tests/')
-from fundamental import *
-
-sys.path.insert(0, '/home/docker/wrf_hydro_py/wrfhydro/')
-from wrf_hydro_model import *
-from utilities import *
-
+import pytest
 
 # ######################################################
 # Help/docstring.
@@ -29,7 +25,7 @@ from utilities import *
 #test_spec           = str(argv[3])
 
 candidate_spec_file = os.path.expanduser('~/wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.yaml')
-domain='/home/docker/domain/croton_NY'
+domain='/home/docker/domain/croton_lite'
 config='NWM'
 version='v1.2.1'
 test_spec = 'fundamental'
@@ -100,38 +96,45 @@ log.debug('')
 
 # ######################################################
 # Setup the test
-log.info(horiz_bar)
-log.info('Set up the test.')
-log.debug('')
-log.debug('Setup the domain.')
-domain = WrfHydroDomain(domain_top_dir=domain, domain_config=config, model_version=version)
-log.debug('')
+#log.info(horiz_bar)
+#log.info('Set up the test.')
+#log.debug('')
+#log.debug('Setup the domain.')
+#domain = WrfHydroDomain(domain_top_dir=domain, domain_config=config, model_version=version)
+#log.debug('')
 
-log.debug('Setup the candidate model and simulation objects.')
-candidate_model = WrfHydroModel(str(candidate_spec['candidate_repo']['local_path'])+'/trunk/NDHMS')
-candidate_sim = WrfHydroSim(candidate_model,domain)
-log.debug('Compile options:')
-log.debug(pformat(candidate_model.compile_options))
-log.debug('')
+#log.debug('Setup the candidate model and simulation objects.')
+#candidate_model = WrfHydroModel(str(candidate_spec['candidate_repo']['local_path'])+'/trunk/NDHMS')
+#candidate_sim = WrfHydroSim(candidate_model,domain)
+#log.debug('Compile options:')
+#log.debug(pformat(candidate_model.compile_options))
+#log.debug('')
 
 # TODO JLM: the trunk/NHDMS seems like a stupid add on... 
 # TODO JLM: when did the path become a posix path object?
 
-log.debug('Setup the reference model and simulation objects.')
-reference_model = WrfHydroModel(str(candidate_spec['reference_repo']['local_path'])+'/trunk/NDHMS')
-reference_sim = WrfHydroSim(reference_model,domain)
-log.debug('')
-
-# ######################################################
-# Take the test.
-#print(globals())
-#exec(open(candidate_spec['wrf_hydro_tests']['test_spec'] ).read(),
-#     globals=globals(), locals=local_dict)
-
-# Assume the worst.
-#exit_value = 1
+#log.debug('Setup the reference model and simulation objects.')
+#reference_model = WrfHydroModel(str(candidate_spec['reference_repo']['local_path'])+'/trunk/NDHMS')
+#reference_sim = WrfHydroSim(reference_model,domain)
+#log.debug('')
 
 
+#$PYTEST_DIR_DOCKER -v \
+#    --domain_dir $DOMAIN_DIR_DOCKER \
+#    --candidate_dir $TEST_DIR_DOCKER/candidate/trunk/NDHMS \
+#    --reference_dir $TEST_DIR_DOCKER/reference/trunk/NDHMS \
+#    --output_dir $TEST_DIR_DOCKER/test_out 
+pytest_cmd = \
+    [
+      str(candidate_spec['candidate_repo']['local_path']),
+      '-v',
+      '--domain_dir',    domain,
+      '--candidate_dir', str(candidate_spec['candidate_repo']['local_path']) + '/trunk/NDHMS',
+      '--reference_dir', str(candidate_spec['reference_repo']['local_path']) + '/trunk/NDHMS',
+      '--output_dir',    str(candidate_spec['test_dir'])
+     ]
+pytest.main(pytest_cmd)
+#["-qq"], plugins=[MyPlugin()])
 
 
 # ######################################################

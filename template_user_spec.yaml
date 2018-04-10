@@ -18,7 +18,12 @@ github:
 
 ## Your PBS header fields. Edit to your needs Do NOT include others here.
 ## These appear commented, but PBS looks for lines beginning with #PBS
-
+PBS :
+  email :
+    when : abe
+    who  : $USER@ucar.edu
+  account : NRAL0017
+    
 #PBS -m abe 
 #PBS -M `whoami`@ucar.edu
 #PBS -A NRAL0017
