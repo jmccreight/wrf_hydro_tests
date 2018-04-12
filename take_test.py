@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+from wrfhydropy import Scheduler
 import os
 import logging
 from pprint import pprint, pformat
@@ -24,7 +24,7 @@ import pytest
 #domain              = str(argv[2])
 #test_spec           = str(argv[3])
 
-candidate_spec_file = os.path.expanduser('~/wrf_hydro_tests/examples/nwm_ana/sixmile/docker/origin_reg-upstream/candidate_spec_GNU.yaml')
+candidate_spec_file = os.path.expanduser('~/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/docker/local_reg-upstream/candidate_spec_GNU.yaml')
 domain='/home/docker/domain/croton_lite'
 config='NWM'
 version='v1.2.1'
