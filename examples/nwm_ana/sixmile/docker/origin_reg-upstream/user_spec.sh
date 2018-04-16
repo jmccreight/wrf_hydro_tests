@@ -3,20 +3,13 @@
 #          is sourced after the candidate specification file and my rely on 
 #          variables defined therein.
 
-
 export WRF_HYDRO_TESTS_DIR=/wrf_hydro_tests
 # REQUIRED
 # The local path to the wrf_hydro_tests dir.
 
-
 #export GITHUB_AUTHTOKEN=`cat ~/.github_authtoken 2> /dev/null`
 #export GITHUB_USERNAME=jmccreight
 # These are passed to docker by the host. 
-
-export NETCDF=$(dirname `nc-config --includedir`)
-# REQUIRED
-# Where NetCDF resides on your system
-
 
 ###########################################################################
 # * Run group *

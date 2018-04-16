@@ -45,6 +45,14 @@ export referenceBinary=$refRepoDir/trunk/NDHMS/Run/wrf_hydro.exe
 ###################################
 ## TODO JLM: also have to tear this down? optionally?
 
+
+if [[ ! -d $domainSourceDir ]]; then
+    echo "The domain source: $domainSourceDir"
+    echo "does not exist. Exiting."
+    exit 1
+fi
+## should the above live elsewhere?
+
 if [[ ! -z $domainRunDir ]]; then
     if [[ -e $domainRunDir ]]; then
         chmod -R 755 $domainRunDir
@@ -55,12 +63,13 @@ if [[ ! -z $domainRunDir ]]; then
     else
 	cp -as `pwd`/$domainSourceDir $domainRunDir
     fi
+    chmod -R 755 $domainRunDir
 else
     if [[ $inDocker == "FALSE" ]]; then
 	## JLM: this does not catch drives mounted from host into the docker container.
-	echo "You are not in docker and you have not specified "
-        echo "the \$domainRunDir environment variable. "
-        echo "Exiting instead of writing into your \$domainSourceDir."
+	echoTee "You are not in docker and you have not specified "                           
+        echoTee "the \$domainRunDir environment variable. "                                   
+        echoTee "Exiting instead of writing into your \$domainSourceDir."                     
 	exit 1
     fi
     export domainRunDir=$domainSourceDir
@@ -74,7 +83,7 @@ fi
 if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
 
     if [ -z `printenv | grep SSH_AGENT_PID` ]; then
-        echo "Initialising new SSH agent..."
+        echoTee "Initialising new SSH agent..."                                               
         ssh-agent -k 
         eval "$(ssh-agent -s)" 
         ssh-add $GITHUB_SSH_PRIV_KEY
@@ -84,16 +93,15 @@ if [[ ! -z ${GITHUB_SSH_PRIV_KEY} ]]; then
 else
 
     if [[ -z ${GITHUB_USERNAME} ]]; then
-        echo "The required environment variable GITHUB_USERNAME has 
-               not been supplied. Exiting."
+        echoTee "The required environment variable GITHUB_USERNAME has"                        
+        echoTee "not been supplied. Exiting."                                                 
         exit 1
     fi
 
     if [[ -z ${GITHUB_AUTHTOKEN} ]]; then
-        echo "The required environment variable GITHUB_AUTHTOKEN has 
-               not been supplied. (A local ssh private key has also not 
-          bee  n supplied). You will be required to authenticate 
-          over    https."
+        echoTee "The required environment variable GITHUB_AUTHTOKEN has "                     
+        echoTee "not been supplied. (A local ssh private key has also not "                   
+        echoTee "been supplied). You will be required to authenticate over https."            
         export authInfo=${GITHUB_USERNAME}
         export GIT_PROTOCOL=https
     else 
@@ -117,48 +125,48 @@ fi
 ###################################
 ## Modules
 ###################################
-echo
-echo -e "\e[0;49;32m-----------------------------------\e[0m"
+echoTee
+echoTee -e "\e[0;49;32m-----------------------------------\e[0m"                              
 if [[ ! -z $WRF_HYDRO_MODULES ]]; then
     message="\e[7;49;32mModule information                                           \e[0m"
-    echo -e "$message"
-    echo "module purge"
+    echoTee -e "$message"                                                                     
+    echoTee "module purge"                                                                    
     module purge
-    echo "module load $WRF_HYDRO_MODULES"
+    echoTee "module load $WRF_HYDRO_MODULES"                                                  
     module load $WRF_HYDRO_MODULES
     module list
+    ##cannot capture the previous line
 else 
     message="\e[7;49;32mConfiguration information:\e[0m"
-    echo -e "$message"
-    echo
+    echoTee -e "$message"                                                                     
+    echoTee                                                                                   
     ## give the fortran+mpi version
     if [[ $HOSTNAME != *tfe* ]]; then
-	echo "mpif90 --version:"
+	echoTee "mpif90 --version:"                                                           
 	mpif90 --version
     else
-	echo "mpiifort --version:"
+	echoTee "mpiifort --version:"                                                         
 	mpiifort --version
     fi	
-    echo
+    echoTee
     ## give the netcdf version + other info
-    echo "nc-config --version --fc --fflags --flibs:"
+    echoTee "nc-config --version --fc --fflags --flibs:"                                      
     nc-config --version --fc --fflags --flibs
 fi
 
 ###################################
 ## Check the compiler is what was requested
 ###################################
-echo "WRF_HYDRO_COMPILER: $WRF_HYDRO_COMPILER"
 if [[ $WRF_HYDRO_COMPILER == intel ]]; then
     export MACROS_FILE=macros.mpp.ifort
     if [[ $HOSTNAME != *tfe* ]]; then
 	mpif90 --version | grep -i intel > /dev/null 2>&1 || {
-            echo 'The requested compiler was not found, exiting.'
+            echoTee 'The requested compiler was not found, exiting.'
             exit 1
 	}
     else
 	mpiifort --version | grep -i intel > /dev/null 2>&1 || {
-            echo 'The requested compiler was not found, exiting.'
+            echoTee 'The requested compiler was not found, exiting.'
             exit 1
 	}
     fi
@@ -168,7 +176,7 @@ fi
 if [[ $WRF_HYDRO_COMPILER == GNU ]]; then
     export MACROS_FILE=macros.mpp.gfort
     mpif90 --version | grep -i GNU > /dev/null 2>&1 || {
-        echo 'The requested compiler was not found, exiting.'
+        echoTee 'The requested compiler was not found, exiting.'
         exit 1
     }
 fi 
@@ -176,4 +184,8 @@ fi
 ###################################
 ## NetCDF env variable setup after modules
 ###################################
-eval $NETCDF
+netcdfStr=`echo $NETCDF | cut -d' ' -f1`
+if [[ $netcdfStr == *export* ]]; then
+    eval $NETCDF
+fi
+
