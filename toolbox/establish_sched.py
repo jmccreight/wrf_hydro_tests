@@ -2,15 +2,16 @@ from pprint import pprint
 import re
 import sys
 import os
+import warnings
 home = os.path.expanduser("~/")
 sys.path.insert(0, home + '/WRF_Hydro/wrf_hydro_tests/toolbox/')
-from establish_specs import establish_spec
+from establish_specs import establish_spec, establish_default_files
 
 
-def get_sched_args_from_specs(name: str=None,
+def get_sched_args_from_specs(job_name: str=None,
                               nnodes: int=None,
                               nproc: int=None,
-                              run_dir: str='$PWD',
+                              run_dir: str=None,
                               machine_spec_file: str=None,
                               user_spec_file: str=None,
                               candidate_spec_file: str=None):
@@ -27,22 +28,28 @@ def get_sched_args_from_specs(name: str=None,
     machine_spec_file_from_candiate = candidate_spec['wrf_hydro_tests']['machine_spec']
     if machine_spec_file_from_candiate:
         machine_spec_file = machine_spec_file_from_candiate
-        print("WARNING: candidate spec_file is overriding machine_spec_file with file " + 
+        warnings.warn("WARNING: candidate spec_file is overriding machine_spec_file with file " + 
               machine_spec_file)
             
     user_spec_file_from_candiate = candidate_spec['wrf_hydro_tests']['user_spec']
     if user_spec_file_from_candiate:
         user_spec_file = user_spec_file_from_candiate
-        print("WARNING: candidate spec_file is overriding user_spec_file with file " + 
+        warnings.warn("WARNING: candidate spec_file is overriding user_spec_file with file " + 
               user_spec_file)
+    
+    default_user_file, default_machine_file = establish_default_files()
         
-    if user_spec_file:
-        user_spec = establish_spec(user_spec_file)
-    #pprint(user_spec)
+    if not user_spec_file:
+        user_spec_file = default_user_file
 
-    if machine_spec_file:
-        machine_spec = establish_spec(machine_spec_file)
-    #pprint(machine_spec)
+    # TODO JLM: should probably be in a try catch.    
+    user_spec = establish_spec(user_spec_file)
+
+    if not machine_spec_file:
+        machine_spec_file = default_machine_file
+
+    # TODO JLM: should probably be in a try catch.    
+    machine_spec = establish_spec(machine_spec_file)
 
     # From least to most important
     spec=machine_spec
@@ -60,12 +67,11 @@ def get_sched_args_from_specs(name: str=None,
     sad = sched_args_dict
 
     # Fomr optional arguments
-    if name:   sad['name']  = name
-    if nnodes: sad['nnodes']= nnodes
-    if nproc:  sad['nproc'] = nproc
+    if job_name: sad['job_name']  = job_name
+    if nnodes:   sad['nnodes']= nnodes
+    if nproc:    sad['nproc'] = nproc
 
-    # From arguments with defaults.
-    sad['run_dir']    = os.path.expandvars(run_dir)
+    if run_dir:  sad['run_dir']    = os.path.expandvars(run_dir)
 
     # From spec files.
     sad['account']    = spec[scheduler_name]['account']

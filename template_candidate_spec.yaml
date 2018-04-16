@@ -6,9 +6,12 @@ n_cores:
       default : 2
       test    : 1
 
+     
 # Where temp repositories cloned from github shall be placed
 #   (in subfolders candidate/ and reference/)
-repos_dir : ~/test_repos
+repos_dir : /glade/scratch/${USER}/test_repos
+
+test_dir : /glade/scratch/${USER}/test_dir
 
 candidate_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
@@ -17,7 +20,7 @@ candidate_repo:
     # --- OR ---
     # A path on local machine where the current state of the repo (potentially uncommitted)
     # is compiled. This supercedes BOTH candidateFork and candidateBranchCommit if set. 
-    local_path : 
+    local_path : /glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_nwm_public
 
 reference_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm

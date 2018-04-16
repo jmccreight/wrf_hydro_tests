@@ -67,13 +67,9 @@ def establish_user_spec(candidate_spec, env_vars):
         candidate_spec['wrf_hydro_tests']['user_spec_setby'] = 'candidate spec'
 
     if user_spec_file == '' or user_spec_file is None:
-        if 'WRF_HYDRO_TESTS_USER_SPEC' in env_vars:
-            user_spec_file = env_vars['WRF_HYDRO_TESTS_USER_SPEC']
-            candidate_spec['wrf_hydro_tests']['user_spec_setby'] = 'env var'
-        else:
-            user_spec_file = os.path.expanduser('~/.wrf_hydro_tests_user_spec.sh')
-            candidate_spec['wrf_hydro_tests']['user_spec_setby'] = \
-               '~/.wrf_hydro_tests_user_spec.sh'
+        default_files = establish_default_files()
+        user_spec_file = default_files[0]
+        candidate_spec['wrf_hydro_tests']['user_spec_setby'] = 'env var'
 
     candidate_spec['wrf_hydro_tests']['user_spec'] = user_spec_file
     # TODO JLM: indicate in the candidate_spec how the user_spec_file was set.
@@ -90,12 +86,8 @@ def establish_user_spec(candidate_spec, env_vars):
 def establish_machine_spec(candidate_spec, user_spec, env_vars):
     log.debug('Establish machine spec.')
 
-    if (not 'wrf_hydro_tests_dir' in user_spec):
-        candidate_spec['wrf_hydro_tests']['machine_spec_setby'] = 'env var'
-        machine_spec_file = env_vars['WRF_HYDRO_TESTS_MACHINE_SPEC']
-    else:
-        candidate_spec['wrf_hydro_tests']['machine_spec_setby'] = 'wrf_hydro_tests_dir'
-        machine_spec_file = user_spec['wrf_hydro_tests_dir']+'/machine_spec.yaml'
+    candidate_spec['wrf_hydro_tests']['machine_spec_setby'] = 'wrf_hydro_tests_dir'
+    machine_spec_file = user_spec['wrf_hydro_tests_dir']+'/machine_spec.yaml'
 
     candidate_spec['wrf_hydro_tests']['machine_spec'] = machine_spec_file
     # TODO JLM: indicate in the candidate_spec how the machine_spec_file was set.
@@ -130,7 +122,7 @@ def establish_test(test_spec, candidate_spec, user_spec):
     if not test_spec_file.exists():
         candidate_spec['wrf_hydro_tests']['test_spec_setby'] = 'command line key'
         test_spec_list = \
-            list(Path(user_spec['wrf_hydro_tests_dir']+'/tests').glob(test_spec+'.sh'))
+            list(Path(user_spec['wrf_hydro_tests_dir']+'/tests').glob(test_spec+'.py'))
         if len(test_spec_list) != 1:
             log.error('The test specification argument does not identify a unique test.')
         else:
@@ -140,3 +132,9 @@ def establish_test(test_spec, candidate_spec, user_spec):
     return(True)
 
 
+# This is to support external calls... should probably enforce this above... 
+def establish_default_files():
+    default_user_spec_file = os.environ['WRF_HYDRO_TESTS_USER_SPEC']
+    default_user_spec = establish_spec(default_user_spec_file)
+    default_machine_spec_file = default_user_spec['wrf_hydro_tests_dir'] + '/machine_spec.yaml'
+    return default_user_spec_file, default_machine_spec_file

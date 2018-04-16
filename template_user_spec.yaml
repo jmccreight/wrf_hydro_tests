@@ -1,5 +1,5 @@
 # REQUIRED: The local path to the wrf_hydro_tests dir.
-wrf_hydro_tests_dir : ~/wrf_hydro_tests
+wrf_hydro_tests_dir : ~/WRF_Hydro/wrf_hydro_tests
 
 
 # REQUIRED only if cloning any repositories from github.

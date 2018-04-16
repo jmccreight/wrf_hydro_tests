@@ -24,7 +24,6 @@ cheyenne:
   exe_cmd:
     PBS    : 'mpiexec_mpt ./wrf_hydro.exe'
     default: 'mpirun -np {num_cores} ./wrf_hydro.exe'
-
     
 docker:
   modules:

@@ -1,19 +1,20 @@
-from wrfhydropy import Scheduler
+import pytest
+from wrfhydropy import *
 import os
+import shutil
 import logging
 from pprint import pprint, pformat
-
-# Anything local/custom below here
+import json
 import sys
-from wrfhydropy import *
+from copy import deepcopy
 
 sys.path.insert(0, 'toolbox/')
 from color_logs import log
 from establish_specs import *
 from log_boilerplate import log_boilerplate
 from establish_repo import *
+from establish_sched import get_sched_args_from_specs
 
-import pytest
 
 # ######################################################
 # Help/docstring.
@@ -24,8 +25,8 @@ import pytest
 #domain              = str(argv[2])
 #test_spec           = str(argv[3])
 
-candidate_spec_file = os.path.expanduser('~/WRF_Hydro/wrf_hydro_tests/examples/nwm_ana/sixmile/docker/local_reg-upstream/candidate_spec_GNU.yaml')
-domain='/home/docker/domain/croton_lite'
+candidate_spec_file = os.path.expanduser('~/WRF_Hydro/wrf_hydro_tests/template_candidate_spec.yaml')
+domain='/glade/p/work/jamesmcc/DOMAINS/croton_NY' #'/home/docker/domain/croton_lite'
 config='NWM'
 version='v1.2.1'
 test_spec = 'fundamental'
@@ -65,6 +66,8 @@ env_vars       = os.environ.copy()
 candidate_spec = establish_candidate(candidate_spec_file)
 user_spec      = establish_user_spec(candidate_spec, env_vars)
 machine_spec   = establish_machine_spec(candidate_spec, user_spec, env_vars)
+#user_spec, machine_spec = establish_default_files()
+
 
 # Test spec is a bit different.
 # Writes to candidate_spec['wrf_hydro_tests']['test_spec']
@@ -93,7 +96,6 @@ establish_repo('candidate_repo', candidate_spec, user_spec)
 establish_repo('reference_repo', candidate_spec, user_spec)
 log.debug('')
 
-
 # ######################################################
 # Setup the test
 #log.info(horiz_bar)
@@ -119,11 +121,74 @@ log.debug('')
 #log.debug('')
 
 
-#$PYTEST_DIR_DOCKER -v \
-#    --domain_dir $DOMAIN_DIR_DOCKER \
-#    --candidate_dir $TEST_DIR_DOCKER/candidate/trunk/NDHMS \
-#    --reference_dir $TEST_DIR_DOCKER/reference/trunk/NDHMS \
-#    --output_dir $TEST_DIR_DOCKER/test_out 
+
+# For each simulation
+# {test_name}}
+#   setup/input specs 
+#     compiler
+#     domain_config
+#   job/output specs
+# #ncores
+# queue
+# wall_time
+# run_dir
+
+# (PBS info from user spec)
+# account
+# email_who
+# email_when
+
+# machine info
+
+# TODO, Each test suite (e.g. fundamental) has its functions to construct the necessary
+# information in dict form for both its fixtures (setup) and for its tests.
+
+specs_for_tests = dict()
+
+# test_1_fundamental: >>>>>>>
+
+setup_spec = { "compiler": candidate_spec['compiler'], "domain_config": config }
+
+job_spec = get_sched_args_from_specs(
+    machine_spec_file=candidate_spec['wrf_hydro_tests']['machine_spec'],
+    user_spec_file=candidate_spec['wrf_hydro_tests']['user_spec'],
+    candidate_spec_file=candidate_spec['wrf_hydro_tests']['candidate_spec']
+)
+
+test_1_fundamental = {
+
+    "candidate_sim" : setup_spec
+    "reference_sim" : setup_spect
+
+    "test_compile_candidate" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_candidate' },
+    "test_compile_reference" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_reference' },
+
+    # These could be shallow copies?
+    "test_run_candidate" : \
+        deepcopy(job_spec).update({'job_name': 'test_run_candidate',
+                                   'nproc'   : candidate_spec['n_cores']['default'],
+                                   'run_dir' : candidate_spec['test_dir'] + '/run_candidate'}),
+
+    "test_run_reference" : \
+        deepcopy(job_spec).update({'job_name': 'test_run_reference',
+                                   'nproc'   : candidate_spec['n_cores']['default'],
+                                   'run_dir' : candidate_spec['test_dir'] + '/run_reference'}),
+
+    "test_ncores_candidate" : \
+        deepcopy(job_spec).update({'job_name': 'test_ncores_candidate',
+                                   'nproc'   : candidate_spec['n_cores']['test'],
+                                   'run_dir' : candidate_spec['test_dir'] + '/ncores_candidate'}),
+
+    "test_perfrestart_candidate" : \
+        deepcopy(job_spec).update({'job_name': 'test_perfrestart_candidate',
+                                   'nproc'   : candidate_spec['n_cores']['default'],
+                                   'run_dir' : candidate_spec['test_dir'] + '/restart_candidate'})
+
+    }
+
+specs_for_tests.update(test_1_fundamental)
+# test_1_fundamental: <<<<<<
+
 pytest_cmd = \
     [
       str(candidate_spec['candidate_repo']['local_path']),
@@ -131,10 +196,9 @@ pytest_cmd = \
       '--domain_dir',    domain,
       '--candidate_dir', str(candidate_spec['candidate_repo']['local_path']) + '/trunk/NDHMS',
       '--reference_dir', str(candidate_spec['reference_repo']['local_path']) + '/trunk/NDHMS',
-      '--output_dir',    str(candidate_spec['test_dir'])
-     ]
+      '--specs_for_tests', specs_for_tests
+    ]
 pytest.main(pytest_cmd)
-#["-qq"], plugins=[MyPlugin()])
 
 
 # ######################################################
@@ -144,6 +208,8 @@ log.info('Tear down test.')
 log.debug('')
 # TODO JLM: tear_down()
 log.debug('')
+#shutil.rmtree(candidate_spec['repos_dir'])
+#shutil.rmtree(candidate_spec['test_dir'])
 
 
 # ######################################################
