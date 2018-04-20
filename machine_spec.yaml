@@ -23,17 +23,11 @@ cheyenne:
   # The executable invocation on the machine
   exe_cmd:
     PBS    : 'mpiexec_mpt ./wrf_hydro.exe'
-    default: 'mpirun -np {num_cores} ./wrf_hydro.exe'
+    default: 'mpirun -np {nproc} ./wrf_hydro.exe'
     
 docker:
   modules:
   scheduler: 
   cores_per_node:
   exe_cmd:
-    default: 'mpirun -ppn {num_cores} ./wrf_hydro.exe'
-    
-  
-
-
-
-
+    default: 'mpirun -ppn {nproc} ./wrf_hydro.exe'
