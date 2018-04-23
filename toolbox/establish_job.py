@@ -16,6 +16,7 @@ def get_job_args_from_specs(
     mode: str='r',
     nnodes: int=None,
     nproc: int=None,
+    scheduler_name: str='',
     machine_spec_file: str=None,
     user_spec_file: str=None,
     candidate_spec_file: str=None
@@ -67,12 +68,12 @@ def get_job_args_from_specs(
         machine = 'cheyenne'
 
     if machine not in spec.keys():
-        # TODO(JLM): CHAGE DEFAULT MACHINE NAME BACK TO DOCKER, THIS IS JUST FOR TESTING.
-        machine = 'cheyenne'
+        machine = 'docker'
         warnings.warn("Machine not found in the machine_spec_file.yaml, using docker.")
 
-    if spec[machine]['scheduler'] is not None:
-        scheduler_name = spec[machine]['scheduler']['name']
+    if scheduler_name == '':
+        if spec[machine]['scheduler'] is not None:
+            scheduler_name = spec[machine]['scheduler']['name']
     else:
         scheduler_name = None
     compiler_name = spec['compiler']
@@ -83,7 +84,7 @@ def get_job_args_from_specs(
     sad = sched_args_dict
     jad = job_args_dict
     
-    # Fomr optional arguments
+    # From optional arguments
     if job_name:
         sad['job_name'] = job_name
     if nnodes:
@@ -102,14 +103,15 @@ def get_job_args_from_specs(
         sad['queue']      = spec['queue']
         sad['walltime']   = spec['wall_time']
         sad['ppn']        = spec[machine]['cores_per_node']
+        jad['scheduler']  = sad
         jad['exe_cmd']    = spec[machine]['exe_cmd'][scheduler_name]
     else:
-        jad['exe_cmd']    = spec[machine]['exe_cmd']
+        jad['exe_cmd']    = spec[machine]['exe_cmd']['default']
 
     if spec[machine]['modules'] is not None: 
         jad['modules']    = spec[machine]['modules'][compiler_name]
         if 'base' in spec[machine]['modules'].keys():
             jad['modules'] += ' ' + spec[machine]['modules']['base']
 
-    jad['scheduler'] = sad
+
     return(job_args_dict)

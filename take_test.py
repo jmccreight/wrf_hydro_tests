@@ -157,8 +157,8 @@ job_spec = get_sched_args_from_specs(
 
 test_1_fundamental = {
 
-    "candidate_sim" : setup_spec
-    "reference_sim" : setup_spect
+    "candidate_sim" : setup_spec,
+    "reference_sim" : setup_spec,
 
     "test_compile_candidate" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_candidate' },
     "test_compile_reference" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_reference' },
