@@ -73,9 +73,10 @@ def get_job_args_from_specs(
 
     if scheduler_name == '':
         if spec[machine]['scheduler'] is not None:
-            scheduler_name = spec[machine]['scheduler']['name']
-    else:
-        scheduler_name = None
+            scheduler_name = spec[machine]['scheduler']['name']        
+        else:
+            scheduler_name = None
+            
     compiler_name = spec['compiler']
 
     sched_args_dict = {}
@@ -93,8 +94,8 @@ def get_job_args_from_specs(
         sad['nproc'] = nproc
         jad['nproc'] = nproc
 
-    jad['machine'] = machine
-        
+    #jad['machine'] = machine
+
     # From spec files.
     if scheduler_name is not None: 
         sad['account']    = spec[scheduler_name]['account']

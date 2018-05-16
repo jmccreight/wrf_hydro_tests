@@ -9,9 +9,9 @@ n_cores:
      
 # Where temp repositories cloned from github shall be placed
 #   (in subfolders candidate/ and reference/)
-repos_dir : /glade/scratch/${USER}/test_repos
+repos_dir : /home/docker/test_repos
 
-test_dir : /glade/scratch/${USER}/test_dir
+test_dir : /home/docker/test_dir
 
 candidate_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
@@ -20,7 +20,7 @@ candidate_repo:
     # --- OR ---
     # A path on local machine where the current state of the repo (potentially uncommitted)
     # is compiled. This supercedes BOTH candidateFork and candidateBranchCommit if set. 
-    local_path : /glade/u/home/jamesmcc/WRF_Hydro/wrf_hydro_nwm_public
+    local_path : /home/docker/wrf_hydro_nwm_myFork
 
 reference_repo:
     # Default = ${GITHUB_USERNAME}/wrf_hydro_nwm
@@ -39,7 +39,8 @@ wrf_hydro_tests:
 # to the file. 
     user_spec :
 # * Machine spec file path *
-# Default (if not set) = $WRF_HYDRO_TESTS_DIR/machine_spec.sh
+# Default (if not set) = {wrf_hydro_tests_dir}/machine_spec.sh
+# Where wrf_hydro_test_dir is set in the user_spec.
 # We recommend using the default by leaving blank. If using an
 # alternative location, then variable consists of the path/file
 # to the file. 

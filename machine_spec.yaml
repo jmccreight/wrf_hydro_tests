@@ -27,7 +27,7 @@ cheyenne:
     
 docker:
   modules:
-  scheduler: 
+  scheduler:
   cores_per_node:
   exe_cmd:
     default: 'mpirun -ppn {nproc} ./wrf_hydro.exe'

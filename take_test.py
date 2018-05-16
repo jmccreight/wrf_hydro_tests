@@ -1,20 +1,48 @@
-import pytest
-from wrfhydropy import *
-import os
-import shutil
-import logging
-from pprint import pprint, pformat
-import json
-import sys
-from copy import deepcopy
 
-sys.path.insert(0, 'toolbox/')
+# # Establish docker.
+# #docker create --name croton_2 wrfhydro/domains:croton_NY
+# disk_dir='chimayoSpace'
+# if [ $HOSTNAME = yucatan.local ]; then disk_dir=jamesmcc; fi
+# host_repos=/Volumes/d1/${disk_dir}/git_repos
+
+# # # Start the image
+# docker run -it \
+#     -e USER=docker \
+#     -e GITHUB_AUTHTOKEN=$GITHUB_AUTHTOKEN \
+#     -e GITHUB_USERNAME=$GITHUB_USERNAME \
+#     -e WRF_HYDRO_TESTS_USER_SPEC=/home/docker/wrf_hydro_tests/.wrf_hydro_tests_user_spec.yaml \
+#     -v ${host_repos}/wrf_hydro_nwm_myFork:/home/docker/wrf_hydro_nwm_myFork \
+#     -v ${host_repos}/wrf_hydro_py:/home/docker/wrf_hydro_py \
+#     -v ${host_repos}/wrf_hydro_tests:/home/docker/wrf_hydro_tests \
+#     -v /Users/jamesmcc/Downloads/croton_NY:/croton_NY --volumes-from croton_2 \
+#     wrfhydro/dev:conda
+
+# # Inside docker
+# cd ~/wrf_hydro_py/
+# pip uninstall -y wrfhydropy
+# pip install termcolor
+# python setup.py develop
+# cd ~/wrf_hydro_tests
+# python
+
+#######################################################
+
+import code
+import copy
+import json
+import logging
+import os
+from pprint import pprint, pformat
+import pytest
+import shutil
+import sys
+import wrfhydropy
+
+sys.path.insert(0, '/home/docker/wrf_hydro_tests/toolbox/')
 from color_logs import log
 from establish_specs import *
 from log_boilerplate import log_boilerplate
 from establish_repo import *
-from establish_sched import get_sched_args_from_specs
-
 
 # ######################################################
 # Help/docstring.
@@ -25,8 +53,8 @@ from establish_sched import get_sched_args_from_specs
 #domain              = str(argv[2])
 #test_spec           = str(argv[3])
 
-candidate_spec_file = os.path.expanduser('~/WRF_Hydro/wrf_hydro_tests/template_candidate_spec.yaml')
-domain='/glade/p/work/jamesmcc/DOMAINS/croton_NY' #'/home/docker/domain/croton_lite'
+candidate_spec_file = os.path.expanduser('/home/docker/wrf_hydro_tests/template_candidate_spec.yaml')
+domain='/home/docker/domain/croton_NY'
 config='NWM'
 version='v1.2.1'
 test_spec = 'fundamental'
@@ -96,109 +124,41 @@ establish_repo('candidate_repo', candidate_spec, user_spec)
 establish_repo('reference_repo', candidate_spec, user_spec)
 log.debug('')
 
-# ######################################################
-# Setup the test
-#log.info(horiz_bar)
-#log.info('Set up the test.')
-#log.debug('')
-#log.debug('Setup the domain.')
-#domain = WrfHydroDomain(domain_top_dir=domain, domain_config=config, model_version=version)
-#log.debug('')
+# ###################################
+machine_name = wrfhydropy.core.job_tools.get_machine()
+if machine_name == 'docker':
+    default_scheduler = None
+else:
+    default_scheduler = wrfhydropy.Scheduler(
+        job_name='default',
+        account=user_spec['PBS']['account'],
+        walltime=candidate_spec['wall_time'],
+        queue=candidate_spec['queue'],
+        nproc=candidate_spec['n_cores'],
+        ppn=machine_spec[machine_name]['cores_per_node']
+    )
+    default_scheduler = json.dumps(default_scheduler.__dict__)
 
-#log.debug('Setup the candidate model and simulation objects.')
-#candidate_model = WrfHydroModel(str(candidate_spec['candidate_repo']['local_path'])+'/trunk/NDHMS')
-#candidate_sim = WrfHydroSim(candidate_model,domain)
-#log.debug('Compile options:')
-#log.debug(pformat(candidate_model.compile_options))
-#log.debug('')
+job_default = wrfhydropy.Job(nproc=candidate_spec['n_cores']['default'])
+job_ncores=copy.deepcopy(job_default)
+job_ncores.nproc=candidate_spec['n_cores']['test']
+job_default = json.dumps(job_default.__dict__)
+job_ncores = json.dumps(job_ncores.__dict__)
 
-# TODO JLM: the trunk/NHDMS seems like a stupid add on... 
-# TODO JLM: when did the path become a posix path object?
+pytest_cmd = [
+    '--config', config,
+    '--compiler', candidate_spec['compiler'],
+    '--domain_dir', domain,
+    '--output_dir',  candidate_spec['test_dir'],
+    '--candidate_dir', str(candidate_spec['candidate_repo']['local_path']) + '/trunk/NDHMS',
+    '--reference_dir', str(candidate_spec['reference_repo']['local_path']) + '/trunk/NDHMS',
+    '--job_default', job_default,
+    '--job_ncores', job_ncores,
+    '--scheduler', default_scheduler,
+]
 
-#log.debug('Setup the reference model and simulation objects.')
-#reference_model = WrfHydroModel(str(candidate_spec['reference_repo']['local_path'])+'/trunk/NDHMS')
-#reference_sim = WrfHydroSim(reference_model,domain)
-#log.debug('')
-
-
-
-# For each simulation
-# {test_name}}
-#   setup/input specs 
-#     compiler
-#     domain_config
-#   job/output specs
-# #ncores
-# queue
-# wall_time
-# run_dir
-
-# (PBS info from user spec)
-# account
-# email_who
-# email_when
-
-# machine info
-
-# TODO, Each test suite (e.g. fundamental) has its functions to construct the necessary
-# information in dict form for both its fixtures (setup) and for its tests.
-
-specs_for_tests = dict()
-
-# test_1_fundamental: >>>>>>>
-
-setup_spec = { "compiler": candidate_spec['compiler'], "domain_config": config }
-
-job_spec = get_sched_args_from_specs(
-    machine_spec_file=candidate_spec['wrf_hydro_tests']['machine_spec'],
-    user_spec_file=candidate_spec['wrf_hydro_tests']['user_spec'],
-    candidate_spec_file=candidate_spec['wrf_hydro_tests']['candidate_spec']
-)
-
-test_1_fundamental = {
-
-    "candidate_sim" : setup_spec,
-    "reference_sim" : setup_spec,
-
-    "test_compile_candidate" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_candidate' },
-    "test_compile_reference" : { "compile_dir" : candidate_spec['test_dir'] + 'compile_reference' },
-
-    # These could be shallow copies?
-    "test_run_candidate" : \
-        deepcopy(job_spec).update({'job_name': 'test_run_candidate',
-                                   'nproc'   : candidate_spec['n_cores']['default'],
-                                   'run_dir' : candidate_spec['test_dir'] + '/run_candidate'}),
-
-    "test_run_reference" : \
-        deepcopy(job_spec).update({'job_name': 'test_run_reference',
-                                   'nproc'   : candidate_spec['n_cores']['default'],
-                                   'run_dir' : candidate_spec['test_dir'] + '/run_reference'}),
-
-    "test_ncores_candidate" : \
-        deepcopy(job_spec).update({'job_name': 'test_ncores_candidate',
-                                   'nproc'   : candidate_spec['n_cores']['test'],
-                                   'run_dir' : candidate_spec['test_dir'] + '/ncores_candidate'}),
-
-    "test_perfrestart_candidate" : \
-        deepcopy(job_spec).update({'job_name': 'test_perfrestart_candidate',
-                                   'nproc'   : candidate_spec['n_cores']['default'],
-                                   'run_dir' : candidate_spec['test_dir'] + '/restart_candidate'})
-
-    }
-
-specs_for_tests.update(test_1_fundamental)
-# test_1_fundamental: <<<<<<
-
-pytest_cmd = \
-    [
-      str(candidate_spec['candidate_repo']['local_path']),
-      '-v',
-      '--domain_dir',    domain,
-      '--candidate_dir', str(candidate_spec['candidate_repo']['local_path']) + '/trunk/NDHMS',
-      '--reference_dir', str(candidate_spec['reference_repo']['local_path']) + '/trunk/NDHMS',
-      '--specs_for_tests', specs_for_tests
-    ]
 pytest.main(pytest_cmd)
+code.interact(local=locals())
 
 
 # ######################################################
